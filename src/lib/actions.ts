@@ -156,3 +156,20 @@ export async function createOrg(form: FormData) {
   await supabase.from("orgs").insert({ name, slug });
   revalidatePath("/desk");
 }
+
+export async function inviteMember(form: FormData) {
+  const supabase = await createClient();
+  const email = String(form.get("email") ?? "").trim().toLowerCase();
+  const org_id = String(form.get("org_id") ?? "");
+  const role = String(form.get("role") ?? "bookkeeper");
+  const name = String(form.get("name") ?? "").trim();
+  if (!email || !org_id || !name) return;
+  await supabase.from("invites").upsert({ email, org_id, role, name }, { onConflict: "email,org_id" });
+  revalidatePath("/desk");
+}
+
+export async function removeInvite(id: string) {
+  const supabase = await createClient();
+  await supabase.from("invites").delete().eq("id", id);
+  revalidatePath("/desk");
+}
