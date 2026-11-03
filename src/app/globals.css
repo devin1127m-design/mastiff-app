@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #000;
+  --paper: #fff;
+  --grey: #6B6B6B;
+  --line: #d9d9d9;
+}
+html { color-scheme: light; }
+body { background: var(--paper); color: var(--ink); font-family: Inter, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.5; }
+h1, h2, h3, .serif { font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-weight: 600; letter-spacing: -0.005em; }
+h1 { font-size: 28px; line-height: 1.2; }
+h2 { font-size: 20px; }
+a { color: inherit; }
+.grey { color: var(--grey); }
+.hair { border-color: var(--line); }
+.btn { display: inline-flex; align-items: center; justify-content: center; border: 1px solid #000; padding: 9px 16px; font-weight: 500; border-radius: 2px; background: #fff; color: #000; cursor: pointer; text-decoration: none; min-height: 40px; }
+.btn.fill { background: #000; color: #fff; }
+.btn:disabled { opacity: .5; cursor: default; }
+.btn.small { padding: 5px 10px; min-height: 32px; font-size: 13px; }
+.field label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+.field input, .field select, .field textarea { width: 100%; border: 1px solid #000; border-radius: 2px; padding: 9px 10px; font: inherit; background: #fff; min-height: 40px; }
+.field textarea { min-height: 80px; }
+.field .hint { font-size: 12.5px; color: var(--grey); margin-top: 4px; }
+.stamp { display: inline-block; border: 2px solid #000; padding: 4px 12px; font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: 22px; letter-spacing: .04em; text-transform: uppercase; }
+.stamp.hold { background: #000; color: #fff; }
+table.list { width: 100%; border-collapse: collapse; font-size: 14px; }
+table.list th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--grey); font-weight: 600; padding: 8px 8px 8px 0; border-bottom: 1px solid #000; }
+table.list td { padding: 10px 8px 10px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.list tr:hover td { background: #fafafa; }
+.card { border: 1px solid #000; border-radius: 2px; padding: 16px; }
+.advisory { font-size: 12.5px; color: var(--grey); }
+.pill { display: inline-block; border: 1px solid #000; border-radius: 999px; padding: 1px 9px; font-size: 12px; }
+.pill.dark { background: #000; color: #fff; }
