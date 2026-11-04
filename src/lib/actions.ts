@@ -318,3 +318,21 @@ export async function adoptPattern(orgId: string, vendorId: string, low: number,
   await supabase.from("vendors").update({ usual_min: low || null, usual_max: high }).eq("id", vendorId).eq("org_id", orgId);
   revalidatePath("/app/vendors");
 }
+
+// Step 7: pull vendors and unpaid bills from QuickBooks. Owner only; read only.
+export async function pullQuickBooks(orgId: string, byName: string) {
+  const supabase = await createClient();
+  const { pull } = await import("@/lib/qbo");
+  let msg: string;
+  try { msg = await pull(supabase, orgId, byName); }
+  catch (e) { msg = "The pull did not finish: " + (e instanceof Error ? e.message.slice(0, 120) : "error"); }
+  revalidatePath("/app"); revalidatePath("/app/vendors"); revalidatePath("/app/settings");
+  redirect(`/app/settings?msg=${encodeURIComponent(msg)}`);
+}
+
+export async function disconnectQuickBooks(orgId: string) {
+  const supabase = await createClient();
+  await supabase.from("connections").delete().eq("org_id", orgId).eq("provider", "qbo");
+  revalidatePath("/app/settings");
+  redirect("/app/settings?qbo=disconnected");
+}
