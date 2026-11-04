@@ -255,7 +255,7 @@ export async function startIntake(orgId: string, byName: string, path: string, s
   let verdict: ReturnType<typeof check> | null = null;
   if (extracted) {
     const { data: org } = await supabase.from("orgs").select("single_cap, range_multiple, hours_start, hours_end").eq("id", orgId).single();
-    const { data: vendors } = await supabase.from("vendors").select("id, name, name_key, account_last4, usual_min, usual_max").eq("org_id", orgId);
+    const { data: vendors } = await supabase.from("vendors").select("id, name, name_key, account_last4, usual_min, usual_max, pass_under").eq("org_id", orgId);
     if (extracted.payee && extracted.amount) {
       verdict = check({ payee: extracted.payee, amount: extracted.amount, account_last4: extracted.account_last4, note: extracted.notes, submittedAt: new Date() }, (vendors ?? []) as Vendor[], org as Org);
       tapReason = needsTap(extracted, verdict, verdict.vendor);
@@ -335,4 +335,38 @@ export async function disconnectQuickBooks(orgId: string) {
   await supabase.from("connections").delete().eq("org_id", orgId).eq("provider", "qbo");
   revalidatePath("/app/settings");
   redirect("/app/settings?qbo=disconnected");
+}
+
+// Step 8: instructions. Propose (model), the owner confirms, plain code applies.
+export async function proposeInstruction(orgId: string, byName: string, form: FormData) {
+  const supabase = await createClient();
+  const text = String(form.get("text") ?? "").trim().slice(0, 400);
+  if (!text) return;
+  const { propose, summary } = await import("@/lib/instructions");
+  const { data: vendors } = await supabase.from("vendors").select("id, name, name_key").eq("org_id", orgId);
+  let proposal;
+  try { proposal = await propose(text, vendors ?? []); }
+  catch (e) { proposal = { kind: "unclear" as const, why: "Mastiff could not read that right now. (" + (e instanceof Error ? e.message.slice(0, 80) : "error") + ")" }; }
+  await supabase.from("instructions").insert({ org_id: orgId, text, proposal, summary: summary(proposal), status: proposal.kind === "unclear" ? "unclear" : "proposed", asked_by: byName });
+  revalidatePath("/app/instructions");
+}
+
+export async function decideInstruction(orgId: string, byName: string, id: string, confirm: boolean) {
+  const supabase = await createClient();
+  const { data: ins } = await supabase.from("instructions").select("proposal, status").eq("id", id).eq("org_id", orgId).maybeSingle();
+  if (!ins || ins.status !== "proposed") return;
+  if (confirm) {
+    const p = ins.proposal as import("@/lib/instructions").Proposal;
+    switch (p.kind) {
+      case "vendor_pass_under": await supabase.from("vendors").update({ pass_under: p.amount }).eq("id", p.vendor_id).eq("org_id", orgId); break;
+      case "vendor_usual_range": await supabase.from("vendors").update({ usual_min: p.min || null, usual_max: p.max }).eq("id", p.vendor_id).eq("org_id", orgId); break;
+      case "vendor_phone": await supabase.from("vendors").update({ callback_phone: p.phone, phone_on_file_since: new Date().toISOString().slice(0, 10) }).eq("id", p.vendor_id).eq("org_id", orgId); break;
+      case "vendor_note": await supabase.from("vendors").update({ instructions: p.note }).eq("id", p.vendor_id).eq("org_id", orgId); break;
+      case "single_cap": await supabase.from("orgs").update({ single_cap: p.amount }).eq("id", orgId); break;
+      case "range_multiple": await supabase.from("orgs").update({ range_multiple: p.multiple }).eq("id", orgId); break;
+      case "hours": await supabase.from("orgs").update({ hours_start: p.start, hours_end: p.end }).eq("id", orgId); break;
+    }
+  }
+  await supabase.from("instructions").update({ status: confirm ? "confirmed" : "declined", decided_by: byName, decided_at: new Date().toISOString() }).eq("id", id);
+  revalidatePath("/app/instructions"); revalidatePath("/app"); revalidatePath("/app/vendors"); revalidatePath("/app/settings");
 }

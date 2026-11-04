@@ -88,6 +88,8 @@ export function needsTap(x: Extracted, v: Verdict, vendor: Vendor | null): strin
   if (x.confidence < CONFIDENT) return "Mastiff is not sure it read this correctly.";
   if (!vendor) return "This vendor is not on file yet.";
   if (v.verdict === "hold") return "It would hold: " + v.reasons[0];
+  const passUnder = (vendor as Vendor & { pass_under?: number | null }).pass_under;
+  if (passUnder != null && x.amount <= Number(passUnder)) return null; // an owner's standing instruction (step 8)
   if (vendor.usual_min != null && x.amount < Number(vendor.usual_min)) return `Amount is below this vendor's usual range (from $${Number(vendor.usual_min).toLocaleString()}).`;
   if (vendor.usual_max != null && x.amount > Number(vendor.usual_max)) return `Amount is above this vendor's usual range (to $${Number(vendor.usual_max).toLocaleString()}).`;
   if (x.notes && /new bank|bank (details|account) (change|updat)|remit(tance)? (change|updat)|handwrit/i.test(x.notes)) return "The invoice mentions a change: " + x.notes;

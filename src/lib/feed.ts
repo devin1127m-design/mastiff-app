@@ -14,11 +14,12 @@ export type Event = {
 const money = (n: number) => "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 export async function buildFeed(supabase: SupabaseClient, orgId: string, limit = 40): Promise<Event[]> {
-  const [{ data: reqs }, { data: intakes }, { data: mails }, { data: notes }] = await Promise.all([
+  const [{ data: reqs }, { data: intakes }, { data: mails }, { data: notes }, { data: ins }] = await Promise.all([
     supabase.from("requests").select("id, payee, amount, verdict, reasons, status, source, submitted_by, straight_through, created_at").eq("org_id", orgId).order("created_at", { ascending: false }).limit(limit),
     supabase.from("intakes").select("id, extracted, needs_tap_because, created_by, request_id, created_at").eq("org_id", orgId).order("created_at", { ascending: false }).limit(limit),
     supabase.from("inbound_emails").select("id, from_email, subject, status, request_id, intake_id, received_at").eq("org_id", orgId).order("received_at", { ascending: false }).limit(limit),
     supabase.from("notifications").select("id, kind, to_email, subject, status, sent_at, created_at").eq("org_id", orgId).eq("status", "sent").order("sent_at", { ascending: false }).limit(limit),
+    supabase.from("instructions").select("id, text, summary, status, asked_by, decided_by, decided_at").eq("org_id", orgId).in("status", ["confirmed", "declined"]).order("decided_at", { ascending: false }).limit(limit),
   ]);
   const ids = (reqs ?? []).map((r) => r.id);
   const [{ data: calls }, { data: decs }] = ids.length ? await Promise.all([
@@ -57,6 +58,9 @@ export async function buildFeed(supabase: SupabaseClient, orgId: string, limit =
   }
   for (const n of notes ?? []) {
     ev.push({ at: n.sent_at ?? n.created_at, who: "mastiff", text: `Emailed ${n.to_email}: ${n.subject}` });
+  }
+  for (const i of ins ?? []) {
+    ev.push({ at: i.decided_at, who: "office", text: `${i.decided_by} ${i.status} the instruction "${i.text}"${i.status === "confirmed" ? `: ${i.summary}` : "."}`, href: "/app/instructions" });
   }
   ev.sort((a, b) => b.at.localeCompare(a.at));
   return ev.slice(0, limit);

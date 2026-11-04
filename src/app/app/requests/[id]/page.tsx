@@ -10,7 +10,7 @@ export default async function RequestPage({ params }: { params: Promise<{ id: st
   const { id } = await params;
   const session = await getSession();
   const supabase = await createClient();
-  const { data: r } = await supabase.from("requests").select("*, orgs(name), vendors(name, callback_phone, account_last4, phone_on_file_since)").eq("id", id).maybeSingle();
+  const { data: r } = await supabase.from("requests").select("*, orgs(name), vendors(name, callback_phone, account_last4, phone_on_file_since, instructions)").eq("id", id).maybeSingle();
   if (!r) notFound();
   const [{ data: calls }, { data: decs }, { data: history }] = await Promise.all([
     supabase.from("callbacks").select("*").eq("request_id", id).order("called_at"),
@@ -23,7 +23,7 @@ export default async function RequestPage({ params }: { params: Promise<{ id: st
   const canDecide = !!membership && (membership.role === "owner" || membership.role === "approver");
   const isHold = r.verdict === "hold";
   const resolved = ["released", "rejected"].includes(r.status);
-  const vendor = r.vendors as { name: string; callback_phone: string | null; account_last4: string | null; phone_on_file_since: string | null } | null;
+  const vendor = r.vendors as { name: string; callback_phone: string | null; account_last4: string | null; phone_on_file_since: string | null; instructions: string | null } | null;
   const org = r.orgs as { name: string } | null;
 
   return (
@@ -136,6 +136,7 @@ export default async function RequestPage({ params }: { params: Promise<{ id: st
                 <div>{vendor.name}</div>
                 <div>Callback {vendor.callback_phone ?? <span className="grey">missing</span>}</div>
                 <div>Account ends {vendor.account_last4 ?? "—"}</div>
+                {vendor.instructions && <div className="pt-1"><span className="grey text-xs uppercase tracking-wide">Owner's instruction</span><div>{vendor.instructions}</div></div>}
                 {history && history.length > 0 && (
                   <div className="pt-2">
                     <div className="grey text-xs uppercase tracking-wide">Last payments</div>

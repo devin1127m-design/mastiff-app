@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import { checkProposal, summary } from "../instructions";
+const vendors = [{ id: "v1", name: "Metro Fasteners LLC", name_key: "metro fasteners" }, { id: "v2", name: "Ray's Drywall", name_key: "rays drywall" }];
+let p = checkProposal('{"kind":"vendor_pass_under","vendor":"Metro Fasteners","amount":500}', vendors);
+assert.equal(p.kind, "vendor_pass_under"); assert.match(summary(p), /Metro Fasteners LLC invoice under \$500/);
+p = checkProposal('{"kind":"vendor_pass_under","vendor":"Pinecrest","amount":500}', vendors);
+assert.equal(p.kind, "unclear"); assert.match(summary(p), /No vendor on file called "Pinecrest"/);
+p = checkProposal('{"kind":"vendor_usual_range","vendor":"Rays Drywall Inc","min":"2,000","max":"5,000"}', vendors);
+assert.equal(p.kind, "vendor_usual_range"); assert.match(summary(p), /\$2,000 to \$5,000/);
+p = checkProposal('{"kind":"hours","start":8,"end":17}', vendors); assert.match(summary(p), /8 am to 5 pm/);
+p = checkProposal('{"kind":"release_hold","id":"x"}', vendors); assert.equal(p.kind, "unclear");
+p = checkProposal('{"kind":"range_multiple","multiple":50}', vendors); assert.equal(p.kind, "unclear");
+p = checkProposal('not json', vendors); assert.equal(p.kind, "unclear");
+console.log("instruction tests pass");
