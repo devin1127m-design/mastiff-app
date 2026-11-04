@@ -1,0 +1,11 @@
+date_time,payee,amount,request_type,bank,account_last4,how_arrived,submitted_by,verdict,reasons,cautions,status,resolved_at,who_called,number_called,vendor_said,approver,override_reason
+"2026-10-14T13:20:00.000Z","Acme Supply LLC","1840","payment","Huron Valley Bank","4417","email","Dana (bookkeeper)","PASS","","","pass","","","","","",""
+"2026-10-15T18:05:00.000Z","Pinecrest HVAC","2200","payment","Lakeshore Credit Union","0238","portal","Dana (bookkeeper)","PASS","","","pass","","","","","",""
+"2026-10-17T14:40:00.000Z","Gordon Glass","3150","bank change","Oakland Savings Bank","6620","email","Dana (bookkeeper)","HOLD","Bank details changed: last 4 is 6620, file has 3391.","Arrived outside payment hours. Worth checking.","released","2026-10-17T17:40:00.000Z","Dana","248-555-0134","Owner confirmed the new account after a bank merger.","Marcus (owner)",""
+"2026-10-18T15:15:00.000Z","Northfield Concrete","6400","payment","Huron Valley Bank","9051","phone","Dana (bookkeeper)","PASS","","","pass","","","","","",""
+"2026-10-20T20:30:00.000Z","Brightline Supply Co","4800","payment","","7782","email","Dana (bookkeeper)","HOLD","Payee not on file.","The request pushes to hurry. Worth checking.","rejected","2026-10-21T16:30:00.000Z","Dana","248-555-0190","The company says it sent no invoice. Could not verify.","Marcus (owner)",""
+"2026-10-22T13:50:00.000Z","Acme Supply LLC","2050","payment","Huron Valley Bank","4417","email","Dana (bookkeeper)","PASS","","","pass","","","","","",""
+"2026-10-24T17:10:00.000Z","Pinecrest HVAC","1975","payment","Lakeshore Credit Union","0238","portal","Dana (bookkeeper)","PASS","","","pass","","","","","",""
+"2026-10-26T19:45:00.000Z","Gordon Glass","3400","payment","Oakland Savings Bank","6620","phone","Dana (bookkeeper)","PASS","","","pass","","","","","",""
+"2026-10-27T14:05:37.320Z","Acme Supply LLC","1900","payment","","4417","email","Dana (bookkeeper)","PASS","","","pass","","","","","",""
+"2026-10-27T14:05:37.535Z","Pinecrest HVAC","2100","bank change","","9087","email","Dana (bookkeeper)","HOLD","Bank details changed: last 4 is 9087, file has 0238.","","released","2026-10-27T14:05:37.966Z","Dana (bookkeeper)","248-555-0122","Vendor confirmed the new account by phone.","Mike (owner)",""

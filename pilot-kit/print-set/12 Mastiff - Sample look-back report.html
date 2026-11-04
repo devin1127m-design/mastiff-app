@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Look-back report - Sample Office</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 32px; background: #fff; color: #000;
+  font-family: Inter, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.45; }
+h1, h2 { font-family: Georgia, "Times New Roman", serif; font-weight: normal; margin: 0; }
+h1 { font-size: 28px; }
+h2 { font-size: 18px; margin-top: 28px; }
+h3 { font-family: Georgia, "Times New Roman", serif; font-weight: normal; font-size: 15px; margin: 18px 0 0; }
+.grey { color: #6B6B6B; }
+.summary { font-family: Georgia, "Times New Roman", serif; font-size: 20px; margin: 18px 0 10px;
+  padding: 12px 0; border-top: 1px solid #000; border-bottom: 1px solid #000; }
+.rules { margin: 4px 0 0; padding-left: 18px; }
+table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+th { text-align: left; font-weight: 600; border-bottom: 1px solid #000; padding: 6px 6px 6px 0; font-size: 11px;
+  text-transform: uppercase; letter-spacing: .04em; }
+td { vertical-align: top; padding: 8px 6px 8px 0; border-bottom: 1px solid #6B6B6B; }
+td.num, th.num { text-align: right; white-space: nowrap; padding-right: 12px; }
+td.nowrap { white-space: nowrap; }
+td.status { width: 1.25in; border-left: 1px solid #6B6B6B; padding-left: 6px; }
+.verdict { font-weight: 600; }
+.item { margin: 0 0 6px; }
+.chk { color: #6B6B6B; }
+.money { font-family: Georgia, "Times New Roman", serif; font-size: 30px; margin: 10px 0 4px; }
+.advisory { margin-top: 28px; padding-top: 12px; border-top: 1px solid #000; }
+@page { size: Letter; margin: 0.6in; }
+@media print {
+  body { padding: 0; font-size: 10.5pt; }
+  thead { display: table-header-group; }
+  tr { page-break-inside: avoid; }
+  a { color: #000; text-decoration: none; }
+}
+</style></head>
+<body>
+<p class="grey" style="margin:0 0 6px">Mastiff</p>
+<h1>Look-back report: Sample Office</h1>
+<p class="grey" style="margin:6px 0 0">Prepared October 30, 2026</p>
+<p class="summary">700 payments, 18 months, 3 would have held, 2 need a call this week. Possible money back or stopped: $4,446.93 in duplicate payments, $322.22 in late fees and interest, $156.17 in missed discounts.</p>
+<p style="margin:0">Mastiff flags. Your firm makes every payment decision.</p>
+<p class="grey" style="margin:4px 0 0">This report is advisory. It does not say a payment was wrong; it says what is worth checking.</p>
+<h2>Money worth checking</h2>
+<p style="margin:6px 0 0">Possible money back or stopped: $4,446.93 in duplicate payments, $322.22 in late fees and interest, $156.17 in missed discounts.</p>
+<p class="grey" style="margin:4px 0 0">These are possibilities for your office to confirm. A payment can repeat for a good reason, and a memo can mislead.</p>
+<h3>Duplicate payments</h3><p style="margin:4px 0 0">Possible duplicate payments: $4,446.93 across 3 pairs. Ask these vendors for a credit or refund.</p>
+<table><thead><tr><th>Vendor</th><th>First paid</th><th>Paid again</th><th class="num">Amount</th><th>Why it looks repeated</th></tr></thead><tbody><tr><td>Metro Fasteners</td><td>2024-07-26</td><td>2024-08-01</td><td class="num">$852.03</td><td>same amount within a few days</td></tr><tr><td>Ironwood Excavating</td><td>2024-08-14</td><td>2024-08-19</td><td class="num">$1,284.50</td><td>same amount within a few days</td></tr><tr><td>Cascade Roofing Supply</td><td>2024-11-04</td><td>2025-01-21</td><td class="num">$2,310.40</td><td>same invoice number twice</td></tr></tbody></table>
+<h3>Late fees and interest</h3><p style="margin:4px 0 0">Late fees and interest paid: $322.22 across 4 payments to 4 vendors. Paying these on time stops this.</p>
+<table><thead><tr><th>Vendor</th><th class="num">Payments</th><th class="num">Total</th></tr></thead><tbody><tr><td>Delmar Wholesale Supply</td><td class="num">1</td><td class="num">$184.22</td></tr><tr><td>Lakeshore Credit Union</td><td class="num">1</td><td class="num">$75.00</td></tr><tr><td>Paylink Payment Processing</td><td class="num">1</td><td class="num">$35.00</td></tr><tr><td>Tri-County Utilities</td><td class="num">1</td><td class="num">$28.00</td></tr></tbody></table>
+<table><thead><tr><th>Date</th><th>Vendor</th><th class="num">Amount</th><th>Matched on</th><th>Verdict</th></tr></thead><tbody><tr><td>2024-05-09</td><td>Lakeshore Credit Union</td><td class="num">$75.00</td><td>late fee (memo)</td><td>worth checking</td></tr><tr><td>2024-10-17</td><td>Paylink Payment Processing</td><td class="num">$35.00</td><td>returned payment fee (memo)</td><td>worth checking</td></tr><tr><td>2025-02-13</td><td>Delmar Wholesale Supply</td><td class="num">$184.22</td><td>finance charge (memo)</td><td>worth checking</td></tr><tr><td>2025-03-26</td><td>Tri-County Utilities</td><td class="num">$28.00</td><td>past due fee (memo)</td><td>worth checking</td></tr></tbody></table>
+<h3>Early-payment discounts</h3><p style="margin:4px 0 0">Early-payment discounts missed: $156.17 on 3 bills. Paying by the discount date keeps this.</p>
+<table><thead><tr><th>Vendor</th><th>Bill date</th><th>Discount by</th><th>Paid</th><th>Terms</th><th class="num">Discount missed</th></tr></thead><tbody><tr><td>Harlan Building Products</td><td>2024-07-04</td><td>2024-07-14</td><td>2024-07-22</td><td>2/10 net 30</td><td class="num">$65.51</td></tr><tr><td>Corbin Electrical Wholesale</td><td>2024-08-18</td><td>2024-08-28</td><td>2024-09-12</td><td>2/10 net 30</td><td class="num">$37.85</td></tr><tr><td>Penrose Fastener and Tool</td><td>2024-12-28</td><td>2025-01-07</td><td>2025-01-30</td><td>2/10 net 30</td><td class="num">$52.81</td></tr></tbody></table>
+<h2>Payments worth a look</h2>
+<p class="grey" style="margin:4px 0 0">Heaviest first. The Status column is for your office to fill in: to verify / verified fine / confirmed loss.</p>
+<table>
+<thead><tr><th>Date</th><th>Payee</th><th class="num">Amount</th><th>Rule(s)</th><th>What to check</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td class="nowrap">2025-06-10</td><td>Pinecrest HVAC</td><td class="num">$1,472.18</td><td class="nowrap">1</td><td><p class="item"><span class="verdict">would have held.</span> Bank details changed: paid to account ending 9087 (was 4412); last paid on May 5, 2025.<br><span class="chk">What to check: Call the vendor on the number already on file, not one from an email, and confirm they asked for the change.</span></p></td><td class="status"></td></tr>
+<tr><td class="nowrap">2025-06-18</td><td>Lakeview Marketing Partners</td><td class="num">$2,500.00</td><td class="nowrap">2</td><td><p class="item"><span class="verdict">would have held.</span> Paid once and not again: $2,500.00 on Jun 18, 2025, a round amount.<br><span class="chk">What to check: Confirm this payee was an expected vendor and that the goods or work were received.</span></p></td><td class="status"></td></tr>
+<tr><td class="nowrap">2024-08-01</td><td>Metro Fasteners</td><td class="num">$852.03</td><td class="nowrap">3</td><td><p class="item"><span class="verdict">worth checking.</span> Possible duplicate: $852.03 paid on Jul 26, 2024 and again on Aug 1, 2024 (6 days apart).<br><span class="chk">What to check: Compare both payments to the bill. If one was not owed, ask the vendor for a credit or refund.</span></p></td><td class="status"></td></tr>
+<tr><td class="nowrap">2024-08-19</td><td>Ironwood Excavating</td><td class="num">$1,284.50</td><td class="nowrap">3</td><td><p class="item"><span class="verdict">worth checking.</span> Possible duplicate: $1,284.50 paid on Aug 14, 2024 and again on Aug 19, 2024 (5 days apart).<br><span class="chk">What to check: Compare both payments to the bill. If one was not owed, ask the vendor for a credit or refund.</span></p></td><td class="status"></td></tr>
+<tr><td class="nowrap">2025-01-21</td><td>Cascade Roofing Supply</td><td class="num">$2,310.40</td><td class="nowrap">3, 7</td><td><p class="item"><span class="verdict">worth checking.</span> Invoice CRS-88231 appears twice: paid on Nov 4, 2024 and Jan 21, 2025.<br><span class="chk">What to check: Compare both payments to the bill. If one was not owed, ask the vendor for a credit or refund.</span></p><p class="item"><span class="verdict">worth checking.</span> No matching bill in the bills file for $2,310.40 paid on Jan 21, 2025.<br><span class="chk">What to check: Find the bill or invoice behind this payment. If there is none, ask who approved it.</span></p></td><td class="status"></td></tr>
+<tr><td class="nowrap">2025-05-20</td><td>Acme Suply</td><td class="num">$2,087.35</td><td class="nowrap">4</td><td><p class="item"><span class="verdict">worth checking.</span> Vendor name &#x27;Acme Suply&#x27; is nearly identical to &#x27;Acme Supply LLC&#x27; (similarity 0.95); 2 and 12 payments on file.<br><span class="chk">What to check: Confirm these are two different companies and not one vendor entered twice or a lookalike.</span></p></td><td class="status"></td></tr>
+<tr><td class="nowrap">2025-05-22</td><td>Gordon Glass</td><td class="num">$3,900.75</td><td class="nowrap">5</td><td><p class="item"><span class="verdict">would have held.</span> Amount out of range: $3,900.75 is 3.3 times this vendor&#x27;s usual $1,182.10.<br><span class="chk">What to check: Match the payment to a signed quote, contract or approved bill.</span></p></td><td class="status"></td></tr>
+<tr><td class="nowrap">2025-04-03</td><td>Northfield Concrete</td><td class="num">$4,912.25</td><td class="nowrap">6</td><td><p class="item"><span class="verdict">worth checking.</span> 4 payments to this payee within 30 days, each just under the $5,000.00 line ($4,912.25 on Apr 3, 2025).<br><span class="chk">What to check: Check whether one larger bill was split into smaller payments, and who approved each.</span></p></td><td class="status"></td></tr>
+<tr><td class="nowrap">2025-04-11</td><td>Northfield Concrete</td><td class="num">$4,958.60</td><td class="nowrap">6</td><td><p class="item"><span class="verdict">worth checking.</span> 4 payments to this payee within 30 days, each just under the $5,000.00 line ($4,958.60 on Apr 11, 2025).<br><span class="chk">What to check: Check whether one larger bill was split into smaller payments, and who approved each.</span></p></td><td class="status"></td></tr>
+<tr><td class="nowrap">2025-04-19</td><td>Northfield Concrete</td><td class="num">$4,894.05</td><td class="nowrap">6</td><td><p class="item"><span class="verdict">worth checking.</span> 4 payments to this payee within 30 days, each just under the $5,000.00 line ($4,894.05 on Apr 19, 2025).<br><span class="chk">What to check: Check whether one larger bill was split into smaller payments, and who approved each.</span></p></td><td class="status"></td></tr>
+<tr><td class="nowrap">2025-04-27</td><td>Northfield Concrete</td><td class="num">$4,935.80</td><td class="nowrap">6</td><td><p class="item"><span class="verdict">worth checking.</span> 4 payments to this payee within 30 days, each just under the $5,000.00 line ($4,935.80 on Apr 27, 2025).<br><span class="chk">What to check: Check whether one larger bill was split into smaller payments, and who approved each.</span></p></td><td class="status"></td></tr>
+<tr><td class="nowrap">2025-02-04</td><td>Riverbend Landscaping</td><td class="num">$654.81</td><td class="nowrap">7</td><td><p class="item"><span class="verdict">worth checking.</span> No matching bill in the bills file for $654.81 paid on Feb 4, 2025.<br><span class="chk">What to check: Find the bill or invoice behind this payment. If there is none, ask who approved it.</span></p></td><td class="status"></td></tr>
+</tbody></table>
+<h2>The rules</h2>
+<p class="grey" style="margin:4px 0 0">Rules 1, 2 and 5 are the checks that would have held a payment. Rules 3, 4, 6 and 7 are worth checking.</p>
+<ol class="rules" style="list-style:none;padding:0"><li>1. Bank details changed</li><li>2. Paid once, never again</li><li>3. Possible duplicate</li><li>4. Lookalike vendor names</li><li>5. Amount out of range</li><li>6. Just under the approval line</li><li>7. No matching bill</li></ol>
+<p class="advisory">Mastiff flags. Your firm makes every payment decision.<br><span class="grey">This report is advisory. It does not say a payment was wrong; it says what is worth checking.</span></p>
+</body></html>

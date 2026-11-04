@@ -1,0 +1,701 @@
+Date,Payee,Amount,Method,Check #,Invoice No,Memo,Account Last4
+01/01/2024,Parkway Cleaning,"$3,274.52",ACH,,INV-01143,,7865
+2024-01-02,Gateway Roofing,$968.35,ACH,,INV-01371,,1637
+01/03/2024,Lantern Printing,$544.00,ACH,,INV-01403,,5136
+01/04/2024,Aspen Staffing,$546.38,ACH,,INV-01072,,7965
+01/04/2024,Kestrel Printing,$973.48,Check,11163,INV-01163,,3826
+01/06/2024,Larkspur Office Supply,$458.58,Check,11518,INV-01518,,9488
+01/10/2024,Overlook Paving,"$3,304.11",Card,,INV-01422,,8733
+01/10/2024,Stonebridge Office Supply,$480.27,Check,11051,INV-01051,,1429
+01/11/2024,Fairmont Plumbing,"$2,460.70",Check,11351,INV-01351,,3030
+01/11/2024,Heritage Cleaning,$675.17,ACH,,INV-01559,,7920
+01/11/2024,Oakland Electric,"$2,285.60",Check,10070,INV-00070,,1102
+01/12/2024,Inland Fuel,"$2,908.54",Check,11130,INV-01130,,5687
+2024-01-12,Tamarack Insurance,"$1,593.90",ACH,,INV-01502,,8311
+01/13/2024,Elmhurst Cleaning,$494.02,ACH,,INV-01112,,3761
+01/13/2024,Highland Lumber,"$2,475.45",Check,11014,INV-01014,,4218
+01/13/2024,Liberty Paving,$691.92,Wire,,INV-01231,,6263
+01/14/2024,Harbor Insurance,"$3,251.52",Check,11431,INV-01431,,5288
+01/15/2024,Pioneer Staffing,"$2,523.12",ACH,,INV-01323,,5274
+01/15/2024,Sterling Paving,"$2,427.04",ACH,,INV-01443,,9454
+01/16/2024,Beacon Roofing,$683.47,Wire,,INV-01296,,8792
+01/16/2024,Foxcroft Lumber,$496.57,Check,11183,INV-01183,,1347
+2024-01-19,Evergreen Roofing,$517.15,ACH,,INV-01332,,1239
+2024-01-19,Rainier Roofing,"$1,601.62",ACH,,INV-01278,,2774
+01/19/2024,Redwood Lumber,"$1,555.75",Wire,,INV-01531,,8174
+01/19/2024,Silverline Insurance,"$1,142.59",ACH,,INV-01390,,6631
+01/20/2024,Acme Supply,"$2,258.18",Check,10028,INV-00028,,3320
+01/20/2024,Quarry Plumbing,$264.15,Check,11259,INV-01259,,5898
+01/20/2024,Yarrow Equipment Rental,"$1,690.88",ACH,,INV-01213,,5981
+01/22/2024,Oakland Electrical Supply,$900.85,Card,,INV-00084,,6609
+2024-01-24,Wexford Telecom,"$3,938.83",Check,11097,INV-01097,,7625
+01/25/2024,Cedar Roofing,$706.88,Check,11544,INV-01544,,1511
+01/25/2024,Kingsley Insurance,"$1,624.33",Check,11195,INV-01195,,6348
+01/26/2024,Meadow Fuel,"$3,797.81",Card,,INV-01461,,4952
+01/28/2024,Atlas Cleaning,"$3,014.47",Card,,INV-01480,,5130
+01/29/2024,Parkway Cleaning,"$3,303.28",ACH,,INV-01144,,7865
+01/29/2024,Vanguard Fuel,"$2,379.31",Check,11001,INV-01001,,1980
+01/30/2024,Kestrel Printing,"$1,026.62",Card,,INV-01164,,3826
+01/31/2024,Lakeshore Telecom,"$1,009.36",Check,11026,INV-01026,,1668
+02/02/2024,Metro Fasteners,$813.78,Check,10013,INV-00013,,6150
+02/02/2024,Northgate Telecom,$305.80,Wire,,INV-01038,,3397
+02/03/2024,Lantern Printing,$515.00,Check,11404,INV-01404,,5136
+02/05/2024,Brandon Tile,"$1,896.84",Card,,INV-00099,,2250
+02/05/2024,Gateway Roofing,"$1,056.93",Check,11372,INV-01372,,1637
+02/06/2024,Fairmont Plumbing,"$2,530.54",Wire,,INV-01352,,3030
+2024-02-07,Copperfield Paving,"$3,293.78",Check,11085,INV-01085,,5116
+02/09/2024,Sterling Paving,"$2,215.61",Check,11444,INV-01444,,9454
+02/10/2024,Union Office Supply,$482.47,ACH,,INV-01493,,3737
+02/11/2024,Zenith Printing,"$1,185.23",Check,11247,INV-01247,,5772
+02/12/2024,Elmhurst Cleaning,$461.64,ACH,,INV-01113,,3761
+02/12/2024,Maple Plumbing,"$1,205.15",Check,11063,INV-01063,wire to acct 82205635094 routing 072000326,3691
+02/13/2024,Evergreen Roofing,$568.97,Wire,,INV-01333,,1239
+02/17/2024,Heritage Cleaning,$689.20,ACH,,INV-01560,,7920
+02/18/2024,Beacon Roofing,$832.95,Wire,,INV-01297,,8792
+02/19/2024,Quarry Plumbing,$331.73,Check,11260,INV-01260,,5898
+02/19/2024,Rainier Roofing,"$1,465.50",Card,,INV-01279,,2774
+02/20/2024,Aspen Staffing,$477.86,ACH,,INV-01073,,7965
+02/20/2024,Inland Fuel,"$3,090.19",Check,11131,INV-01131,,5687
+02/20/2024,Larkspur Office Supply,$484.51,Check,11519,INV-01519,,9488
+02/20/2024,Liberty Paving,$814.35,ACH,,INV-01232,,6263
+02/20/2024,Yarrow Equipment Rental,"$1,788.16",Check,11214,INV-01214,,5981
+02/21/2024,Brandon Tiles,$649.14,ACH,,INV-00111,,7743
+02/21/2024,Meadow Fuel,"$3,273.44",Check,11462,INV-01462,,4952
+02/22/2024,Tamarack Insurance,"$1,662.10",Wire,,INV-01503,,8311
+02/24/2024,Oakland Electric,"$2,328.23",ACH,,INV-00071,,1102
+02/26/2024,Glenview Insurance,$312.49,ACH,,INV-01314,,5747
+2024-02-26,Kingsley Insurance,"$1,553.46",ACH,,INV-01196,,6348
+02/26/2024,Wexford Telecom,"$3,305.25",Card,,INV-01098,,7625
+02/27/2024,Oakland Electrical Supply,"$1,085.70",Check,10085,INV-00085,,6609
+02/27/2024,Redwood Lumber,"$1,674.51",Card,,INV-01532,,8174
+02/28/2024,Stonebridge Office Supply,$465.29,ACH,,INV-01052,,1429
+03/01/2024,Cedar Roofing,$782.13,Wire,,INV-01545,,1511
+03/01/2024,Harbor Insurance,"$3,995.89",ACH,,INV-01432,,5288
+03/01/2024,Parkway Cleaning,"$3,667.39",Card,,INV-01145,,7865
+03/02/2024,Foxcroft Lumber,$559.41,Check,11184,INV-01184,,1347
+03/02/2024,Highland Lumber,"$2,441.99",Card,,INV-01015,,4218
+03/02/2024,Kestrel Printing,"$1,223.64",Check,11165,INV-01165,,3826
+03/02/2024,Silverline Insurance,"$1,029.65",Wire,,INV-01391,,6631
+03/03/2024,Gateway Roofing,"$1,091.13",Check,11373,INV-01373,,1637
+03/06/2024,Acme Supply LLC,"$1,928.61",Wire,,INV-00029,,3320
+03/08/2024,Fairmont Plumbing,"$2,212.59",ACH,,INV-01353,,3030
+2024-03-08,Lantern Printing,$547.17,Check,11405,INV-01405,,5136
+03/10/2024,Atlas Cleaning,"$3,020.53",Card,,INV-01481,,5130
+03/10/2024,Metro Fasteners,$943.60,Card,,INV-00014,,6150
+03/10/2024,Overlook Paving,"$3,183.50",Card,,INV-01423,,8733
+03/12/2024,Elmhurst Cleaning,$552.99,ACH,,INV-01114,,3761
+03/12/2024,Lakeshore Telecom,$984.25,Check,11027,INV-01027,,1668
+03/14/2024,Vanguard Fuel,"$2,477.38",Check,11002,INV-01002,,1980
+2024-03-15,Beacon Roofing,$841.35,Check,11298,INV-01298,,8792
+03/15/2024,Brandon Tile,"$1,865.57",ACH,,INV-00100,,2250
+03/15/2024,Northgate Telecom,$287.92,Check,11039,INV-01039,,3397
+03/15/2024,Quarry Plumbing,$289.07,ACH,,INV-01261,,5898
+03/15/2024,Sterling Paving,"$2,099.16",Check,11445,INV-01445,,9454
+03/16/2024,Evergreen Roofing,$580.48,ACH,,INV-01334,,1239
+03/18/2024,Meadow Fuel,"$3,453.79",Check,11463,INV-01463,,4952
+03/19/2024,Copperfield Paving,"$3,438.32",Check,11086,INV-01086,,5116
+03/19/2024,Pioneer Staffing,"$2,437.42",Check,11324,INV-01324,,5274
+03/20/2024,Rainier Roofing,"$1,660.52",Check,11280,INV-01280,,2774
+03/21/2024,Yarrow Equipment Rental,"$1,496.94",Check,11215,INV-01215,,5981
+03/25/2024,Liberty Paving,$808.13,Check,11233,INV-01233,,6263
+03/25/2024,Zenith Printing,"$1,087.59",ACH,,INV-01248,,5772
+03/26/2024,Parkway Cleaning,"$3,918.29",Check,11146,INV-01146,,7865
+03/27/2024,Kingsley Insurance,"$1,822.72",Card,,INV-01197,,6348
+03/28/2024,Tamarack Insurance,"$1,471.83",Wire,,INV-01504,,8311
+03/30/2024,Kestrel Printing,"$1,036.33",Check,11166,INV-01166,,3826
+03/30/2024,Wexford Telecom,"$3,245.58",ACH,,INV-01099,,7625
+03/31/2024,Larkspur Office Supply,$459.86,Wire,,INV-01520,,9488
+04/02/2024,Gateway Roofing,$972.16,Check,11374,INV-01374,,1637
+04/03/2024,Heritage Cleaning,$843.82,Wire,,INV-01561,,7920
+04/03/2024,Huron Valley Bank,$412.67,ACH,,INV-00129,loan payment interest,
+04/03/2024,Oakland Electrical Supply,$990.82,ACH,,INV-00086,,6609
+04/04/2024,Cedar Roofing,$744.22,Wire,,INV-01546,,1511
+04/04/2024,Fairmont Plumbing,"$2,536.92",ACH,,INV-01354,,3030
+04/04/2024,Inland Fuel,"$3,344.80",Card,,INV-01132,,23481485955687
+04/04/2024,Oakland Electric,"$2,180.47",ACH,,INV-00072,,1102
+2024-04-05,Aspen Staffing,$531.29,Check,11074,INV-01074,,7965
+04/07/2024,Redwood Lumber,"$1,520.96",Check,11533,INV-01533,,8174
+04/07/2024,Silverline Insurance,"$1,144.19",Wire,,INV-01392,,6631
+04/07/2024,Union Office Supply,$555.80,Wire,,INV-01494,,3737
+04/08/2024,Brandon Tiles,$657.49,Card,,INV-00112,,7743
+04/08/2024,Lantern Printing,$508.21,Check,11406,INV-01406,,5136
+04/11/2024,Elmhurst Cleaning,$581.03,Card,,INV-01115,,3761
+04/11/2024,Evergreen Roofing,$573.82,Card,,INV-01335,,1239
+04/11/2024,Maple Plumbing,"$1,148.35",Check,11064,INV-01064,,3691
+04/12/2024,Metro Fasteners,$826.16,Wire,,INV-00015,,6150
+04/12/2024,Quarry Plumbing,$297.97,ACH,,INV-01262,,5898
+04/12/2024,Sterling Paving,"$2,090.01",Check,11446,INV-01446,,9454
+04/14/2024,Beacon Roofing,$695.38,Card,,INV-01299,,8792
+04/14/2024,Rainier Roofing,"$1,796.87",ACH,,INV-01281,,2774
+04/15/2024,Highland Lumber,"$2,423.15",ACH,,INV-01016,,4218
+04/15/2024,Stonebridge Office Supply,$522.76,Check,11053,INV-01053,,1429
+04/16/2024,Acme Supply,"$2,058.29",Check,10030,INV-00030,,3320
+04/17/2024,Foxcroft Lumber,$484.09,Check,11185,INV-01185,,1347
+04/18/2024,Harbor Insurance,"$3,940.05",ACH,,INV-01433,,5288
+04/18/2024,Meadow Fuel,"$3,901.72",Check,11464,INV-01464,,4952
+04/19/2024,Atlas Cleaning,"$3,105.67",Card,,INV-01482,"W-9 on file, EIN 38-6378972",5130
+04/20/2024,Yarrow Equipment Rental,"$1,494.75",ACH,,INV-01216,,5981
+04/22/2024,Vanguard Fuel,"$2,175.11",ACH,,INV-01003,,1980
+04/23/2024,Glenview Insurance,$329.63,ACH,,INV-01315,,5747
+2024-04-23,Kestrel Printing,"$1,053.35",Card,,INV-01167,,3826
+04/25/2024,Northgate Telecom,$269.69,Check,11040,INV-01040,,3397
+04/26/2024,Parkway Cleaning,"$3,690.80",Wire,,INV-01147,,7865
+04/26/2024,Tamarack Insurance,"$1,758.16",ACH,,INV-01505,,8311
+04/28/2024,Kingsley Insurance,"$1,769.01",ACH,,INV-01198,,6348
+2024-04-29,Brandon Tile,"$1,579.74",ACH,,INV-00101,,2250
+04/29/2024,Liberty Paving,$699.40,ACH,,INV-01234,,550935313826263
+05/01/2024,Lakeshore Telecom,"$1,054.28",Card,,INV-01028,,1668
+05/03/2024,Fairmont Plumbing,"$2,295.46",Check,11355,INV-01355,,3030
+05/03/2024,Gateway Roofing,"$1,122.20",ACH,,INV-01375,,1637
+2024-05-03,Huron Valley Bank,$409.12,ACH,,INV-00130,loan payment interest,
+05/06/2024,Copperfield Paving,"$3,441.43",Check,11087,INV-01087,,5116
+05/07/2024,Overlook Paving,"$3,485.70",Wire,,INV-01424,,8733
+05/08/2024,Lantern Printing,$553.68,Check,11407,INV-01407,,5136
+05/09/2024,Lakeshore Credit Union,$75.00,ACH,,INV-00125,LATE FEE,
+05/09/2024,Wexford Telecom,"$3,172.48",Card,,INV-01100,"W-9 on file, EIN 38-1837522",7625
+05/10/2024,Evergreen Roofing,$473.34,Check,11336,INV-01336,,1239
+05/10/2024,Larkspur Office Supply,$507.53,Check,11521,INV-01521,,9488
+05/10/2024,Sterling Paving,"$2,509.67",Check,11447,INV-01447,,9454
+2024-05-11,Cedar Roofing,$800.79,ACH,,INV-01547,,1511
+05/11/2024,Heritage Cleaning,$722.90,Card,,INV-01562,,632081570577920
+05/12/2024,Beacon Roofing,$814.89,ACH,,INV-01300,,8792
+05/12/2024,Elmhurst Cleaning,$478.37,ACH,,INV-01116,,3761
+05/12/2024,Oakland Electrical Supply,$950.93,ACH,,INV-00087,,6609
+05/13/2024,Oakland Electric,"$2,653.53",ACH,,INV-00073,,1102
+05/13/2024,Pioneer Staffing,"$2,065.26",Card,,INV-01325,,5274
+05/13/2024,Rainier Roofing,"$1,678.93",Check,11282,INV-01282,,2774
+05/13/2024,Zenith Printing,"$1,230.37",Check,11249,INV-01249,,5772
+05/15/2024,Quarry Plumbing,$288.62,ACH,,INV-01263,,5898
+05/16/2024,Meadow Fuel,"$3,483.05",Wire,,INV-01465,,4952
+05/17/2024,Inland Fuel,"$3,015.71",ACH,,INV-01133,,5687
+05/17/2024,Yarrow Equipment Rental,"$1,750.64",ACH,,INV-01217,,5981
+05/19/2024,Aspen Staffing,$556.14,Card,,INV-01075,,7965
+05/21/2024,Silverline Insurance,"$1,031.09",Check,11393,INV-01393,,6631
+05/23/2024,Kestrel Printing,"$1,231.83",Check,11168,INV-01168,,3826
+05/23/2024,Metro Fasteners,$984.40,Wire,,INV-00016,,6150
+05/24/2024,Parkway Cleaning,"$3,275.63",ACH,,INV-01148,,7865
+05/24/2024,Redwood Lumber,"$1,651.67",Wire,,INV-01534,,8174
+05/27/2024,Stonebridge Office Supply,$495.75,ACH,,INV-01054,,1429
+2024-05-29,Kingsley Insurance,"$1,625.67",Check,11199,INV-01199,,6348
+2024-05-30,Highland Lumber,"$2,343.35",Card,,INV-01017,,4218
+05/31/2024,Fairmont Plumbing,"$2,292.75",ACH,,INV-01356,,3030
+05/31/2024,Gateway Roofing,"$1,178.04",Card,,INV-01376,,1637
+05/31/2024,Tamarack Insurance,"$1,511.31",Check,11506,INV-01506,,8311
+06/02/2024,Brandon Tiles,$577.80,Wire,,INV-00113,,7743
+06/02/2024,Evergreen Roofing,$479.12,Card,,INV-01337,,1239
+06/02/2024,Foxcroft Lumber,$573.06,Check,11186,INV-01186,,1347
+06/02/2024,Harbor Insurance,"$3,724.32",Card,,INV-01434,,5288
+06/02/2024,Vanguard Fuel,"$2,438.69",Check,11004,INV-01004,,1980
+06/03/2024,Huron Valley Bank,$405.55,ACH,,INV-00131,loan payment interest,
+06/04/2024,Acme Supply LLC,"$2,280.31",Wire,,INV-00031,,3320
+06/04/2024,Atlas Cleaning,"$3,112.00",Wire,,INV-01483,,5130
+06/04/2024,Lantern Printing,$475.66,Check,11408,INV-01408,,5136
+06/05/2024,Liberty Paving,$701.11,Check,11235,INV-01235,,6263
+2024-06-07,Northgate Telecom,$293.59,Check,11041,INV-01041,,3397
+06/07/2024,Quarry Plumbing,$277.41,ACH,,INV-01264,,5898
+06/08/2024,Wexford Telecom,"$3,737.55",Check,11101,INV-01101,,7625
+06/09/2024,Maple Plumbing,"$1,167.82",Check,11065,INV-01065,,3691
+2024-06-09,Sterling Paving,"$2,485.60",Wire,,INV-01448,,9454
+2024-06-10,Meadow Fuel,"$3,905.56",Wire,,INV-01466,,4952
+06/11/2024,Oakland Electrical Supply,"$1,003.12",Card,,INV-00088,,6609
+06/11/2024,Riverbend Landscaping,$609.49,Card,,INV-00057,,9014
+06/11/2024,Union Office Supply,$569.42,Card,,INV-01495,,3737
+06/12/2024,Cedar Roofing,$752.24,ACH,,INV-01548,,1511
+2024-06-12,Rainier Roofing,"$1,742.31",Check,11283,INV-01283,,2774
+06/14/2024,Beacon Roofing,$793.31,Check,11301,INV-01301,,8792
+06/14/2024,Elmhurst Cleaning,$544.76,ACH,,INV-01117,,3761
+06/16/2024,Parkway Cleaning,"$3,369.65",Wire,,INV-01149,,7865
+06/17/2024,Brandon Tile,"$1,706.92",Check,10102,INV-00102,,2250
+06/18/2024,Kestrel Printing,"$1,167.97",Check,11169,INV-01169,,430438193823826
+06/19/2024,Larkspur Office Supply,$503.51,Wire,,INV-01522,,9488
+06/19/2024,Yarrow Equipment Rental,"$1,639.53",Check,11218,INV-01218,,5981
+06/21/2024,Oakland Electric,"$2,458.33",Check,10074,INV-00074,,1102
+06/22/2024,Copperfield Paving,"$3,402.79",ACH,,INV-01088,,5116
+2024-06-22,Fairmont Plumbing,"$2,245.71",Wire,,INV-01357,,3030
+06/22/2024,Glenview Insurance,$305.76,ACH,,INV-01316,,5747
+06/22/2024,Inland Fuel,"$2,732.31",Check,11134,INV-01134,,5687
+06/22/2024,Metro Fasteners,$820.27,Wire,,INV-00017,,6150
+06/24/2024,Zenith Printing,"$1,177.60",Wire,,INV-01250,,5772
+2024-06-28,Heritage Cleaning,$682.11,Card,,INV-01563,,7920
+06/29/2024,Kingsley Insurance,"$1,715.05",Check,11200,INV-01200,,6348
+06/30/2024,Evergreen Roofing,$538.77,Check,11338,INV-01338,,1239
+2024-07-01,Gateway Roofing,"$1,199.70",ACH,,INV-01377,,1637
+07/03/2024,Lantern Printing,$511.38,ACH,,INV-01409,,5136
+07/05/2024,Aspen Staffing,$481.14,Wire,,INV-01076,,7965
+07/05/2024,Quarry Plumbing,$276.80,ACH,,INV-01265,,5898
+07/05/2024,Redwood Lumber,"$1,663.61",Check,11535,INV-01535,,8174
+07/06/2024,Overlook Paving,"$3,903.82",Check,11425,INV-01425,,8733
+07/06/2024,Silverline Insurance,"$1,175.84",Wire,,INV-01394,,6631
+07/07/2024,Liberty Paving,$673.57,ACH,,INV-01236,,6263
+07/08/2024,Meadow Fuel,"$3,278.52",Check,11467,INV-01467,,4952
+07/08/2024,Tamarack Insurance,"$1,649.10",Check,11507,INV-01507,,8311
+07/09/2024,Sterling Paving,"$2,031.01",ACH,,INV-01449,,9454
+07/11/2024,Riverbend Landscaping,$693.82,ACH,,INV-00058,,9014
+07/11/2024,Stonebridge Office Supply,$560.50,Card,,INV-01055,,1429
+07/12/2024,Beacon Roofing,$848.42,Wire,,INV-01302,,8792
+07/12/2024,Elmhurst Cleaning,$536.36,ACH,,INV-01118,,3761
+07/12/2024,Harbor Insurance,"$3,233.85",ACH,,INV-01435,,5288
+07/12/2024,Pioneer Staffing,"$2,323.49",Check,11326,INV-01326,,5274
+2024-07-13,Northgate Telecom,$292.06,Card,,INV-01042,,3397
+07/14/2024,Atlas Cleaning,"$3,106.03",Check,11484,INV-01484,,5130
+07/14/2024,Vanguard Fuel,"$2,278.24",Check,11005,INV-01005,,1980
+07/16/2024,Foxcroft Lumber,$530.31,ACH,,INV-01187,,1347
+07/16/2024,Highland Lumber,"$2,430.41",ACH,,INV-01018,,4218
+07/16/2024,Wexford Telecom,"$3,407.00",Wire,,INV-01102,,7625
+07/17/2024,Rainier Roofing,"$1,510.58",Check,11284,INV-01284,,2774
+07/18/2024,Yarrow Equipment Rental,"$1,688.11",Card,,INV-01219,,5981
+07/19/2024,Parkway Cleaning,"$3,456.50",Wire,,INV-01150,,7865
+2024-07-20,Cedar Roofing,$828.12,Card,,INV-01549,,1511
+07/20/2024,Oakland Electrical Supply,"$1,028.77",ACH,,INV-00089,,6609
+07/21/2024,Acme Supply,"$2,199.36",Check,10032,INV-00032,,3320
+07/21/2024,Brandon Tiles,$680.54,Wire,,INV-00114,,7743
+07/21/2024,Fairmont Plumbing,"$2,538.37",ACH,,INV-01358,,3030
+07/21/2024,Kestrel Printing,"$1,145.33",Wire,,INV-01170,,3826
+07/22/2024,Harlan Building Products,"$3,275.50",Check,10132,INV-00132,,
+2024-07-26,Metro Fasteners,$852.03,ACH,,INV-00018,,6150
+07/27/2024,Oakland Electric,"$2,492.88",Card,,INV-00075,,1102
+07/28/2024,Brandon Tile,"$1,699.86",Card,,INV-00103,,2250
+07/31/2024,Lakeshore Telecom,"$1,029.69",ACH,,INV-01030,,1668
+08/01/2024,Metro Fasteners,$852.03,ACH,,INV-00027,,6150
+08/02/2024,Copperfield Paving,"$3,999.90",ACH,,INV-01089,,5116
+08/02/2024,Evergreen Roofing,$543.82,Card,,INV-01339,,1239
+08/02/2024,Larkspur Office Supply,$547.45,Check,11523,INV-01523,,9488
+08/03/2024,Gateway Roofing,"$1,109.57",Wire,,INV-01378,,1637
+08/03/2024,Heritage Cleaning,$810.46,Card,,INV-01564,,7920
+08/04/2024,Inland Fuel,"$3,425.85",Check,11135,INV-01135,,5687
+08/04/2024,Union Office Supply,$567.77,ACH,,INV-01496,,3737
+08/06/2024,Lantern Printing,$533.21,Check,11410,INV-01410,,5136
+08/06/2024,Quarry Plumbing,$327.38,ACH,,INV-01266,,5898
+08/08/2024,Riverbend Landscaping,$639.70,Check,10059,INV-00059,,9014
+08/08/2024,Zenith Printing,$973.12,ACH,,INV-01251,,5772
+08/10/2024,Beacon Roofing,$713.70,Card,,INV-01303,,8792
+08/10/2024,Meadow Fuel,"$3,776.32",Check,11468,INV-01468,,4952
+08/11/2024,Elmhurst Cleaning,$462.41,Check,11119,INV-01119,,3761
+08/12/2024,Rainier Roofing,"$1,475.72",ACH,,INV-01285,,2774
+08/12/2024,Sterling Paving,"$2,349.69",Check,11450,INV-01450,,9454
+08/12/2024,Tamarack Insurance,"$1,544.31",ACH,,INV-01508,,8311
+08/13/2024,Kestrel Printing,"$1,089.58",ACH,,INV-01171,,3826
+08/13/2024,Maple Plumbing,"$1,187.76",Wire,,INV-01066,,3691
+08/14/2024,Aspen Staffing,$541.52,Check,11077,INV-01077,,7965
+08/14/2024,Ironwood Excavating,"$1,284.50",ACH,,IE-4410,,
+2024-08-14,Parkway Cleaning,"$4,012.61",Card,,INV-01151,,7865
+08/14/2024,Silverline Insurance,"$1,112.45",ACH,,INV-01395,,6631
+08/15/2024,Liberty Paving,$729.59,Check,11237,INV-01237,,6263
+08/16/2024,Redwood Lumber,"$1,483.56",Wire,,INV-01536,,8174
+08/19/2024,Ironwood Excavating,"$1,284.50",ACH,,IE-4411,,
+08/20/2024,Fairmont Plumbing,"$2,561.49",ACH,,INV-01359,,3030
+08/20/2024,Wexford Telecom,"$3,266.08",ACH,,INV-01103,,7625
+08/20/2024,Yarrow Equipment Rental,"$1,585.49",ACH,,INV-01220,,5981
+08/21/2024,Oakland Electrical Supply,$960.40,ACH,,INV-00090,,6609
+08/23/2024,Cedar Roofing,$808.64,Check,11550,INV-01550,,1511
+08/23/2024,Vanguard Fuel,"$2,416.97",Wire,,INV-01006,,1980
+2024-08-24,Glenview Insurance,$274.50,Wire,,INV-01317,,5747
+08/25/2024,Harbor Insurance,"$3,752.42",ACH,,INV-01436,,5288
+08/25/2024,Stonebridge Office Supply,$515.85,Check,11056,INV-01056,,1429
+08/27/2024,Kingsley Insurance,"$1,537.87",Wire,,INV-01202,,6348
+2024-08-28,Atlas Cleaning,"$3,078.55",Check,11485,INV-01485,,5130
+08/28/2024,Foxcroft Lumber,$528.13,Check,11188,INV-01188,,1347
+08/29/2024,Gateway Roofing,"$1,230.72",Card,,INV-01379,,1637
+08/29/2024,Northgate Telecom,$292.83,ACH,,INV-01043,,265926952783397
+08/30/2024,Metro Fasteners,$942.25,Card,,INV-00019,,6150
+08/31/2024,Evergreen Roofing,$573.78,Check,11340,INV-01340,,1239
+2024-08-31,Highland Lumber,"$2,378.31",ACH,,INV-01019,,4218
+2024-09-01,Acme Supply LLC,"$2,085.57",Check,10033,INV-00033,,3320
+09/02/2024,Meadow Fuel,"$3,637.25",Card,,INV-01469,,4952
+09/02/2024,Quarry Plumbing,$303.16,Card,,INV-01267,,5898
+09/04/2024,Brandon Tiles,$578.39,Wire,,INV-00115,,7743
+09/04/2024,Overlook Paving,"$3,550.16",Card,,INV-01426,,8733
+09/05/2024,Lantern Printing,$515.73,ACH,,INV-01411,,5136
+09/07/2024,Riverbend Landscaping,$579.24,Check,10060,INV-00060,,9014
+09/07/2024,Sterling Paving,"$2,563.58",Card,,INV-01451,,9454
+09/10/2024,Lakeshore Telecom,"$1,194.49",Wire,,INV-01031,,1668
+09/10/2024,Oakland Electric,"$2,596.57",Wire,,INV-00076,,1102
+09/10/2024,Pinecrest HVAC,"$1,288.44",Check,10001,INV-00001,,4412
+09/11/2024,Elmhurst Cleaning,$480.59,Card,,INV-01120,,3761
+09/12/2024,Beacon Roofing,$724.75,Card,,INV-01304,,8792
+2024-09-12,Corbin Electrical Wholesale,"$1,892.50",Check,10133,INV-00133,,
+09/12/2024,Parkway Cleaning,"$3,529.10",Card,,INV-01152,,7865
+09/12/2024,Rainier Roofing,"$1,566.28",Wire,,INV-01286,,2774
+09/14/2024,Brandon Tile,"$1,940.28",ACH,,INV-00104,,2250
+09/14/2024,Kestrel Printing,"$1,039.09",ACH,,INV-01172,,3826
+09/14/2024,Larkspur Office Supply,$462.04,Wire,,INV-01524,,9488
+09/15/2024,Pioneer Staffing,"$2,237.92",ACH,,INV-01327,,5274
+09/15/2024,Tamarack Insurance,"$1,742.22",ACH,,INV-01509,,8311
+09/17/2024,Copperfield Paving,"$3,522.08",Wire,,INV-01090,,5116
+09/17/2024,Heritage Cleaning,$801.63,Check,11565,INV-01565,,7920
+09/17/2024,Liberty Paving,$726.06,Check,11238,INV-01238,,6263
+09/18/2024,Fairmont Plumbing,"$2,532.11",Check,11360,INV-01360,,3030
+09/20/2024,Inland Fuel,"$2,865.83",Check,11136,INV-01136,,5687
+09/21/2024,Wexford Telecom,"$3,818.50",Check,11104,INV-01104,,7625
+09/21/2024,Zenith Printing,"$1,148.63",Card,,INV-01252,,5772
+09/23/2024,Evergreen Roofing,$526.88,ACH,,INV-01341,,1239
+09/23/2024,Kingsley Insurance,"$1,728.15",Check,11203,INV-01203,,6348
+09/23/2024,Redwood Lumber,"$1,518.52",Wire,,INV-01537,,8174
+09/25/2024,Silverline Insurance,$979.28,Card,,INV-01396,,6631
+09/26/2024,Oakland Electrical Supply,$947.17,ACH,,INV-00091,,6609
+09/27/2024,Gateway Roofing,$995.07,Wire,,INV-01380,,1637
+09/28/2024,Aspen Staffing,$534.01,Check,11078,INV-01078,,7965
+09/28/2024,Quarry Plumbing,$265.53,ACH,,INV-01268,,5898
+09/30/2024,Cedar Roofing,$704.82,Wire,,INV-01551,,1511
+10/02/2024,Gordon Glass,"$1,231.09",Check,10042,INV-00042,,5502
+10/03/2024,Riverbend Landscaping,$682.66,Check,10061,INV-00061,,9014
+10/04/2024,Atlas Cleaning,"$2,857.90",Card,,INV-01486,,5130
+10/04/2024,Lantern Printing,$573.17,Card,,INV-01412,,5136
+10/05/2024,Northgate Telecom,$288.22,ACH,,INV-01044,,3397
+10/06/2024,Meadow Fuel,"$3,957.93",Wire,,INV-01470,,4952
+10/06/2024,Metro Fasteners,$816.23,Check,10020,INV-00020,,6150
+10/06/2024,Union Office Supply,$511.80,Wire,,INV-01497,,3737
+10/07/2024,Parkway Cleaning,"$3,776.74",ACH,,INV-01153,,7865
+10/07/2024,Stonebridge Office Supply,$462.38,ACH,,INV-01057,,1429
+10/08/2024,Elmhurst Cleaning,$505.20,Wire,,INV-01121,,3761
+10/09/2024,Kestrel Printing,"$1,115.68",Check,11173,INV-01173,,3826
+2024-10-10,Pinecrest HVAC,"$1,562.54",ACH,,INV-00002,,4412
+10/10/2024,Vanguard Fuel,"$2,099.74",Check,11007,INV-01007,,1980
+10/11/2024,Foxcroft Lumber,$514.89,ACH,,INV-01189,,1347
+10/11/2024,Sterling Paving,"$2,101.00",Card,,INV-01452,,9454
+10/12/2024,Highland Lumber,"$2,166.88",Card,,INV-01020,,4218
+10/12/2024,Maple Plumbing,"$1,063.27",ACH,,INV-01067,,3691
+10/14/2024,Harbor Insurance,"$3,192.90",ACH,,INV-01437,,5288
+10/15/2024,Beacon Roofing,$739.40,Card,,INV-01305,,8792
+10/15/2024,Oakland Electric,"$2,146.04",Card,,INV-00077,,1102
+2024-10-15,Rainier Roofing,"$1,684.89",ACH,,INV-01287,,2774
+10/15/2024,Yarrow Equipment Rental,"$1,645.64",ACH,,INV-01222,,5981
+10/16/2024,Acme Supply,"$2,199.46",ACH,,INV-00034,,3320
+10/17/2024,Paylink Payment Processing,$35.00,Card,,INV-00126,returned payment fee,
+10/18/2024,Fairmont Plumbing,"$2,573.47",Check,11361,INV-01361,,3030
+10/19/2024,Glenview Insurance,$312.19,Check,11318,INV-01318,,5747
+10/21/2024,Kingsley Insurance,"$1,729.93",ACH,,INV-01204,,6348
+10/21/2024,Tamarack Insurance,"$1,730.26",Check,11510,INV-01510,"W-9 on file, EIN 38-4018227",8311
+10/22/2024,Evergreen Roofing,$565.23,Card,,INV-01342,,1239
+10/22/2024,Liberty Paving,$848.27,Check,11239,INV-01239,,6263
+2024-10-24,Lakeshore Telecom,"$1,027.51",Wire,,INV-01032,,930673045661668
+10/26/2024,Brandon Tiles,$649.24,Check,10116,INV-00116,,7743
+10/26/2024,Gateway Roofing,"$1,097.99",Check,11381,INV-01381,,1637
+10/26/2024,Heritage Cleaning,$819.50,Wire,,INV-01566,,7920
+10/28/2024,Inland Fuel,"$3,403.35",ACH,,INV-01137,,5687
+10/30/2024,Cedar Roofing,$697.53,Check,11552,INV-01552,,1511
+10/30/2024,Oakland Electrical Supply,$926.77,ACH,,INV-00092,,6609
+10/30/2024,Quarry Plumbing,$318.83,Card,,INV-01269,,5898
+10/30/2024,Wexford Telecom,"$3,477.28",Card,,INV-01105,,7625
+10/31/2024,Brandon Tile,"$1,949.97",Check,10105,INV-00105,,2250
+11/01/2024,Meadow Fuel,"$3,688.78",ACH,,INV-01471,,4952
+11/02/2024,Copperfield Paving,"$3,637.96",ACH,,INV-01091,,5116
+2024-11-02,Lantern Printing,$489.37,Check,11413,INV-01413,,5136
+11/03/2024,Gordon Glass,"$1,257.64",Check,10043,INV-00043,,5502
+11/04/2024,Cascade Roofing Supply,"$2,310.40",ACH,,CRS-88231,,
+11/04/2024,Kestrel Printing,"$1,172.01",Check,11174,INV-01174,,3826
+11/04/2024,Sterling Paving,"$2,363.65",Check,11453,INV-01453,,9454
+2024-11-05,Northfield Concrete,"$4,881.40",Wire,,INV-00050,,2088
+11/06/2024,Overlook Paving,"$3,369.98",Card,,INV-01427,,8733
+2024-11-06,Redwood Lumber,"$1,796.56",Card,,INV-01538,,8174
+11/06/2024,Zenith Printing,"$1,225.24",ACH,,INV-01253,,5772
+11/07/2024,Pinecrest HVAC,"$1,276.80",ACH,,INV-00003,,4412
+11/07/2024,Riverbend Landscaping,$584.77,ACH,,INV-00062,,9014
+11/07/2024,Silverline Insurance,"$1,125.85",ACH,,INV-01397,,6631
+11/08/2024,Parkway Cleaning,"$3,806.65",Card,,INV-01154,,7865
+11/09/2024,Beacon Roofing,$671.10,Wire,,INV-01306,,8792
+11/10/2024,Elmhurst Cleaning,$572.25,ACH,,INV-01122,,3761
+11/11/2024,Pioneer Staffing,"$2,562.14",ACH,,INV-01328,,5274
+11/11/2024,Rainier Roofing,"$1,666.97",Wire,,INV-01288,,2774
+11/13/2024,Aspen Staffing,$511.41,ACH,,INV-01079,,7965
+11/13/2024,Metro Fasteners,$895.35,Card,,INV-00021,,6150
+11/15/2024,Fairmont Plumbing,"$2,121.87",ACH,,INV-01362,,3030
+11/15/2024,Yarrow Equipment Rental,"$1,709.47",Wire,,INV-01223,,5981
+2024-11-16,Vanguard Fuel,"$2,223.08",Check,11008,INV-01008,,1980
+11/17/2024,Atlas Cleaning,"$3,198.48",Check,11487,INV-01487,,5130
+11/22/2024,Evergreen Roofing,$510.25,Check,11343,INV-01343,,1239
+11/22/2024,Northgate Telecom,$319.47,Wire,,INV-01045,,3397
+11/22/2024,Tamarack Insurance,"$1,574.95",Check,11511,INV-01511,,8311
+11/23/2024,Harbor Insurance,"$3,792.90",Check,11438,INV-01438,,5288
+11/24/2024,Quarry Plumbing,$271.06,Card,,INV-01270,,5898
+11/25/2024,Kingsley Insurance,"$1,702.09",ACH,,INV-01205,,6348
+2024-11-26,Foxcroft Lumber,$506.43,Check,11190,INV-01190,,1347
+11/26/2024,Meadow Fuel,"$3,728.64",Wire,,INV-01472,,4952
+11/26/2024,Stonebridge Office Supply,$528.33,Check,11058,INV-01058,,1429
+11/27/2024,Liberty Paving,$699.76,ACH,,INV-01240,,6263
+2024-11-27,Oakland Electric,"$2,444.72",Check,10078,INV-00078,,1102
+11/28/2024,Highland Lumber,"$2,042.98",ACH,,INV-01021,,4218
+11/29/2024,Gordon Glass,"$1,114.03",Check,10044,INV-00044,,5502
+11/30/2024,Acme Supply LLC,"$1,925.28",Card,,INV-00035,,3320
+12/01/2024,Gateway Roofing,"$1,180.96",Check,11382,INV-01382,,1637
+12/01/2024,Lantern Printing,$493.65,Check,11414,INV-01414,,5136
+12/01/2024,Wexford Telecom,"$3,985.36",ACH,,INV-01106,,7625
+12/02/2024,Oakland Electrical Supply,$869.71,ACH,,INV-00093,,6609
+12/04/2024,Kestrel Printing,"$1,075.93",Card,,INV-01175,,3826
+12/04/2024,Larkspur Office Supply,$499.44,Wire,,INV-01526,,9488
+12/04/2024,Northfield Concrete,"$4,927.15",Wire,,INV-00051,,2088
+12/05/2024,Kessler Glass and Door,"$1,450.50",Check,10135,INV-00135,,
+12/05/2024,Sterling Paving,"$2,486.81",Check,11454,INV-01454,,9454
+12/06/2024,Parkway Cleaning,"$3,901.41",Card,,INV-01155,,7865
+12/06/2024,Pinecrest HVAC,"$1,604.26",Check,10004,INV-00004,,4412
+12/06/2024,Riverbend Landscaping,$711.83,Check,10063,INV-00063,,9014
+12/07/2024,Heritage Cleaning,$829.19,Card,,INV-01567,,7920
+12/08/2024,Union Office Supply,$512.52,Check,11498,INV-01498,,3737
+12/09/2024,Fairmont Plumbing,"$2,119.46",Card,,INV-01363,,3030
+12/10/2024,Cedar Roofing,$780.85,Wire,,INV-01553,,1511
+12/11/2024,Elmhurst Cleaning,$467.92,Check,11123,INV-01123,,3761
+12/11/2024,Inland Fuel,"$2,787.99",Wire,,INV-01138,,5687
+12/12/2024,Beacon Roofing,$718.78,Check,11307,INV-01307,,8792
+12/12/2024,Rainier Roofing,"$1,595.40",ACH,,INV-01289,,2774
+2024-12-13,Copperfield Paving,"$3,974.99",Wire,,INV-01092,,5116
+12/13/2024,Lakeshore Telecom,"$1,179.61",Check,11033,INV-01033,,1668
+12/14/2024,Brandon Tile,"$1,681.53",Wire,,INV-00106,,2250
+12/14/2024,Yarrow Equipment Rental,"$1,679.03",ACH,,INV-01224,,5981
+12/15/2024,Brandon Tiles,$703.22,Card,,INV-00117,,7743
+12/15/2024,Evergreen Roofing,$564.16,Wire,,INV-01344,,1239
+12/16/2024,Silverline Insurance,"$1,211.29",ACH,,INV-01398,,6631
+12/17/2024,Metro Fasteners,$891.55,Card,,INV-00022,,6150
+12/19/2024,Glenview Insurance,$275.00,Check,11319,INV-01319,,5747
+12/21/2024,Redwood Lumber,"$1,772.15",ACH,,INV-01539,,8174
+12/21/2024,Zenith Printing,"$1,119.39",Check,11254,INV-01254,,5772
+12/22/2024,Quarry Plumbing,$319.60,Check,11271,INV-01271,,5898
+12/24/2024,Meadow Fuel,"$3,326.09",Wire,,INV-01473,,4952
+12/25/2024,Gateway Roofing,"$1,230.71",Check,11383,INV-01383,,1637
+12/26/2024,Kingsley Insurance,"$1,455.50",Wire,,INV-01206,,6348
+2024-12-28,Parkway Cleaning,"$3,777.68",Card,,INV-01156,,7865
+2024-12-28,Vanguard Fuel,"$2,163.91",ACH,,INV-01009,,1980
+12/29/2024,Gordon Glass,"$1,223.24",Card,,INV-00045,,5502
+12/30/2024,Lantern Printing,$560.66,ACH,,INV-01415,,5136
+12/30/2024,Tamarack Insurance,"$1,724.00",Check,11512,INV-01512,,8311
+12/31/2024,Northgate Telecom,$270.72,Wire,,INV-01046,,3397
+01/01/2025,Aspen Staffing,$532.12,Check,11080,INV-01080,,7965
+01/01/2025,Atlas Cleaning,"$2,883.79",ACH,,INV-01488,,5130
+01/02/2025,Liberty Paving,$706.51,Card,,INV-01241,,6263
+01/03/2025,Oakland Electric,"$2,143.85",ACH,,INV-00079,,1102
+01/03/2025,Sterling Paving,"$2,533.51",Card,,INV-01455,,9454
+01/04/2025,Kestrel Printing,"$1,085.25",ACH,,INV-01176,,3826
+01/05/2025,Overlook Paving,"$3,638.67",Check,11428,INV-01428,,8733
+01/05/2025,Riverbend Landscaping,$711.84,Check,10064,INV-00064,,9014
+01/06/2025,Northfield Concrete,"$4,863.90",Check,10052,INV-00052,,2088
+01/06/2025,Pinecrest HVAC,"$1,291.75",Check,10005,INV-00005,,4412
+01/08/2025,Fairmont Plumbing,"$2,175.91",Card,,INV-01364,,3030
+01/08/2025,Stonebridge Office Supply,$532.27,Card,,INV-01059,,1429
+01/09/2025,Elmhurst Cleaning,$503.56,Check,11124,INV-01124,,3761
+01/09/2025,Oakland Electrical Supply,"$1,050.41",Wire,,INV-00094,,6609
+01/09/2025,Wexford Telecom,"$3,813.46",Check,11107,INV-01107,,7625
+01/10/2025,Cedar Roofing,$681.47,Wire,,INV-01554,,1511
+01/10/2025,Rainier Roofing,"$1,755.38",ACH,,INV-01290,,2774
+01/11/2025,Acme Supply,"$2,096.94",Card,,INV-00036,,3320
+2025-01-11,Harbor Insurance,"$3,468.99",Check,11439,INV-01439,,5288
+01/11/2025,Pioneer Staffing,"$2,217.75",ACH,,INV-01329,,5274
+2025-01-12,Beacon Roofing,$678.20,ACH,,INV-01308,,8792
+01/12/2025,Evergreen Roofing,$519.91,Check,11345,INV-01345,,1239
+01/12/2025,Foxcroft Lumber,$538.77,ACH,,INV-01191,,1347
+01/12/2025,Highland Lumber,"$2,088.61",ACH,,INV-01022,,4218
+01/12/2025,Yarrow Equipment Rental,"$1,795.97",Check,11225,INV-01225,,5981
+01/17/2025,Metro Fasteners,$926.22,Wire,,INV-00023,,6150
+01/19/2025,Inland Fuel,"$2,815.27",Card,,INV-01139,,5687
+01/20/2025,Heritage Cleaning,$779.11,Wire,,INV-01568,,7920
+01/20/2025,Larkspur Office Supply,$486.41,Card,,INV-01527,,9488
+01/21/2025,Cascade Roofing Supply,"$2,310.40",ACH,,CRS-88231,,
+01/21/2025,Meadow Fuel,"$3,892.07",Check,11474,INV-01474,,4952
+01/22/2025,Kingsley Insurance,"$1,574.53",ACH,,INV-01207,,6348
+01/23/2025,Quarry Plumbing,$329.23,Check,11272,INV-01272,,5898
+01/24/2025,Lakeshore Telecom,$968.86,Card,,INV-01034,,1668
+01/26/2025,Silverline Insurance,"$1,051.67",ACH,,INV-01399,wire to acct 81976721353 routing 072000326,6631
+01/27/2025,Lantern Printing,$545.94,Check,11416,INV-01416,,5136
+2025-01-28,Copperfield Paving,"$3,654.67",Wire,,INV-01093,,5116
+01/28/2025,Gateway Roofing,"$1,194.15",Check,11384,INV-01384,,1637
+2025-01-28,Parkway Cleaning,"$3,859.91",ACH,,INV-01157,,7865
+01/28/2025,Redwood Lumber,"$1,763.38",Wire,,INV-01540,,8174
+01/29/2025,Brandon Tile,"$1,673.03",Wire,,INV-00107,,2250
+01/30/2025,Penrose Fastener and Tool,"$2,640.50",Check,10134,INV-00134,,
+01/31/2025,Gordon Glass,"$1,184.22",Wire,,INV-00046,,5502
+2025-01-31,Kestrel Printing,$996.28,ACH,,INV-01177,,3826
+02/02/2025,Union Office Supply,$580.05,Check,11499,INV-01499,,3737
+02/03/2025,Sterling Paving,"$2,225.39",ACH,,INV-01456,,9454
+02/04/2025,Riverbend Landscaping,$654.81,Check,10065,INV-00065,,9014
+02/05/2025,Brandon Tiles,$714.05,Card,,INV-00118,,7743
+02/05/2025,Pinecrest HVAC,"$1,392.09",ACH,,INV-00006,,4412
+02/05/2025,Tamarack Insurance,"$1,568.32",Wire,,INV-01513,,8311
+02/06/2025,Fairmont Plumbing,"$2,496.81",Check,11365,INV-01365,,3030
+02/07/2025,Beacon Roofing,$680.75,Check,11309,INV-01309,,8792
+02/07/2025,Liberty Paving,$721.07,Check,11242,INV-01242,,6263
+02/07/2025,Rainier Roofing,"$1,489.60",ACH,,INV-01291,,2774
+02/07/2025,Zenith Printing,$983.81,Check,11255,INV-01255,,5772
+02/08/2025,Elmhurst Cleaning,$463.99,Wire,,INV-01125,,3761
+02/08/2025,Maple Plumbing,"$1,113.31",Card,,INV-01069,,3691
+02/08/2025,Vanguard Fuel,"$2,179.72",Wire,,INV-01010,,1980
+02/09/2025,Aspen Staffing,$518.16,Check,11081,INV-01081,,7965
+02/10/2025,Evergreen Roofing,$567.25,Card,,INV-01346,,1239
+02/12/2025,Atlas Cleaning,"$3,268.20",ACH,,INV-01489,,5130
+02/12/2025,Northgate Telecom,$309.89,Wire,,INV-01047,,3397
+02/13/2025,Cedar Roofing,$734.79,ACH,,INV-01555,,1511
+02/13/2025,Delmar Wholesale Supply,$184.22,Check,10127,INV-00127,finance charge on balance,
+02/13/2025,Oakland Electric,"$2,304.85",Check,10080,INV-00080,,1102
+02/13/2025,Wexford Telecom,"$3,943.51",Check,11108,INV-01108,,7625
+02/13/2025,Yarrow Equipment Rental,"$1,662.13",Check,11226,INV-01226,,5981
+02/15/2025,Oakland Electrical Supply,$877.67,ACH,,INV-00095,,6609
+02/16/2025,Quarry Plumbing,$313.23,Card,,INV-01273,,5898
+02/18/2025,Glenview Insurance,$298.60,Check,11320,INV-01320,,5747
+02/18/2025,Meadow Fuel,"$4,002.77",Check,11475,INV-01475,,4952
+02/19/2025,Kingsley Insurance,"$1,536.33",Wire,,INV-01208,,6348
+02/19/2025,Stonebridge Office Supply,$536.41,Card,,INV-01060,,1429
+02/26/2025,Gateway Roofing,"$1,140.32",Card,,INV-01385,,1637
+02/26/2025,Kestrel Printing,$999.12,Check,11178,INV-01178,,3826
+02/26/2025,Lantern Printing,$550.65,ACH,,INV-01417,,5136
+02/26/2025,Larkspur Office Supply,$538.76,ACH,,INV-01528,,9488
+02/26/2025,Metro Fasteners,$782.77,Wire,,INV-00024,,6150
+02/27/2025,Harbor Insurance,"$3,935.98",Wire,,INV-01440,,5288
+02/27/2025,Highland Lumber,"$2,478.28",Wire,,INV-01023,,4218
+02/27/2025,Parkway Cleaning,"$3,527.39",Wire,,INV-01158,,7865
+02/28/2025,Acme Supply LLC,"$2,054.13",Check,10037,INV-00037,,3320
+02/28/2025,Foxcroft Lumber,$512.75,Wire,,INV-01192,,1347
+02/28/2025,Gordon Glass,"$1,114.11",Card,,INV-00047,,5502
+03/03/2025,Fairmont Plumbing,"$2,090.99",Check,11366,INV-01366,,3030
+2025-03-03,Inland Fuel,"$2,937.13",Check,11140,INV-01140,,5687
+03/03/2025,Riverbend Landscaping,$716.19,ACH,,INV-00066,,9014
+03/05/2025,Heritage Cleaning,$810.16,ACH,,INV-01569,,7920
+03/07/2025,Overlook Paving,"$3,691.67",Check,11429,INV-01429,,8733
+03/07/2025,Pinecrest HVAC,"$1,336.41",Card,,INV-00007,,4412
+03/08/2025,Beacon Roofing,$845.42,Card,,INV-01310,,8792
+03/08/2025,Lakeshore Telecom,"$1,172.69",Check,11035,INV-01035,,1668
+03/09/2025,Elmhurst Cleaning,$536.60,Check,11126,INV-01126,,3761
+03/10/2025,Sterling Paving,"$2,199.56",ACH,,INV-01457,,9454
+03/11/2025,Brightwater Paint Supply,$980.25,Check,10136,INV-00136,,
+03/11/2025,Silverline Insurance,"$1,180.63",ACH,,INV-01400,,6631
+2025-03-11,Tamarack Insurance,"$1,720.36",Card,,INV-01514,,8311
+03/12/2025,Brandon Tile,"$1,667.70",Wire,,INV-00108,,2250
+03/13/2025,Copperfield Paving,"$3,811.00",Wire,,INV-01094,,5116
+03/13/2025,Evergreen Roofing,$524.94,Check,11347,INV-01347,,1239
+03/13/2025,Redwood Lumber,"$1,664.74",Check,11541,INV-01541,,8174
+03/14/2025,Liberty Paving,$831.07,Check,11243,INV-01243,,6263
+03/15/2025,Pioneer Staffing,"$2,552.74",Check,11330,INV-01330,,5274
+2025-03-15,Rainier Roofing,"$1,557.45",Wire,,INV-01292,,2774
+03/16/2025,Quarry Plumbing,$298.80,ACH,,INV-01274,,5898
+03/17/2025,Yarrow Equipment Rental,"$1,737.25",Check,11227,INV-01227,,5981
+03/18/2025,Meadow Fuel,"$3,757.48",Wire,,INV-01476,,4952
+03/18/2025,Oakland Electrical Supply,"$1,072.61",ACH,,INV-00096,,6609
+03/21/2025,Cedar Roofing,$685.86,Card,,INV-01556,,1511
+03/21/2025,Wexford Telecom,"$3,562.46",Wire,,INV-01109,,7625
+03/22/2025,Atlas Cleaning,"$2,878.60",Check,11490,INV-01490,,5130
+03/22/2025,Zenith Printing,"$1,084.26",ACH,,INV-01256,,5772
+03/25/2025,Gateway Roofing,"$1,030.08",Wire,,INV-01386,,1637
+03/25/2025,Kestrel Printing,"$1,156.75",ACH,,INV-01179,,3826
+03/25/2025,Kingsley Insurance,"$1,732.86",ACH,,INV-01209,,6348
+03/25/2025,Northgate Telecom,$271.21,Check,11048,INV-01048,,3397
+03/26/2025,Parkway Cleaning,"$3,597.76",Card,,INV-01159,,7865
+03/26/2025,Tri-County Utilities,$28.00,ACH,,INV-00128,past due fee,
+03/27/2025,Brandon Tiles,$637.41,Wire,,INV-00119,,7743
+2025-03-27,Oakland Electric,"$2,504.18",Card,,INV-00081,,1102
+03/29/2025,Aspen Staffing,$492.08,ACH,,INV-01082,,7965
+04/01/2025,Union Office Supply,$467.07,Card,,INV-01500,,3737
+04/02/2025,Acme Suply,"$2,144.90",Wire,,INV-00040,,8841
+04/02/2025,Lantern Printing,$567.08,Check,11418,INV-01418,,5136
+04/02/2025,Metro Fasteners,$856.93,ACH,,INV-00025,,6150
+04/03/2025,Fairmont Plumbing,"$2,489.87",ACH,,INV-01367,,3030
+04/03/2025,Northfield Concrete,"$4,912.25",Check,10053,INV-00053,,2088
+2025-04-03,Riverbend Landscaping,$672.65,Wire,,INV-00067,,9014
+04/04/2025,Gordon Glass,"$1,150.36",Check,10048,INV-00048,,5502
+04/04/2025,Sterling Paving,"$2,073.48",Check,11458,INV-01458,,9454
+2025-04-04,Stonebridge Office Supply,$513.42,Check,11061,INV-01061,,1429
+04/06/2025,Elmhurst Cleaning,$534.28,Card,,INV-01127,,3761
+04/06/2025,Maple Plumbing,"$1,092.63",Check,11070,INV-01070,,3691
+04/07/2025,Highland Lumber,"$2,047.17",ACH,,INV-01024,,4218
+04/08/2025,Evergreen Roofing,$568.84,Wire,,INV-01348,,1239
+04/09/2025,Harbor Insurance,"$3,749.12",ACH,,INV-01441,,5288
+04/09/2025,Larkspur Office Supply,$467.29,ACH,,INV-01529,,9488
+2025-04-11,Northfield Concrete,"$4,958.60",Check,10054,INV-00054,,2088
+04/11/2025,Pinecrest HVAC,"$1,601.58",Wire,,INV-00008,,4412
+2025-04-12,Beacon Roofing,$674.15,Check,11311,INV-01311,,8792
+04/12/2025,Yarrow Equipment Rental,"$1,484.70",Card,,INV-01228,,5981
+04/13/2025,Acme Supply,"$1,903.15",Check,10038,INV-00038,,3320
+04/13/2025,Heritage Cleaning,$817.21,ACH,,INV-01570,,7920
+2025-04-14,Foxcroft Lumber,$572.93,ACH,,INV-01193,,1347
+04/14/2025,Rainier Roofing,"$1,842.49",Wire,,INV-01293,,2774
+04/15/2025,Inland Fuel,"$2,958.93",Check,11141,INV-01141,,5687
+04/16/2025,Quarry Plumbing,$273.16,Check,11275,INV-01275,,5898
+04/16/2025,Tamarack Insurance,"$1,605.80",Card,,INV-01515,,8311
+04/17/2025,Liberty Paving,$714.21,ACH,,INV-01244,,6263
+2025-04-18,Meadow Fuel,"$3,834.76",Wire,,INV-01477,,4952
+04/19/2025,Northfield Concrete,"$4,894.05",Check,10055,INV-00055,,2088
+04/21/2025,Lakeshore Telecom,"$1,027.66",ACH,,INV-01036,,1668
+04/21/2025,Oakland Electrical Supply,"$1,046.33",Check,10097,INV-00097,,6609
+04/21/2025,Silverline Insurance,"$1,034.55",Check,11401,INV-01401,,6631
+04/22/2025,Kestrel Printing,"$1,021.00",Card,,INV-01180,,3826
+2025-04-23,Glenview Insurance,$283.67,Check,11321,INV-01321,,5747
+04/24/2025,Kingsley Insurance,"$1,456.29",ACH,,INV-01210,,6348
+04/24/2025,Parkway Cleaning,"$3,989.93",Check,11160,INV-01160,,7865
+04/24/2025,Redwood Lumber,"$1,766.49",Check,11542,INV-01542,,8174
+04/24/2025,Wexford Telecom,"$3,422.82",Check,11110,INV-01110,,7625
+04/25/2025,Cedar Roofing,$848.88,Wire,,INV-01557,,1511
+04/27/2025,Northfield Concrete,"$4,935.80",ACH,,INV-00056,,2088
+04/28/2025,Gateway Roofing,$979.60,Card,,INV-01387,,1637
+04/30/2025,Brandon Tile,"$1,648.54",Wire,,INV-00109,,2250
+2025-05-02,Copperfield Paving,"$3,492.47",ACH,,INV-01095,,5116
+05/02/2025,Vanguard Fuel,"$2,327.97",ACH,,INV-01012,,1980
+05/03/2025,Lantern Printing,$463.19,Check,11419,INV-01419,,5136
+05/03/2025,Overlook Paving,"$3,645.83",Check,11430,INV-01430,,8733
+05/04/2025,Northgate Telecom,$281.43,ACH,,INV-01049,,3397
+2025-05-05,Atlas Cleaning,"$2,980.98",Check,11491,INV-01491,,5130
+05/05/2025,Metro Fasteners,$833.67,Wire,,INV-00026,,6150
+05/05/2025,Oakland Electric,"$2,583.65",Wire,,INV-00082,,1102
+05/05/2025,Pinecrest HVAC,"$1,472.33",Card,,INV-00009,,4412
+05/05/2025,Sterling Paving,"$2,061.19",Check,11459,INV-01459,,9454
+05/06/2025,Riverbend Landscaping,$676.16,Check,10068,INV-00068,,9014
+05/08/2025,Zenith Printing,"$1,188.71",Wire,,INV-01257,,5772
+05/09/2025,Elmhurst Cleaning,$469.42,Check,11128,INV-01128,,3761
+05/10/2025,Aspen Staffing,$534.73,Check,11083,INV-01083,,7965
+05/10/2025,Evergreen Roofing,$513.65,ACH,,INV-01349,,1239
+2025-05-11,Pioneer Staffing,"$2,530.09",Card,,INV-01331,,5274
+05/11/2025,Rainier Roofing,"$1,552.37",Check,11294,INV-01294,,2774
+05/11/2025,Yarrow Equipment Rental,"$1,513.50",Check,11229,INV-01229,,5981
+05/12/2025,Beacon Roofing,$836.78,Check,11312,INV-01312,,8792
+05/12/2025,Quarry Plumbing,$330.71,Check,11276,INV-01276,,5898
+05/16/2025,Tamarack Insurance,"$1,802.33",Card,,INV-01516,,8311
+05/17/2025,Brandon Tiles,$667.49,ACH,,INV-00120,,7743
+05/18/2025,Liberty Paving,$714.63,Card,,INV-01245,,6263
+2025-05-18,Meadow Fuel,"$3,391.38",Check,11478,INV-01478,,4952
+05/20/2025,Acme Suply,"$2,087.35",Card,,INV-00041,,8841
+05/20/2025,Kingsley Insurance,"$1,580.85",ACH,,INV-01211,,6348
+05/20/2025,Stonebridge Office Supply,$480.91,ACH,,INV-01062,,1429
+05/22/2025,Gordon Glass,"$3,900.75",Check,10049,INV-00049,,5502
+05/22/2025,Harbor Insurance,"$3,397.52",ACH,,INV-01442,,5288
+05/22/2025,Parkway Cleaning,"$3,178.93",ACH,,INV-01161,,7865
+05/24/2025,Fairmont Plumbing,"$2,565.09",ACH,,INV-01369,,3030
+05/24/2025,Heritage Cleaning,$719.36,Wire,,INV-01571,,7920
+05/24/2025,Kestrel Printing,"$1,060.52",Card,,INV-01181,,3826
+05/26/2025,Acme Supply LLC,"$2,321.75",ACH,,INV-00039,,3320
+05/26/2025,Inland Fuel,"$3,404.03",ACH,,INV-01142,,5687
+05/26/2025,Wexford Telecom,"$3,352.73",Card,,INV-01111,,7625
+2025-05-27,Highland Lumber,"$2,542.54",ACH,,INV-01025,,4218
+05/27/2025,Larkspur Office Supply,$486.48,Wire,,INV-01530,,9488
+05/28/2025,Foxcroft Lumber,$513.83,Card,,INV-01194,,1347
+05/30/2025,Gateway Roofing,"$1,179.14",Check,11388,INV-01388,,1637
+05/30/2025,Lantern Printing,$505.76,Check,11420,INV-01420,,5136
+06/01/2025,Oakland Electrical Supply,"$1,084.64",Check,10098,INV-00098,,6609
+06/02/2025,Redwood Lumber,"$1,606.71",Check,11543,INV-01543,,8174
+06/02/2025,Union Office Supply,$538.91,Check,11501,INV-01501,,3737
+06/03/2025,Cedar Roofing,$698.84,Check,11558,INV-01558,,1511
+06/03/2025,Evergreen Roofing,$507.33,Wire,,INV-01350,,1239
+06/04/2025,Maple Plumbing,"$1,000.87",ACH,,INV-01071,,3691
+06/04/2025,Silverline Insurance,"$1,031.35",ACH,,INV-01402,,6631
+06/04/2025,Sterling Paving,"$2,196.05",ACH,,INV-01460,wire to acct 43036801764 routing 072000326,9454
+06/06/2025,Lakeshore Telecom,"$1,057.48",ACH,,INV-01037,,1668
+06/06/2025,Riverbend Landscaping,$665.97,Check,10069,INV-00069,,9014
+06/08/2025,Brandon Tile,"$1,581.18",Check,10110,INV-00110,,2250
+06/08/2025,Elmhurst Cleaning,$562.69,Wire,,INV-01129,,3761
+2025-06-10,Pinecrest HVAC,"$1,472.18",Check,10010,INV-00010,,9087
+06/11/2025,Meadow Fuel,"$3,489.71",Card,,INV-01479,,4952
+2025-06-12,Beacon Roofing,$722.03,Check,11313,INV-01313,,8792
+06/12/2025,Quarry Plumbing,$283.95,ACH,,INV-01277,,5898
+06/12/2025,Rainier Roofing,"$1,698.48",Check,11295,INV-01295,,2774
+06/14/2025,Parkway Cleaning,"$3,895.40",ACH,,INV-01162,,7865
+06/15/2025,Copperfield Paving,"$3,951.39",Card,,INV-01096,,5116
+06/15/2025,Northgate Telecom,$319.37,Check,11050,INV-01050,,3397
+2025-06-15,Yarrow Equipment Rental,"$1,547.02",ACH,,INV-01230,,5981
+06/16/2025,Oakland Electric,"$2,342.86",ACH,,INV-00083,,1102
+06/18/2025,Atlas Cleaning,"$3,430.19",ACH,,INV-01492,,5130
+06/18/2025,Glenview Insurance,$274.51,Check,11322,INV-01322,,5747
+06/18/2025,Lakeview Marketing Partners,"$2,500.00",Wire,,INV-00012,,7731
+06/18/2025,Vanguard Fuel,"$2,195.21",ACH,,INV-01013,,1980
+06/18/2025,Zenith Printing,"$1,062.02",Wire,,INV-01258,,5772
+06/19/2025,Kestrel Printing,"$1,004.04",Wire,,INV-01182,,3826
+06/21/2025,Kingsley Insurance,"$1,719.26",Check,11212,INV-01212,,6348
+06/21/2025,Liberty Paving,$669.82,Wire,,INV-01246,,6263
+06/24/2025,Pinecrest HVAC,"$1,431.64",ACH,,INV-00011,,9087
+06/24/2025,Tamarack Insurance,"$1,533.29",Wire,,INV-01517,,8311
+06/27/2025,Fairmont Plumbing,"$2,142.56",Check,11370,INV-01370,,3030
+06/28/2025,Aspen Staffing,$516.58,Check,11084,INV-01084,,7965
+06/28/2025,Gateway Roofing,"$1,201.34",Wire,,INV-01389,,1637
+06/30/2025,Lantern Printing,$487.69,Check,11421,INV-01421,,5136

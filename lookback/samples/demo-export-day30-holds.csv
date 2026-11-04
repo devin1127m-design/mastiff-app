@@ -1,0 +1,4 @@
+Date,Payee,Amount,Reasons,Outcome,Who called,Number called,Approver
+2026-10-17,Gordon Glass,3150.00,"Bank details changed: last 4 is 6620, file has 3391.",Released after callback,Dana,248-555-0134,Marcus (owner)
+2026-10-20,Brightline Supply Co,4800.00,Payee not on file.,Recorded not paid,Dana,248-555-0190,Marcus (owner)
+2026-10-27,Pinecrest HVAC,2100.00,"Bank details changed: last 4 is 9087, file has 0238.",Released after callback,Dana (bookkeeper),248-555-0122,Mike (owner)

@@ -1,0 +1,313 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Mastiff</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a one-page site for a two-person service business. White, black and one grey; hairline rules
+   instead of fills; no accent color. Hero states the thesis, four sourced numbers, the pilot in three
+   steps, the three rules, the pilot card, the form. */
+:root{
+  --paper:#FFFFFF; --paper-2:#F5F5F5; --ink:#111111; --ink-2:#222222; --muted:#6B6B6B; --line:#D9D9D9;
+  --claret:#111111; --claret-ink:#FFFFFF; --bronze:#6B6B6B; --ok:#111111;
+  --font-display:'Inter Tight','Helvetica Neue',Arial,sans-serif;
+  --font-body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E0E0E; --paper-2:#171717; --ink:#F2F2F2; --ink-2:#1E1E1E; --muted:#9A9A9A; --line:#2E2E2E;
+    --claret:#F2F2F2; --claret-ink:#0E0E0E; --bronze:#9A9A9A; --ok:#F2F2F2; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E0E0E; --paper-2:#171717; --ink:#F2F2F2; --ink-2:#1E1E1E; --muted:#9A9A9A; --line:#2E2E2E;
+  --claret:#F2F2F2; --claret-ink:#0E0E0E; --bronze:#9A9A9A; --ok:#F2F2F2; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.5}
+h1,h2,h3{margin:0;font-family:var(--font-display);line-height:1.05;text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(36px,6vw,68px);font-weight:600}
+h2{font-size:clamp(26px,3.6vw,40px);font-weight:600}
+h3{font-size:18px;font-weight:600;letter-spacing:-.01em}
+p{margin:0}
+a{color:inherit}
+.band{padding-block:56px}
+.band .in{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.band.ink{background:var(--ink);color:var(--paper)}
+.band.paper2{background:var(--paper-2)}
+.eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--muted)}
+.band.ink .eyebrow{color:color-mix(in srgb,var(--paper) 60%,transparent)}
+.muted{color:var(--muted)}
+.band.ink .muted{color:color-mix(in srgb,var(--paper) 65%,transparent)}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.lead{font-size:clamp(17px,2vw,20px);max-width:60ch;line-height:1.45}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid currentColor;border-radius:2px;padding:12px 20px;font-weight:500;text-decoration:none;font-size:14.5px;background:none;color:inherit;cursor:pointer;min-height:44px;letter-spacing:.01em}
+.btn.fill{background:var(--claret);color:var(--claret-ink);border-color:var(--claret)}
+.btn:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.row{display:flex;flex-wrap:wrap;gap:12px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:18px 0}
+.wordmark{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:600;font-size:20px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
+.wordmark .m{width:30px;height:30px;border:1px solid currentColor;border-radius:2px;display:grid;place-items:center;font-size:15px;line-height:1;letter-spacing:0}
+.topnav{display:flex;gap:22px;font-size:13.5px;font-weight:500}
+.topnav a{text-decoration:none;color:var(--muted)}
+.topnav a:hover{color:var(--ink)}
+@media (max-width:640px){.topnav{display:none}}
+.hero{padding-block:48px 64px}
+.hero .grid{display:grid;grid-template-columns:minmax(0,1fr);gap:32px;align-items:end}
+@media (min-width:900px){.hero .grid{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}}
+.hero h1 em{font-style:normal;color:var(--muted)}
+.hero .sub{display:flex;flex-direction:column;gap:20px}
+.ticket{border:1px solid var(--ink);border-radius:2px;padding:20px;display:flex;flex-direction:column;gap:12px;background:var(--paper);min-width:0}
+.ticket .k{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;border-bottom:1px dashed var(--line);padding-bottom:8px}
+.ticket .k:last-child{border-bottom:0;padding-bottom:0}
+.ticket .k b{font-weight:600;text-align:right}
+.ticket .verdict{font-family:var(--font-display);font-weight:600;font-size:20px;color:var(--ink)}
+.ticket .stamp{align-self:flex-start;background:var(--ink);color:var(--paper);border-radius:2px;padding:3px 9px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
+.num{display:flex;flex-direction:column;gap:6px;min-width:0;border-top:1px solid var(--ink);padding-top:14px}
+.num .v{font-family:var(--font-display);font-size:clamp(34px,4.5vw,52px);font-weight:600;line-height:1;letter-spacing:-.03em}
+.num .d{font-size:14.5px}
+.num .s{font-size:12.5px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.step{display:flex;flex-direction:column;gap:10px;padding:22px;border:1px solid var(--line);border-radius:2px;min-width:0;background:var(--paper)}
+.step .n{font-family:var(--font-mono);font-size:12.5px;color:var(--muted);font-weight:500}
+.step p{font-size:14.5px}
+.step .rule{font-family:var(--font-mono);font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.step.hot{border-color:var(--ink)}
+.step.hot .rule{color:var(--ink)}
+.rules{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px 32px}
+.rules li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;font-size:15px}
+.rules li i{font-style:normal;font-family:var(--font-mono);font-size:12px;color:color-mix(in srgb,var(--paper) 60%,transparent);padding-top:4px}
+.rules li b{display:block;font-weight:600}
+.rules li span{display:block;font-size:14px}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.plan{border:1px solid var(--line);border-radius:2px;padding:28px;display:flex;flex-direction:column;gap:16px;background:var(--paper);min-width:0}
+.plan.hot{border-color:var(--ink)}
+.plan .price{font-family:var(--font-display);font-size:40px;font-weight:600;line-height:1;letter-spacing:-.03em}
+.plan .price small{font-size:14px;font-weight:500;color:var(--muted);letter-spacing:0;font-family:var(--font-body)}
+.plan ul{margin:0;padding-left:18px;font-size:14.5px;display:flex;flex-direction:column;gap:5px}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label{font-size:13px;font-weight:600}
+.field input,.field select{border:1px solid var(--line);border-radius:2px;padding:11px 12px;background:var(--paper);color:var(--ink);font:inherit;min-width:0}
+.form .full{grid-column:1 / -1}
+.done{border:1px solid var(--ink);border-radius:2px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.done b{color:var(--ink);font-family:var(--font-display);font-size:18px}
+footer{padding-block:28px 48px;font-size:13px;color:var(--muted)}
+footer .in{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+</style>
+
+<header class="band" style="padding-block:0">
+  <div class="in topbar">
+    <a class="wordmark" href="#top"><span class="m">M</span>Mastiff</a>
+    <nav class="topnav" aria-label="Sections">
+      <a href="#how">What you get</a>
+      <a href="#rules">The three rules</a>
+      <a href="#difference">The difference</a>
+      <a href="#pricing">The pilot</a>
+      <a href="#demo">Start the pilot</a>
+    </nav>
+  </div>
+</header>
+
+<section class="band hero" id="top">
+  <div class="in grid">
+    <div class="sub">
+      <span class="eyebrow">Payment controls for companies that pay vendors</span>
+      <h1>A payment that can’t be verified <em>doesn’t go out.</em></h1>
+      <p class="lead">Criminals don’t hack your bank. They ask for the money: a vendor’s “new bank details,” an invoice that looks right, the boss’s voice on a call. AI has made the fakes perfect. Mastiff puts a wall in front of your outbound payments: every request is checked before it is keyed, and one that fails a rule holds until a callback is logged.</p>
+      <div class="row">
+        <a class="btn fill" href="#demo">Start the free pilot</a>
+        <a class="btn" href="#how">What you get</a>
+      </div>
+    </div>
+    <div class="ticket" aria-label="Example of a held payment">
+      <span class="stamp">Held</span>
+      <div class="k"><span>Request</span><b>Vendor bank change · invoice $184,200</b></div>
+      <div class="k"><span>Arrived by</span><b>Email from the vendor’s domain</b></div>
+      <div class="k"><span>Wall</span><b>Hold · bank details never change on an email</b></div>
+      <div class="k"><span>Callback</span><b>Vendor: “We never changed banks.”</b></div>
+      <div class="k"><span>Result</span><span class="verdict">Not paid</span></div>
+      <p class="muted" style="font-size:13px">The invoice is paid to the account on file. The change request is logged. Nothing clever happened; the rule simply held.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band paper2" aria-label="The problem in numbers">
+  <div class="in">
+    <div class="nums">
+      <div class="num"><span class="v">81%</span><span class="d">of finance leaders saw an AI-enabled fraud attempt in the past year. Only half are confident they can stop one before money moves.</span><span class="s muted"><a href="https://www.prnewswire.com/news-releases/ai-deepfakes-target-corporate-americas-multi-bank-blind-spot-302898894.html">Certos survey of 230 CFOs and treasurers, Oct 2026</a></span></div>
+      <div class="num"><span class="v">#1</span><span class="d">Manufacturing and construction is the most-targeted sector for this fraud. The average fake vendor invoice is $125,000.</span><span class="s muted"><a href="https://www.fincen.gov/sites/default/files/shared/FinCEN_Financial_Trend_Analysis_FINAL_508.pdf">FinCEN financial trend analysis</a></span></div>
+      <div class="num"><span class="v">$93,425</span><span class="d">paid by a small construction firm to a hacked subcontractor’s “new bank.” They had a callback policy. Nobody made the call.</span><span class="s muted"><a href="https://www.cfc.com/en-us/resources/case-studies/cyber-claims-case-study-subcontractor-scam">CFC cyber claims case study</a></span></div>
+      <div class="num"><span class="v">Denied</span><span class="d">Cyber insurers now require a callback on bank changes and two approvers on wires, and deny the claim when the step was skipped.</span><span class="s muted"><a href="https://seedpodcyber.com/social-engineering-funds-transfer-fraud-cyber-insurance/">SeedPod Cyber, Sep 2026</a></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="how">
+  <div class="in" style="display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span class="eyebrow">What you get</span>
+      <h2>Thirty days behind the wall. Nothing to install.</h2>
+      <p class="lead muted">The wall is a web page your bookkeeper opens before keying any payment. Mastiff is new, so the first five offices run it free while we prove it holds. That is the whole deal.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="n">01 · Setup · day one</span>
+        <h3>Load the vendor list, set the rules</h3>
+        <p>Thirty minutes with your bookkeeper: every vendor’s name, bank, last four and the number you already call back. Then the owner sets three numbers: the single-payment line, your payment hours, and who can be the second person on a release.</p>
+        <span class="rule">Nothing installed. No access to your bank or your books.</span>
+      </div>
+      <div class="step">
+        <span class="n">02 · The wall · day one onward</span>
+        <h3>Every payment request gets checked before it is keyed</h3>
+        <p>Your bookkeeper enters the payee, the amount and the account. Mastiff answers Pass or Hold with the reason: a payee not on file, a change of bank details, an amount out of range, a request that arrived at 9 PM on a Saturday, or one that pushes to hurry. A hold ends only when someone calls the number on file and logs the call with a second person’s name. Then the bank-side controls, dual release and payee limits, are set with your banker in the room.</p>
+        <span class="rule">Pass or Hold, like an error code. Not a judgment call made alone at 4:55 PM.</span>
+      </div>
+      <div class="step">
+        <span class="n">03 · The review · weekly</span>
+        <h3>We go through the log with you</h3>
+        <p>Once a week for thirty days we sit with the log: what held, what was released, what got rejected, how long holds took. On day 30 you get a one-page read-out of what the wall caught and what it cost you in time. You keep the log either way.</p>
+        <span class="rule">No contract. Stop any day with one message.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band ink" id="rules">
+  <div class="in" style="display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span class="eyebrow">The three rules</span>
+      <h2>Every case we have studied was lost by breaking one of these.</h2>
+      <p class="lead muted">Scams change costume. The tells do not: money going to an account you have never paid, an urgent request outside the normal pattern, a person skipping a callback.</p>
+    </div>
+    <ul class="rules">
+      <li><i>01</i><div><b>The callback rule.</b><span class="muted">Bank details change only after a call to a number already on file, made by someone other than the person who received the request. The payment holds until the call is logged.</span></div></li>
+      <li><i>02</i><div><b>The cap.</b><span class="muted">A dollar amount above which no single person can send, and a weekly total, written down and enforced at the bank with dual release.</span></div></li>
+      <li><i>03</i><div><b>The urgency rule.</b><span class="muted">Any request to skip the process is the reason to slow down. The owner commits in writing to never be angry about a confirmation call.</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="band" id="difference">
+  <div class="in" style="display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span class="eyebrow">The difference</span>
+      <h2>You already pay for three kinds of protection. None of them checks the payment.</h2>
+      <p class="lead muted">Keep all three. Mastiff sits in the gap between them.</p>
+    </div>
+    <div class="steps" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))">
+      <div class="step">
+        <span class="n">Your IT company</span>
+        <h3>Protects the inbox</h3>
+        <p>Filters the junk, runs phishing training, locks email down with MFA. Good, and the best fakes still get through, because they look exactly like your real vendor.</p>
+        <span class="rule">Misses: the request that arrives looking legitimate.</span>
+      </div>
+      <div class="step">
+        <span class="n">Your bank</span>
+        <h3>Confirms it was you</h3>
+        <p>Positive pay stops checks and debits you never authorized. The approve-wire step confirms you meant to send it.</p>
+        <span class="rule">Misses: a wire you approved to the wrong account. That is how every loss happens.</span>
+      </div>
+      <div class="step">
+        <span class="n">Your AP software</span>
+        <h3>Emails the vendor to confirm</h3>
+        <p>BILL and tools like it email the vendor when bank details change, to the same inbox a thief may already control, and let you pay before anyone answers.</p>
+        <span class="rule">Misses: a call to the number you already had.</span>
+      </div>
+      <div class="step hot">
+        <span class="n">Mastiff</span>
+        <h3>Checks the payment itself</h3>
+        <p>Every payee, amount and bank change is checked against what is on file before it is keyed. A hold clears only after a call to the number on file and a second person’s sign-off. Every check and every call is written down, so when your insurer or your CPA asks how you knew a payment was real, you hand them the log.</p>
+        <span class="rule">The tools that do this for big companies start at $800 a month. Nothing was built for an office your size until now.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band paper2" id="pricing">
+  <div class="in" style="display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span class="eyebrow">The pilot</span>
+      <h2>Free for thirty days. On day 30, you decide.</h2>
+      <p class="lead muted">For offices that pay vendors by wire, ACH or check: accounting and advisory practices, contractors, anyone with a bookkeeper and a checkbook. No card on file, nothing renews on its own. If you want to keep the wall, we quote one flat monthly price before you commit to anything. If you don’t, you keep the log and we part as friends.</p>
+    </div>
+    <div class="plans" style="max-width:560px">
+      <div class="plan hot">
+        <span class="eyebrow">30-day pilot</span>
+        <span class="price">$0<small> for thirty days · first five firms</small></span>
+        <ul>
+          <li>We load your vendor list with you: name, bank, last four, the number you call back</li>
+          <li>Your bookkeeper runs every payment request through the wall</li>
+          <li>Holds close only with a logged callback and a second name</li>
+          <li>We review the log with you each week</li>
+          <li>Day 30: a one-page read-out of what the wall caught and what it cost you in time</li>
+          <li>Then you decide: keep it at a flat monthly price, or stop. You keep the log either way</li>
+          <li>No card on file. No contract. Stop any day</li>
+        </ul>
+        <a class="btn fill" href="#demo">Start the pilot</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="demo">
+  <div class="in" style="display:flex;flex-direction:column;gap:24px;max-width:760px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span class="eyebrow">Start the pilot</span>
+      <h2>Thirty days, free, starting with a twenty-minute call. Bring whoever sends your wires.</h2>
+    </div>
+    <form class="form" id="demo-form" novalidate>
+      <div class="field"><label for="f-name">Your name</label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
+      <div class="field"><label for="f-company">Company</label><input id="f-company" name="company" type="text" autocomplete="organization" required></div>
+      <div class="field"><label for="f-email">Work email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="f-role">Role</label>
+        <select id="f-role" name="role">
+          <option>Owner</option><option>Controller</option><option>Office manager / bookkeeper</option><option>CFO</option><option>Other</option>
+        </select>
+      </div>
+      <div class="field full"><label for="f-worry">What made you look? (optional)</label><input id="f-worry" name="worry" type="text" placeholder="A sub emailed new bank details last month and we almost paid it"></div>
+      <div class="full row"><button class="btn fill" type="submit" id="f-submit">Request the pilot</button><span class="muted" style="font-size:13px;align-self:center" id="f-hint">Prototype site: requests are shown here, not sent anywhere yet.</span></div>
+    </form>
+    <div class="done" id="done" hidden>
+      <b>Request noted.</b>
+      <span id="done-text"></span>
+      <span class="muted" style="font-size:13px">This is a prototype site. Nothing was sent; copy the details into an email for now.</span>
+    </div>
+  </div>
+</section>
+
+<footer class="band" style="padding-block:28px 48px">
+  <div class="in">
+    <span>Mastiff · Oxford, Michigan</span>
+    <span>Statistics link to their sources above. Pilot terms change once the first five firms are in.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  const form = document.getElementById('demo-form');
+  const done = document.getElementById('done');
+  const text = document.getElementById('done-text');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = form.name.value.trim();
+    const company = form.company.value.trim();
+    const email = form.email.value.trim();
+    const bad = [];
+    if (name.length < 2) bad.push(form.name);
+    if (company.length < 2) bad.push(form.company);
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) bad.push(form.email);
+    if (bad.length){ bad[0].focus(); bad[0].style.borderColor = 'var(--ink)'; return; }
+    text.textContent = `${name} at ${company} (${form.role.value}), ${email}.` + (form.worry.value.trim() ? ` Note: "${form.worry.value.trim()}"` : '');
+    form.hidden = true;
+    done.hidden = false;
+    done.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+  form.querySelectorAll('input').forEach(i => i.addEventListener('input', () => { i.style.borderColor = ''; }));
+})();
+</script>
+
+</body></html>

@@ -48,3 +48,24 @@ Not now: QuickBooks/Xero/bank integrations, pricing page, deception features, AI
 
 ## Working with Devin
 He is 16, learning to code, on his phone most of the time. Stop after each step and show him, in plain words, what changed and what he'd say to an owner about it. One step at a time; he has said "you did too much" when handed a wall. Never send email on his behalf without showing him the draft. Keep the app something he can demo on his phone in two minutes: Pass, Hold, callback, decision, CSV.
+
+## From the foundation repo (October 2026), folded in 2026-11-04
+The research, pilot kit, static site and look-back tool were built in a separate repo before this app existed. They now live here, alongside the app, and nothing in `src/` or `supabase/` depends on them:
+
+- `plans/`: the product definition (`product.md`), the decision log (`decisions.md`), the October plans and working files.
+- `research/`: insurer requirements and the 13 log fields (r1), competitor teardown (r3), verified statistics (r4), Mastiff's own exposure (r5), and `app-brief-2026-11-04.md`, the hand-off brief written for this app.
+- `pilot-kit/`: operations manual, six service sheets, bookkeeper sheet, incident playbook, call script, agreement draft (lawyer first), the 14 printables.
+- `site/`: the finished five-page marketing site as static HTML, to port into the app.
+- `wall-demo/`: the static demo of the check, holds and log; reference only.
+- `lookback/`: the Python look-back scan and day-30 read-out, 86 tests. The reference the TypeScript port must match; the fixture in `lookback/tests/fixtures/` has the planted patterns.
+
+Where `plans/decisions.md` (entries dated 2026-11-04) and the roadmap above disagree, Devin's decisions log is the newer word: the owner hits pay, nothing else; a live activity feed; the owner can talk to Mastiff; a hosted model with per-office memory in Supabase; connections only through the owner's own login, never a bank's money-moving side. Reconcile the roadmap with him before building past step 2.
+
+### The October rules, kept for the record
+1. Rule zero: never slow the bookkeeper.
+2. Only three things hold on their own: payee not on file, bank details changed, amount out of range. Off-hours and urgency language are cautions.
+3. Wording: "would have held," "worth checking," "missing." Never "fraud," "you were hit," "illegal," "caught," "prevented," "saved." Never state what an insurer requires. Every verdict says: "Mastiff flags. Your firm makes every payment decision."
+4. Last 4 digits of any account or tax ID, never more.
+5. AI reads, a person confirms. Per the 2026-11-04 decisions: a person confirms payment, not every extraction.
+6. Style: black, white, one grey (#6B6B6B); serif headlines, Inter body; no gradients, icons, emoji, stock images, fake logos or testimonials.
+7. Freeze: if it isn't in a plan, write it in `LATER.md` and move on.
