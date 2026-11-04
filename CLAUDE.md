@@ -27,6 +27,7 @@ Next.js 16 (App Router, TypeScript, Tailwind v4 via `@tailwindcss/postcss`), Sup
 ## What is built (v1, Nov 3 2026)
 - `/login`: email link sign-in.
 - `/app`: office home (week count, holds waiting, vendors, verified count, recent).
+- `/app` also carries step 4: "What Mastiff did", a feed built from the tables themselves (`src/lib/feed.ts`, never a separate log that can drift), each line opening the request; and "Ask Mastiff" (`src/lib/ask.ts`), which hands the office's own records to the model for one read-only answer. On a passed request the office can "Turn into a hold" (`askForALook`), which is the take-over.
 - `/app/vendors`: vendor file, add one, paste CSV import.
 - `/app/requests/new`: take a photo or upload a PDF (`InvoiceUpload`, shrunk on the phone, straight to the private `invoices` bucket), read by the model (`src/lib/intake.ts`), Rule 5 decides: straight into the log as `straight_through`, or parked in `intakes` and shown pre-filled for a tap. Or the four fields typed in. Home lists intakes waiting for a look.
 - `/app/requests/[id]`: Pass/Hold stamp with reasons, the invoice image under the fields when there is one, callback log form (staff only), decision form (owner/approver only), vendor sidebar with last three payments.

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Shell } from "@/components/Shell";
 import { requireOrg, fmtMoney, fmtDate, STATUS_LABEL } from "@/lib/org";
 import { createClient } from "@/lib/supabase/server";
+import { buildFeed } from "@/lib/feed";
+import { AskBox } from "@/components/AskBox";
 
 export default async function OrgHome() {
   const { session, org } = await requireOrg();
@@ -15,6 +17,7 @@ export default async function OrgHome() {
     supabase.from("vendors").select("id", { count: "exact", head: true }).eq("org_id", org.id).not("verified_at", "is", null),
     supabase.from("intakes").select("id, created_at, created_by, extracted, needs_tap_because").eq("org_id", org.id).is("request_id", null).order("created_at", { ascending: false }),
   ]);
+  const feed = await buildFeed(supabase, org.id, 25);
   return (
     <Shell session={session} orgName={org.name}>
       <div className="flex items-start justify-between gap-4 mb-8">
@@ -52,6 +55,25 @@ export default async function OrgHome() {
           ))}
         </tbody></table>
       ) : <p className="grey mb-10">Nothing is waiting. Every request on file has passed or been decided.</p>}
+
+      <div className="grid md:grid-cols-[1fr_360px] gap-8 mb-10 items-start">
+        <div>
+          <h2 className="mb-3">What Mastiff did</h2>
+          {feed.length ? (
+            <ol className="space-y-2">
+              {feed.map((e, i) => (
+                <li key={i} className="text-sm flex gap-3 border-b hair pb-2">
+                  <span className="grey whitespace-nowrap w-24 shrink-0">{fmtDate(e.at)}</span>
+                  <span className={`pill shrink-0 ${e.who === "mastiff" ? "dark" : ""}`}>{e.who === "mastiff" ? "Mastiff" : e.who === "desk" ? "Desk" : "Office"}</span>
+                  <span>{e.href ? <Link href={e.href} className="underline-offset-2 hover:underline">{e.text}</Link> : e.text}</span>
+                </li>
+              ))}
+            </ol>
+          ) : <p className="grey">Nothing yet. The first invoice you send starts the record.</p>}
+          <p className="advisory mt-3">Every line is something you can open and take over. Mastiff flags; your firm makes every payment decision.</p>
+        </div>
+        <AskBox orgId={org.id} />
+      </div>
 
       <h2 className="mb-3">Recent</h2>
       {recent && recent.length ? (

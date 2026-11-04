@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { Shell, getSession } from "@/components/Shell";
 import { fmtMoney, fmtDate, STATUS_LABEL } from "@/lib/org";
 import { createClient } from "@/lib/supabase/server";
-import { logCallback, recordDecision } from "@/lib/actions";
+import { logCallback, recordDecision, askForALook } from "@/lib/actions";
 import { InvoiceImage } from "@/components/InvoiceImage";
 
 export default async function RequestPage({ params }: { params: Promise<{ id: string }> }) {
@@ -54,6 +54,12 @@ export default async function RequestPage({ params }: { params: Promise<{ id: st
             <div className="card mb-6">
               <p>Matches what is on file: payee known{vendor?.account_last4 ? `, account ends ${vendor.account_last4}` : ""}, amount within range. Pay as usual.</p>
               {r.cautions.length > 0 && <p className="grey text-sm mt-3">Noted, did not hold: {r.cautions.join(" ")}</p>}
+              {!!membership && !resolved && (
+                <form action={askForALook.bind(null, id, myName)} className="mt-4 flex flex-wrap gap-2 items-end border-t hair pt-3">
+                  <div className="field flex-1 min-w-48"><label>Not right? Ask Mastiff to check it</label><input name="why" placeholder="What looks off" /></div>
+                  <button className="btn small">Turn into a hold</button>
+                </form>
+              )}
             </div>
           )}
 

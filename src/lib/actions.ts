@@ -288,3 +288,25 @@ export async function discardIntake(orgId: string, intakeId: string) {
   revalidatePath("/app");
   redirect("/app");
 }
+
+// Step 4: questions. Read-only; the answer is returned, nothing is stored.
+export async function askMastiff(orgId: string, question: string): Promise<string> {
+  const supabase = await createClient();
+  const { data: ok } = await supabase.from("orgs").select("id").eq("id", orgId).maybeSingle();
+  if (!ok) return "";
+  const { ask } = await import("@/lib/ask");
+  try { return await ask(supabase, orgId, question); }
+  catch (e) { return "Mastiff could not answer that right now. (" + (e instanceof Error ? e.message.slice(0, 80) : "error") + ")"; }
+}
+
+// Step 4: the office takes over anything Mastiff did. A pass becomes a hold the desk works.
+export async function askForALook(requestId: string, byName: string, form: FormData) {
+  const supabase = await createClient();
+  const why = String(form.get("why") ?? "").trim() || "The office asked for a look.";
+  const { data: r } = await supabase.from("requests").select("reasons, status").eq("id", requestId).single();
+  if (!r || ["released", "rejected"].includes(r.status)) return;
+  await supabase.from("requests").update({ verdict: "hold", status: "open", reasons: [...(r.reasons as string[]), `${byName} asked Mastiff to check: ${why}`] }).eq("id", requestId);
+  revalidatePath(`/app/requests/${requestId}`);
+  revalidatePath("/app");
+  revalidatePath("/desk");
+}
