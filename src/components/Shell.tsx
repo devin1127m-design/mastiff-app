@@ -31,12 +31,12 @@ export function Shell({ session, orgName, children }: { session: Session; orgNam
   return (
     <div className="min-h-screen flex flex-col">
       <header className="border-b border-black">
-        <div className="mx-auto max-w-5xl px-4 h-14 flex items-center justify-between gap-4">
+        <div className="mx-auto max-w-5xl px-4 min-h-14 py-2 flex items-center justify-between gap-4">
           <div className="flex items-center gap-5">
             <Link href={session.isStaff ? "/desk" : "/app"} className="serif text-xl no-underline">Mastiff</Link>
             {orgName && <span className="grey text-sm hidden sm:inline">{orgName}</span>}
           </div>
-          <nav className="flex items-center gap-4 text-sm">
+          <nav className="flex items-center flex-wrap justify-end gap-x-3 gap-y-1 text-sm">
             {session.isStaff && <Link href="/desk">Desk</Link>}
             {session.memberships.length > 0 && (
               <>
@@ -44,6 +44,7 @@ export function Shell({ session, orgName, children }: { session: Session; orgNam
                 <Link href="/app/requests/new">New request</Link>
                 <Link href="/app/vendors">Vendors</Link>
                 <Link href="/app/lookback">Look-back</Link>
+                <Link href="/app/readout">Read-out</Link>
                 <Link href="/app/log">Log</Link>
               </>
             )}

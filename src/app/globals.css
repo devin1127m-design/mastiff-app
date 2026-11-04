@@ -32,3 +32,10 @@ table.list tr:hover td { background: #fafafa; }
 .advisory { font-size: 12.5px; color: var(--grey); }
 .pill { display: inline-block; border: 1px solid #000; border-radius: 999px; padding: 1px 9px; font-size: 12px; }
 .pill.dark { background: #000; color: #fff; }
+
+/* Read-out print view: hide the shell, keep the paper. */
+.print-page header, .print-page footer, .print-page nav, .print-page .print\:hidden { display: none !important; }
+.print-page main { max-width: 100%; padding: 0; }
+.print-page .print\:block { display: block !important; }
+.print-page a { text-decoration: none; }
+@media print { header, footer, nav, .print\:hidden { display: none !important; } main { padding: 0; } }
