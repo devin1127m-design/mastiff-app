@@ -3,14 +3,14 @@ import { redirect } from "next/navigation";
 import { Shell, getSession } from "@/components/Shell";
 import { fmtMoney, fmtDate, STATUS_LABEL } from "@/lib/org";
 import { createClient } from "@/lib/supabase/server";
-import { createOrg, inviteMember, removeInvite } from "@/lib/actions";
+import { createOrg, inviteMember, removeInvite, createPartner, attachOrgToPartner } from "@/lib/actions";
 
 export default async function Desk() {
   const session = await getSession();
   if (!session.isStaff) redirect("/app");
   const supabase = await createClient();
   const since = new Date(Date.now() - 7 * 86400000).toISOString();
-  const [{ data: holds }, { data: orgs }, { count: weekCount }, { data: invites }, { data: members }, { data: mail }, { data: notes }] = await Promise.all([
+  const [{ data: holds }, { data: orgs }, { count: weekCount }, { data: invites }, { data: members }, { data: mail }, { data: notes }, { data: partnerRows }] = await Promise.all([
     supabase.from("requests").select("id, payee, amount, created_at, reasons, status, orgs(name)").in("status", ["open", "not_confirmed", "confirmed"]).order("created_at"),
     supabase.from("orgs").select("id, name, slug, inbound_email, created_at").order("name"),
     supabase.from("requests").select("id", { count: "exact", head: true }).gte("created_at", since),
@@ -18,6 +18,7 @@ export default async function Desk() {
     supabase.from("memberships").select("org_id, role, name"),
     supabase.from("inbound_emails").select("id, from_email, to_email, subject, status, received_at, request_id, intake_id, orgs(name)").order("received_at", { ascending: false }).limit(20),
     supabase.from("notifications").select("id, kind, to_email, subject, status, error, created_at").order("created_at", { ascending: false }).limit(20),
+    supabase.from("partners").select("id, name, partner_members(name), orgs(name)").order("name"),
   ]);
   const now = Date.now();
   return (
@@ -104,6 +105,27 @@ export default async function Desk() {
         <div className="field"><label>Email</label><input name="email" type="email" required /><div className="hint">They sign in at this site with this email and a 6-digit code. Nothing else to set up.</div></div>
         <button className="btn fill">Invite</button>
       </form>
+      </div>
+
+      <h2 className="mt-10 mb-3">Partner firms</h2>
+      <p className="grey text-sm mb-3">A bookkeeping firm that works several client offices. Its people see every attached office at /partner and work each one as its bookkeeper.</p>
+      {partnerRows && partnerRows.length ? (
+        <table className="list mb-4"><thead><tr><th>Firm</th><th>People</th><th>Client offices</th></tr></thead><tbody>
+          {partnerRows.map((p) => <tr key={p.id}><td>{p.name}</td><td className="text-sm">{(p.partner_members as { name: string }[]).map((m) => m.name).join(", ") || <span className="grey">none yet</span>}</td><td className="text-sm">{(p.orgs as { name: string }[]).map((o) => o.name).join(", ") || <span className="grey">none yet</span>}</td></tr>)}
+        </tbody></table>
+      ) : <p className="grey mb-4">No partner firms yet.</p>}
+      <div className="grid md:grid-cols-3 gap-6 mb-10">
+        <form action={createPartner} className="card space-y-3"><h2>Add a firm</h2><div className="field"><label>Name</label><input name="name" required /></div><button className="btn fill">Add</button></form>
+        <form action={attachOrgToPartner} className="card space-y-3"><h2>Attach an office to a firm</h2>
+          <div className="field"><label>Office</label><select name="org_id" required defaultValue=""><option value="" disabled>Choose</option>{(orgs ?? []).map((o) => <option key={o.id} value={o.id}>{o.name}</option>)}</select></div>
+          <div className="field"><label>Firm</label><select name="partner_id" required defaultValue=""><option value="" disabled>Choose</option>{(partnerRows ?? []).map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}</select></div>
+          <button className="btn fill">Attach</button></form>
+        <form action={inviteMember} className="card space-y-3"><h2>Invite a firm's person</h2>
+          <div className="field"><label>Name</label><input name="name" required /></div>
+          <div className="field"><label>Email</label><input name="email" type="email" required /></div>
+          <div className="field"><label>Firm</label><select name="partner_id" required defaultValue=""><option value="" disabled>Choose</option>{(partnerRows ?? []).map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}</select></div>
+          <input type="hidden" name="role" value="partner" />
+          <button className="btn fill">Invite</button></form>
       </div>
 
       <h2 className="mt-10 mb-3">People</h2>

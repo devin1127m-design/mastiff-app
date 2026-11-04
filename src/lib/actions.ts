@@ -179,12 +179,30 @@ export async function createOrg(form: FormData) {
 export async function inviteMember(form: FormData) {
   const supabase = await createClient();
   const email = String(form.get("email") ?? "").trim().toLowerCase();
-  const org_id = String(form.get("org_id") ?? "");
+  const org_id = String(form.get("org_id") ?? "") || null;
+  const partner_id = String(form.get("partner_id") ?? "") || null;
   const role = String(form.get("role") ?? "bookkeeper");
   const name = String(form.get("name") ?? "").trim();
-  if (!email || !org_id || !name) return;
-  await supabase.from("invites").upsert({ email, org_id, role, name }, { onConflict: "email,org_id" });
+  if (!email || !name || (!org_id && !partner_id)) return;
+  if (role === "partner") await supabase.from("invites").insert({ email, partner_id, role, name });
+  else await supabase.from("invites").upsert({ email, org_id, role, name }, { onConflict: "email,org_id" });
   revalidatePath("/desk");
+}
+
+// Step 10: partner firms.
+export async function createPartner(form: FormData) {
+  const supabase = await createClient();
+  const name = String(form.get("name") ?? "").trim();
+  if (!name) return;
+  await supabase.from("partners").insert({ name });
+  revalidatePath("/desk");
+}
+export async function attachOrgToPartner(form: FormData) {
+  const supabase = await createClient();
+  const org_id = String(form.get("org_id") ?? ""), partner_id = String(form.get("partner_id") ?? "");
+  if (!org_id || !partner_id) return;
+  await supabase.from("orgs").update({ partner_id }).eq("id", org_id);
+  revalidatePath("/desk"); revalidatePath("/partner");
 }
 
 export async function removeInvite(id: string) {
@@ -369,4 +387,34 @@ export async function decideInstruction(orgId: string, byName: string, id: strin
   }
   await supabase.from("instructions").update({ status: confirm ? "confirmed" : "declined", decided_by: byName, decided_at: new Date().toISOString() }).eq("id", id);
   revalidatePath("/app/instructions"); revalidatePath("/app"); revalidatePath("/app/vendors"); revalidatePath("/app/settings");
+}
+
+// Step 9: subcontractor register.
+function dateOrNull(v: FormDataEntryValue | null) { const s = String(v ?? "").trim(); return /^\d{4}-\d{2}-\d{2}$/.test(s) ? s : null; }
+export async function saveSub(orgId: string, vendorId: string, form: FormData) {
+  const supabase = await createClient();
+  const id = vendorId || String(form.get("vendor_id") ?? "");
+  if (!id) return;
+  const ai = String(form.get("additional_insured") ?? "");
+  await supabase.from("vendors").update({
+    is_sub: true, gl_expires: dateOrNull(form.get("gl_expires")), wc_expires: dateOrNull(form.get("wc_expires")),
+    wc_exempt: String(form.get("wc_exempt")) === "yes", auto_expires: dateOrNull(form.get("auto_expires")),
+    additional_insured: ai === "yes" ? true : ai === "no" ? false : null, waiver_through: dateOrNull(form.get("waiver_through")),
+  }).eq("id", id).eq("org_id", orgId);
+  revalidatePath("/app/subs");
+}
+export async function unmarkSub(orgId: string, vendorId: string) {
+  const supabase = await createClient();
+  await supabase.from("vendors").update({ is_sub: false }).eq("id", vendorId).eq("org_id", orgId);
+  revalidatePath("/app/subs");
+}
+export async function importSubs(orgId: string, form: FormData) {
+  const { parseRegister } = await import("@/lib/subs");
+  const supabase = await createClient();
+  const rows = parseRegister(String(form.get("csv") ?? ""));
+  if (!rows.length) return;
+  for (const r of rows) {
+    await supabase.from("vendors").upsert({ org_id: orgId, name: r.name, name_key: nameKey(r.name), is_sub: true, gl_expires: r.gl_expires, wc_expires: r.wc_expires, wc_exempt: r.wc_exempt, auto_expires: r.auto_expires, additional_insured: r.additional_insured, waiver_through: r.waiver_through }, { onConflict: "org_id,name_key" });
+  }
+  revalidatePath("/app/subs"); revalidatePath("/app/vendors");
 }

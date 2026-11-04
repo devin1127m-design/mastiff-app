@@ -1,9 +1,11 @@
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { getSession, type Session } from "@/components/Shell";
 
 export async function requireOrg(orgId?: string) {
   const session = await getSession();
-  const m = (orgId && session.memberships.find((x) => x.org_id === orgId)) || session.memberships[0];
+  const chosen = orgId ?? (await cookies()).get("mastiff_org")?.value;
+  const m = (chosen && session.memberships.find((x) => x.org_id === chosen)) || session.memberships[0];
   if (!m) {
     if (session.isStaff) redirect("/desk");
     redirect("/login?noorg=1");
