@@ -1,33 +1,19 @@
 "use client";
 import { useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { sendSignInLink } from "@/lib/auth-actions";
 
 export default function Login() {
   const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
-  const [stage, setStage] = useState<"email" | "code">("email");
+  const [sent, setSent] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  async function sendCode(e: React.FormEvent) {
+  async function send(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true); setErr(null);
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOtp({ email: email.trim().toLowerCase(), options: { shouldCreateUser: true } });
+    const r = await sendSignInLink(email, window.location.origin);
     setBusy(false);
-    if (error) setErr(error.message.includes("seconds") ? "Give it a minute, then try again." : error.message);
-    else setStage("code");
-  }
-
-  async function verify(e: React.FormEvent) {
-    e.preventDefault();
-    setBusy(true); setErr(null);
-    const supabase = createClient();
-    const { error } = await supabase.auth.verifyOtp({ email: email.trim().toLowerCase(), token: code.replace(/\D/g, ""), type: "email" });
-    if (error) { setBusy(false); setErr("That code didn't work. Check it or request a new one."); return; }
-    await supabase.rpc("claim_invites");
-    const { data: staff } = await supabase.from("staff").select("user_id").maybeSingle();
-    window.location.href = staff ? "/desk" : "/app";
+    if (!r.ok) setErr(r.message ?? "Could not send."); else setSent(true);
   }
 
   return (
@@ -35,26 +21,22 @@ export default function Login() {
       <div className="w-full max-w-sm">
         <div className="serif text-3xl mb-1">Mastiff</div>
         <p className="grey mb-8">Payment verification for small offices.</p>
-        {stage === "email" ? (
-          <form onSubmit={sendCode} className="space-y-4">
+        {sent ? (
+          <div className="card space-y-3">
+            <h2>Check your email</h2>
+            <p>We sent a sign-in link to <strong>{email}</strong>. Open it on any device. It works once and expires in an hour.</p>
+            <p className="grey text-sm">Not there in a minute? Check spam.</p>
+            <button type="button" className="btn w-full" onClick={() => { setSent(false); setErr(null); }}>Use a different email</button>
+          </div>
+        ) : (
+          <form onSubmit={send} className="space-y-4">
             <div className="field">
               <label htmlFor="email">Work email</label>
               <input id="email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
-              <div className="hint">No password. We email you a 6-digit code.</div>
+              <div className="hint">No password. We email you a sign-in link each time.</div>
             </div>
             {err && <p className="text-sm">{err}</p>}
-            <button className="btn fill w-full" disabled={busy}>{busy ? "Sending…" : "Email me a code"}</button>
-          </form>
-        ) : (
-          <form onSubmit={verify} className="space-y-4">
-            <div className="field">
-              <label htmlFor="code">Enter the code we sent to {email}</label>
-              <input id="code" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9 ]*" maxLength={8} required value={code} onChange={(e) => setCode(e.target.value)} autoFocus className="tracking-widest text-xl" />
-              <div className="hint">Check spam if it is not there in a minute. The code works on any device.</div>
-            </div>
-            {err && <p className="text-sm">{err}</p>}
-            <button className="btn fill w-full" disabled={busy}>{busy ? "Checking…" : "Sign in"}</button>
-            <button type="button" className="btn w-full" onClick={() => { setStage("email"); setCode(""); setErr(null); }}>Use a different email</button>
+            <button className="btn fill w-full" disabled={busy}>{busy ? "Sending…" : "Send sign-in link"}</button>
           </form>
         )}
         <p className="advisory mt-8">Mastiff flags. Your firm makes every payment decision.</p>
