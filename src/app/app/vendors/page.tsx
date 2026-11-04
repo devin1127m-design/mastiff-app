@@ -1,18 +1,31 @@
 import { Shell } from "@/components/Shell";
 import { requireOrg } from "@/lib/org";
 import { createClient } from "@/lib/supabase/server";
-import { addVendor, importVendors, deleteVendor } from "@/lib/actions";
+import { addVendor, importVendors, deleteVendor, adoptPattern } from "@/lib/actions";
+import { pattern, describe, type Pattern } from "@/lib/memory";
 
 export default async function Vendors() {
   const { session, org } = await requireOrg();
   const supabase = await createClient();
-  const { data: vendors } = await supabase.from("vendors").select("*").eq("org_id", org.id).order("name");
+  const [{ data: vendors }, { data: paid }, { data: mails }] = await Promise.all([
+    supabase.from("vendors").select("*").eq("org_id", org.id).order("name"),
+    supabase.from("requests").select("id, vendor_id, amount, created_at").eq("org_id", org.id).in("status", ["passed", "confirmed", "released"]).not("vendor_id", "is", null),
+    supabase.from("inbound_emails").select("from_email, request_id").eq("org_id", org.id).not("request_id", "is", null),
+  ]);
+  // Vendor memory: what the office's own history says is normal. Suggested, never applied on its own.
+  const domainByRequest = new Map((mails ?? []).map((m) => [m.request_id, m.from_email]));
+  const patterns = new Map<string, Pattern>();
+  for (const v of vendors ?? []) {
+    const rows = (paid ?? []).filter((r) => r.vendor_id === v.id);
+    const p = pattern(rows.map((r) => Number(r.amount)), rows.map((r) => r.created_at), rows.map((r) => domainByRequest.get(r.id)).filter((x): x is string => !!x));
+    if (p) patterns.set(v.id, p);
+  }
   const add = addVendor.bind(null, org.id);
   const imp = importVendors.bind(null, org.id);
   return (
     <Shell session={session} orgName={org.name}>
       <h1 className="mb-1">Vendor file</h1>
-      <p className="grey mb-8">Everyone you pay, the number you already call them on, and the last four digits of their account. Nothing longer is ever stored.</p>
+      <p className="grey mb-8">Everyone you pay, the number you already call them on, and the last four digits of their account. Nothing longer is ever stored. After three payments, Mastiff says what is usual for each vendor; you decide whether to use it.</p>
 
       <div className="grid md:grid-cols-2 gap-8 mb-10">
         <form action={add} className="card space-y-3">
@@ -38,18 +51,24 @@ export default async function Vendors() {
         </form>
       </div>
 
-      <table className="list"><thead><tr><th>Vendor</th><th>Callback</th><th>Last 4</th><th>Usual</th><th>Verified</th><th></th></tr></thead><tbody>
+      <table className="list"><thead><tr><th>Vendor</th><th>Callback</th><th>Last 4</th><th>Usual</th><th>What history says</th><th>Verified</th><th></th></tr></thead><tbody>
         {(vendors ?? []).map((v) => (
           <tr key={v.id}>
             <td>{v.name}{v.notes && <div className="grey text-xs">{v.notes}</div>}</td>
             <td>{v.callback_phone ?? <span className="grey">missing</span>}{v.phone_on_file_since && <div className="grey text-xs">since {v.phone_on_file_since}</div>}</td>
             <td>{v.account_last4 ? `····${v.account_last4}` : <span className="grey">—</span>}</td>
             <td className="text-sm">{v.usual_min || v.usual_max ? `$${Number(v.usual_min ?? 0).toLocaleString()} – $${Number(v.usual_max ?? 0).toLocaleString()}` : <span className="grey">—</span>}</td>
+            <td className="text-sm">{(() => {
+              const p = patterns.get(v.id);
+              if (!p) return <span className="grey">Fewer than three payments so far.</span>;
+              const same = Number(v.usual_min) === p.low && Number(v.usual_max) === p.high;
+              return <>{describe(p)}{!same && <form action={adoptPattern.bind(null, org.id, v.id, p.low, p.high)} className="mt-1"><button className="btn small">Use ${p.low.toLocaleString()} – ${p.high.toLocaleString()} as usual</button></form>}</>;
+            })()}</td>
             <td className="text-sm">{v.verified_at ? <>by voice, {new Date(v.verified_at).toLocaleDateString()}<div className="grey text-xs">{v.verified_by}</div></> : <span className="grey">not yet</span>}</td>
             <td><form action={deleteVendor.bind(null, org.id, v.id)}><button className="btn small">Remove</button></form></td>
           </tr>
         ))}
-        {!vendors?.length && <tr><td colSpan={6} className="grey">No vendors yet. Add one or paste your list.</td></tr>}
+        {!vendors?.length && <tr><td colSpan={7} className="grey">No vendors yet. Add one or paste your list.</td></tr>}
       </tbody></table>
     </Shell>
   );

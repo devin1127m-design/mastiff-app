@@ -310,3 +310,11 @@ export async function askForALook(requestId: string, byName: string, form: FormD
   revalidatePath("/app");
   revalidatePath("/desk");
 }
+
+// Step 5: the owner adopts what history suggests as the vendor's usual range.
+export async function adoptPattern(orgId: string, vendorId: string, low: number, high: number) {
+  const supabase = await createClient();
+  if (!(high > 0) || low < 0 || low > high) return;
+  await supabase.from("vendors").update({ usual_min: low || null, usual_max: high }).eq("id", vendorId).eq("org_id", orgId);
+  revalidatePath("/app/vendors");
+}
