@@ -65,6 +65,9 @@ Later, year two if ever: voice callbacks, QuickBooks Desktop, write-back to any 
 
 Calls: Mastiff suggests when and whom to call (vendor, number on file, last invoices, best time); a person dials and records who answered, what was said, outcome, and their name.
 
+## Wiring
+Everything on the roadmap is built; `WIRING.md` lists the keys and accounts that switch each part on, in order. Read it before telling Devin something is "not working": it is usually a key not yet set.
+
 ## Working with Devin
 He is 16, learning to code, on his phone most of the time. Stop after each step and show him, in plain words, what changed and what he'd say to an owner about it. One step at a time; he has said "you did too much" when handed a wall. Never send email on his behalf without showing him the draft. Keep the app something he can demo on his phone in two minutes: Pass, Hold, callback, decision, CSV.
 
