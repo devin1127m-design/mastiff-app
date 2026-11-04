@@ -77,6 +77,13 @@ export async function submitRequest(orgId: string, submittedBy: string, form: Fo
   };
   if (!input.payee || !(input.amount > 0)) return;
   const v = check(input, (vendors ?? []) as Vendor[], org as Org);
+  // A request confirmed from a read carries the image and what was read.
+  const intakeId = String(form.get("intake_id") ?? "") || null;
+  let intake: { image_path: string; source: string; extracted: unknown; read_confidence: number | null } | null = null;
+  if (intakeId) {
+    const { data } = await supabase.from("intakes").select("image_path, source, extracted, read_confidence").eq("id", intakeId).eq("org_id", orgId).maybeSingle();
+    intake = data;
+  }
   const { data: row } = await supabase.from("requests").insert({
     org_id: orgId,
     payee: input.payee,
@@ -84,14 +91,19 @@ export async function submitRequest(orgId: string, submittedBy: string, form: Fo
     account_last4: input.account_last4,
     invoice_no: String(form.get("invoice_no") ?? "").trim() || null,
     note: input.note,
-    source: "form",
+    source: intake?.source ?? "form",
     submitted_by: submittedBy,
     verdict: v.verdict,
     reasons: v.reasons,
     cautions: v.cautions,
     vendor_id: v.vendor?.id ?? null,
     status: v.verdict === "pass" ? "passed" : "open",
+    image_path: intake?.image_path ?? null,
+    extracted: intake?.extracted ?? null,
+    read_confidence: intake?.read_confidence ?? null,
+    straight_through: false,
   }).select("id").single();
+  if (intakeId && row) await supabase.from("intakes").update({ request_id: row.id }).eq("id", intakeId);
   revalidatePath("/app");
   revalidatePath("/desk");
   redirect(`/app/requests/${row!.id}`);
@@ -208,4 +220,64 @@ export async function markRow(lookbackId: string, row: number, markedBy: string,
     amount_recovered: rec ? Number(rec) : null, marked_by: markedBy,
   }, { onConflict: "lookback_id,row" });
   revalidatePath(`/app/lookback/${lookbackId}`);
+}
+
+// Intake (step 3). The file is already in the private `invoices` bucket at
+// <org_id>/<name>, uploaded straight from the phone. Read it, check it, and
+// either file the request (Rule 5: confident, on file, passes, in pattern)
+// or park it as an intake for the bookkeeper to confirm.
+export async function startIntake(orgId: string, byName: string, path: string, source: "upload" | "photo") {
+  const { readInvoice, needsTap, isConfigured } = await import("@/lib/intake");
+  const supabase = await createClient();
+  if (!path.startsWith(orgId + "/")) return;
+  const mime = path.endsWith(".pdf") ? "application/pdf" : path.endsWith(".png") ? "image/png" : path.endsWith(".webp") ? "image/webp" : "image/jpeg";
+
+  let extracted = null as Awaited<ReturnType<typeof readInvoice>> | null;
+  let readError: string | null = null;
+  if (!isConfigured()) readError = "Reading is not switched on for this desk yet. Fill in the fields; the picture stays attached.";
+  else {
+    const { data: blob, error } = await supabase.storage.from("invoices").download(path);
+    if (error || !blob) readError = "The upload did not finish. Try again.";
+    else {
+      try { extracted = await readInvoice(new Uint8Array(await blob.arrayBuffer()), mime); }
+      catch (e) { readError = "Mastiff could not read this one. Fill it in by hand; the picture stays attached. (" + (e instanceof Error ? e.message.slice(0, 80) : "read failed") + ")"; }
+    }
+  }
+
+  let tapReason: string | null = readError;
+  let verdict: ReturnType<typeof check> | null = null;
+  if (extracted) {
+    const { data: org } = await supabase.from("orgs").select("single_cap, range_multiple, hours_start, hours_end").eq("id", orgId).single();
+    const { data: vendors } = await supabase.from("vendors").select("id, name, name_key, account_last4, usual_min, usual_max").eq("org_id", orgId);
+    if (extracted.payee && extracted.amount) {
+      verdict = check({ payee: extracted.payee, amount: extracted.amount, account_last4: extracted.account_last4, note: extracted.notes, submittedAt: new Date() }, (vendors ?? []) as Vendor[], org as Org);
+      tapReason = needsTap(extracted, verdict, verdict.vendor);
+    } else tapReason = needsTap(extracted, { verdict: "hold", reasons: [], cautions: [], vendor: null }, null);
+  }
+
+  if (extracted && verdict && !tapReason) {
+    // Straight through. The pay screen shows the image beside these fields; the click on pay is the check.
+    const { data: row } = await supabase.from("requests").insert({
+      org_id: orgId, payee: extracted.payee, amount: extracted.amount, account_last4: extracted.account_last4,
+      invoice_no: extracted.invoice_no, note: extracted.notes, source, submitted_by: "Mastiff (read for " + byName + ")",
+      verdict: verdict.verdict, reasons: verdict.reasons, cautions: verdict.cautions, vendor_id: verdict.vendor?.id ?? null,
+      status: "passed", image_path: path, extracted, read_confidence: extracted.confidence, straight_through: true,
+    }).select("id").single();
+    revalidatePath("/app");
+    redirect(`/app/requests/${row!.id}`);
+  }
+
+  const { data: it } = await supabase.from("intakes").insert({
+    org_id: orgId, image_path: path, source, extracted, read_confidence: extracted?.confidence ?? null,
+    needs_tap_because: tapReason, read_error: readError, created_by: byName,
+  }).select("id").single();
+  revalidatePath("/app");
+  redirect(`/app/requests/new?intake=${it!.id}`);
+}
+
+export async function discardIntake(orgId: string, intakeId: string) {
+  const supabase = await createClient();
+  await supabase.from("intakes").delete().eq("id", intakeId).eq("org_id", orgId);
+  revalidatePath("/app");
+  redirect("/app");
 }

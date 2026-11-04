@@ -7,12 +7,13 @@ export default async function OrgHome() {
   const { session, org } = await requireOrg();
   const supabase = await createClient();
   const since = new Date(Date.now() - 7 * 86400000).toISOString();
-  const [{ data: open }, { data: recent }, { count: weekCount }, { count: vendorCount }, { count: verifiedCount }] = await Promise.all([
+  const [{ data: open }, { data: recent }, { count: weekCount }, { count: vendorCount }, { count: verifiedCount }, { data: intakes }] = await Promise.all([
     supabase.from("requests").select("id, payee, amount, created_at, reasons, status").eq("org_id", org.id).in("status", ["open", "confirmed", "not_confirmed"]).order("created_at"),
     supabase.from("requests").select("id, payee, amount, created_at, verdict, status").eq("org_id", org.id).order("created_at", { ascending: false }).limit(10),
     supabase.from("requests").select("id", { count: "exact", head: true }).eq("org_id", org.id).gte("created_at", since),
     supabase.from("vendors").select("id", { count: "exact", head: true }).eq("org_id", org.id),
     supabase.from("vendors").select("id", { count: "exact", head: true }).eq("org_id", org.id).not("verified_at", "is", null),
+    supabase.from("intakes").select("id, created_at, created_by, extracted, needs_tap_because").eq("org_id", org.id).is("request_id", null).order("created_at", { ascending: false }),
   ]);
   return (
     <Shell session={session} orgName={org.name}>
@@ -21,7 +22,7 @@ export default async function OrgHome() {
           <h1>{org.name}</h1>
           <p className="grey">Forward invoices to <strong className="text-black">{org.inbound_email}</strong>, or enter one below.</p>
         </div>
-        <div className="flex gap-2"><Link href="/app/lookback" className="btn">Look-back</Link><Link href="/app/requests/new" className="btn fill">New request</Link></div>
+        <div className="flex gap-2"><Link href="/app/lookback" className="btn">Look-back</Link><Link href="/app/requests/new" className="btn fill">Send an invoice</Link></div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
@@ -30,6 +31,18 @@ export default async function OrgHome() {
         <div className="card"><div className="grey text-xs uppercase tracking-wide">Vendors</div><div className="serif text-3xl">{vendorCount ?? 0}</div><div className="text-sm">on file</div></div>
         <div className="card"><div className="grey text-xs uppercase tracking-wide">Verified</div><div className="serif text-3xl">{verifiedCount ?? 0}</div><div className="text-sm">confirmed by voice</div></div>
       </div>
+
+      {intakes && intakes.length > 0 && (
+        <>
+          <h2 className="mb-3">Waiting for a look</h2>
+          <table className="list mb-10"><thead><tr><th>When</th><th>Read as</th><th>Why</th><th></th></tr></thead><tbody>
+            {intakes.map((i) => {
+              const x = i.extracted as { payee?: string | null; amount?: number | null } | null;
+              return <tr key={i.id}><td>{fmtDate(i.created_at)}</td><td>{x?.payee ? `${x.payee}${x.amount ? " · " + fmtMoney(x.amount) : ""}` : <span className="grey">could not read</span>}</td><td className="text-sm">{i.needs_tap_because}</td><td><Link href={`/app/requests/new?intake=${i.id}`} className="btn small">Confirm</Link></td></tr>;
+            })}
+          </tbody></table>
+        </>
+      )}
 
       <h2 className="mb-3">Holds</h2>
       {open && open.length ? (

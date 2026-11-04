@@ -4,6 +4,7 @@ import { Shell, getSession } from "@/components/Shell";
 import { fmtMoney, fmtDate, STATUS_LABEL } from "@/lib/org";
 import { createClient } from "@/lib/supabase/server";
 import { logCallback, recordDecision } from "@/lib/actions";
+import { InvoiceImage } from "@/components/InvoiceImage";
 
 export default async function RequestPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -34,7 +35,13 @@ export default async function RequestPage({ params }: { params: Promise<{ id: st
             <span className="grey text-sm">{STATUS_LABEL[r.status]}</span>
           </div>
           <h1 className="mb-1">{r.payee}</h1>
-          <p className="serif text-2xl mb-6">{fmtMoney(r.amount)}{r.invoice_no && <span className="grey text-base"> · invoice {r.invoice_no}</span>}</p>
+          <p className="serif text-2xl mb-2">{fmtMoney(r.amount)}{r.invoice_no && <span className="grey text-base"> · invoice {r.invoice_no}</span>}</p>
+          {r.image_path && (
+            <p className="advisory mb-6">{r.straight_through
+              ? "Read by Mastiff and filed without a tap: vendor on file, usual amount, passed the three checks. Compare the picture with the numbers before you pay."
+              : "Read by Mastiff, confirmed by " + r.submitted_by + "."}</p>
+          )}
+          {!r.image_path && <div className="mb-4" />}
 
           {isHold ? (
             <div className="card mb-6">
@@ -135,6 +142,14 @@ export default async function RequestPage({ params }: { params: Promise<{ id: st
           </div>
           <Link href="/app" className="btn w-full">Back to home</Link>
         </aside>
+      </div>
+      {r.image_path && (
+        <div className="mt-8 max-w-2xl">
+          <h2 className="mb-2">The invoice</h2>
+          <InvoiceImage path={r.image_path} />
+        </div>
+      )}
+      <div>
       </div>
     </Shell>
   );
