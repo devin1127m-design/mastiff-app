@@ -12,7 +12,7 @@ Payment verification for small offices. The bookkeeper enters (or forwards) a pa
 2. **Only three things hold on their own:** payee not on file, bank details changed, amount out of range. Off-hours and urgency wording are cautions; they never hold alone. The rules live in `src/lib/rules.ts` and stay plain, readable code. No ML in the verdict.
 3. **Wording:** "would have held," "worth checking," "missing." Never "fraud," "scam," "you were hit."
 4. **Data:** last four digits of any account, ever. The database rejects longer values; the importer cuts them. Never store a routing number or tax ID. Never ask for a bank login.
-5. **AI reads, a person confirms.** When intake arrives (v2), nothing the AI extracts is saved until the bookkeeper confirms it.
+5. **AI reads; a person confirms the exceptions, and the pay screen is the check for the rest.** When intake arrives (step 3): a confident read of a bill from a vendor on file that passes the three rules goes straight into the pay run with no tap. The bookkeeper is asked to confirm only a low-confidence read, a new vendor, a hold, or an amount outside that vendor's pattern. The pay screen shows the extracted fields beside the invoice image, so the click on pay is the confirmation for everything that went straight through. Nothing the AI extracts is ever paid without a person having seen it on one of those two screens.
 6. **Style:** black, white, one grey (#6B6B6B). Serif headings, Inter body. No gradients, icons, emoji, stock images. Reads like a bank or a law firm. Phone-first; the bookkeeper is on her phone.
 7. **Freeze:** if it isn't in the roadmap below, write it in `LATER.md` and move on. Do not add features because they seem useful.
 
@@ -35,16 +35,26 @@ Next.js 16 (App Router, TypeScript, Tailwind v4 via `@tailwindcss/postcss`), Sup
 - `/desk`: staff only. All open holds across offices oldest first with the one-hour window flagged; add office; invite person; people list.
 - Roles: `staff` table = Mastiff's people. `memberships.role` = owner | bookkeeper | approver. Invites are claimed on login by `claim_invites()`.
 
-## Roadmap (build in this order; stop after each and show Devin)
-1. **Domain and email.** Once Devin buys the domain: Resend for transactional mail (custom SMTP in Supabase so the sign-in email can carry a 6-digit code), and an inbound address per office (`<slug>@requests.<domain>`) that creates a request with `source = 'email'` and the raw email attached for staff to enter. Bookkeeper does nothing.
-2. **Hold notifications.** Email (later SMS) to the bookkeeper and approver when a hold is logged, when a callback result lands, and a Monday digest. Silence means Pass.
-3. **Vendor memory.** Per-vendor usual range learned from history instead of typed; the `usual_min/max` fields become suggestions.
-4. **Day-30 read-out.** A printable page per office: requests, holds, callbacks, vendors verified by voice, mapped to the carrier questions in the pilot kit.
-5. **AI intake (v2).** Read the forwarded invoice/email, pre-fill the request, bookkeeper confirms. Rule 5 applies.
-6. **Construction add-ons.** Certificate expiry, lien waiver gaps, positive pay export. Only once a construction office is in a pilot.
-7. **Partner portal.** A bookkeeping firm sees all its client offices in one view.
+## The product in one line
+**"You don't think about accounts payable until it's time to hit pay."** Bills reach Mastiff without keying, Mastiff reads and checks them, calls when a call is needed, and the owner's job is one click. Autonomous by the third office, not before the first: the manual desk (what is built today) is sold now, and each roadmap step replaces one thing Devin does by hand, built on real invoices from real offices. The owner never sees the difference.
 
-Not now: QuickBooks/Xero/bank integrations, pricing page, deception features, AI-written-text detection, a native app.
+## Roadmap (build in this order; stop after each and show Devin)
+| # | Step | What the office gets | Gate to start |
+| --- | --- | --- | --- |
+| 1 | Domain, email, forwarding address | Bookkeeper forwards or auto-forwards invoices to `<slug>@requests.<domain>`; a request with `source='email'` and the raw email appears for staff to enter. Resend as custom SMTP so sign-in uses a 6-digit code | Domain bought |
+| 2 | Hold notifications and Monday digest | Email (later SMS) to bookkeeper and approver when a hold is logged and when the callback result lands; a Monday digest. Silence means Pass | Step 1 |
+| 3 | AI intake | The forwarded invoice is read (hosted Claude model via the API, called from the app; per-office memory in Supabase, never in the model) and the request pre-filled. Rule 5 below decides when a tap is needed | One office forwarding real invoices |
+| 4 | Activity feed | Every action Mastiff took, visible live on the office home, each one overridable or taken over by the office | Step 3 |
+| 5 | Vendor memory | Each vendor's normal pattern (amount range, cadence, sender domain) learned from history; `usual_min/max` become suggestions | 200+ real requests |
+| 6 | Day-30 read-out | Printable renewal packet per office: requests, holds, callbacks, vendors verified by voice, mapped to the carrier questions in `pilot-kit/` | First pilot at day 25 |
+| 7 | QuickBooks Online, read only | Bills and vendors pulled in with the owner's own login (OAuth). Nothing written back. Xero, Gmail and Microsoft 365 read connections follow the same pattern later | Second paying office asks |
+| 8 | Talk to Mastiff | "Why did this hold?" "Always pass Metro Fasteners under $500." Preferences become per-office settings; the model never changes a rule on its own | Step 3 |
+| 9 | Construction add-ons | Certificate expiry, lien waiver gaps, positive pay export (the office uploads it; Mastiff never sends to a bank) | A construction office in a pilot |
+| 10 | Partner portal | A bookkeeping firm sees all its client offices in one view | First white-label firm signs |
+
+Later, year two if ever: voice callbacks, QuickBooks Desktop, write-back to any books system. Never: bank credentials, a release button, a pricing page before five clients, deception features, AI-written-text detection.
+
+Calls: Mastiff suggests when and whom to call (vendor, number on file, last invoices, best time); a person dials and records who answered, what was said, outcome, and their name.
 
 ## Working with Devin
 He is 16, learning to code, on his phone most of the time. Stop after each step and show him, in plain words, what changed and what he'd say to an owner about it. One step at a time; he has said "you did too much" when handed a wall. Never send email on his behalf without showing him the draft. Keep the app something he can demo on his phone in two minutes: Pass, Hold, callback, decision, CSV.
@@ -59,13 +69,13 @@ The research, pilot kit, static site and look-back tool were built in a separate
 - `wall-demo/`: the static demo of the check, holds and log; reference only.
 - `lookback/`: the Python look-back scan and day-30 read-out, 86 tests. The reference the TypeScript port must match; the fixture in `lookback/tests/fixtures/` has the planted patterns.
 
-Where `plans/decisions.md` (entries dated 2026-11-04) and the roadmap above disagree, Devin's decisions log is the newer word: the owner hits pay, nothing else; a live activity feed; the owner can talk to Mastiff; a hosted model with per-office memory in Supabase; connections only through the owner's own login, never a bank's money-moving side. Reconcile the roadmap with him before building past step 2.
+The 2026-11-04 entries in `plans/decisions.md` were reconciled with Devin the same morning and are now in the roadmap above (intake at 3, activity feed at 4, talk to Mastiff at 8, QuickBooks read-only at 7, hosted model, owner's-login-only connections). One entry was changed: "fully autonomous before selling begins" became "autonomous by the third office, not before the first." Rule 5 is the confirm-on-exception version above. The roadmap in this file is the single plan; `plans/decisions.md` records why.
 
 ### The October rules, kept for the record
 1. Rule zero: never slow the bookkeeper.
 2. Only three things hold on their own: payee not on file, bank details changed, amount out of range. Off-hours and urgency language are cautions.
 3. Wording: "would have held," "worth checking," "missing." Never "fraud," "you were hit," "illegal," "caught," "prevented," "saved." Never state what an insurer requires. Every verdict says: "Mastiff flags. Your firm makes every payment decision."
 4. Last 4 digits of any account or tax ID, never more.
-5. AI reads, a person confirms. Per the 2026-11-04 decisions: a person confirms payment, not every extraction.
+5. AI reads, a person confirms. Superseded 2026-11-04 by Rule 5 above (confirm on exception; the pay screen is the check for the rest).
 6. Style: black, white, one grey (#6B6B6B); serif headlines, Inter body; no gradients, icons, emoji, stock images, fake logos or testimonials.
 7. Freeze: if it isn't in a plan, write it in `LATER.md` and move on.
