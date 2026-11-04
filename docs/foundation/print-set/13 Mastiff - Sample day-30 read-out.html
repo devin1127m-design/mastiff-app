@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day-30 read-out - Sample Office</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 28px; background: #fff; color: #000;
+  font-family: Inter, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 12px; line-height: 1.35; }
+h1, h2 { font-family: Georgia, "Times New Roman", serif; font-weight: normal; margin: 0; }
+h1 { font-size: 24px; }
+h2 { font-size: 15px; margin-top: 16px; }
+p { margin: 0; }
+.grey { color: #6B6B6B; }
+.nums { display: flex; border-top: 1px solid #000; border-bottom: 1px solid #000; margin-top: 10px; }
+.nums div { flex: 1; padding: 6px 8px 6px 0; }
+.nums b { display: block; font-family: Georgia, "Times New Roman", serif; font-size: 22px; font-weight: normal; }
+.nums span { font-size: 10px; text-transform: uppercase; letter-spacing: .04em; color: #6B6B6B; }
+table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+th { text-align: left; font-weight: 600; border-bottom: 1px solid #000; padding: 3px 6px 3px 0; font-size: 9.5px;
+  text-transform: uppercase; letter-spacing: .04em; }
+td { vertical-align: top; padding: 4px 6px 4px 0; border-bottom: 1px solid #6B6B6B; }
+td.num, th.num { text-align: right; white-space: nowrap; }
+td.nowrap { white-space: nowrap; }
+.carriers { color: #6B6B6B; font-size: 9.5px; }
+.ev { font-weight: 600; white-space: nowrap; }
+.fields { columns: 2; column-gap: 24px; list-style: none; padding: 0; margin: 6px 0 0; }
+.fields li { break-inside: avoid; padding: 1px 0; }
+.advisory { margin-top: 14px; padding-top: 8px; border-top: 1px solid #000; }
+@page { size: Letter; margin: 0.35in; }
+@media print {
+  body { padding: 0; font-size: 7pt; line-height: 1.15; }
+  h1 { font-size: 16pt; } h2 { font-size: 9.5pt; margin-top: 5px; }
+  .nums { margin-top: 5px; } .nums div { padding: 3px 6px 3px 0; }
+  .nums b { font-size: 14pt; } .nums span { font-size: 6pt; }
+  th { font-size: 6pt; } td { padding: 1.5px 5px 1.5px 0; } .carriers { font-size: 6pt; }
+  .advisory { margin-top: 6px; padding-top: 4px; }
+  tr { page-break-inside: avoid; }
+}
+</style></head>
+<body>
+<p class="grey">Mastiff</p>
+<h1>Day-30 read-out: Sample Office</h1>
+<p class="grey">Period covered: September 1, 2026 to September 30, 2026. Prepared October 27, 2026.</p>
+<div class="nums"><div><b>40</b><span>Checked</span></div><div><b>9</b><span>Holds</span></div><div><b>4</b><span>Released</span></div><div><b>2</b><span>Recorded not paid</span></div><div><b>5.0</b><span>Median hours to resolve</span></div></div>
+<p class="grey" style="margin-top:4px">1 override (paid without callback, as reported), 1 void, 1 still open.</p>
+<h2>What was held and what happened</h2>
+<table>
+<thead><tr><th>Date</th><th>Payee</th><th class="num">Amount</th><th>Reasons</th><th>Outcome</th><th>Who called</th><th>Number called</th><th>Approver</th></tr></thead>
+<tbody><tr><td class="nowrap">2026-09-03</td><td>Lakeshore Concrete Supply</td><td class="num">$3,200</td><td>Payee not on file.</td><td>Released after callback</td><td>Marcus</td><td class="nowrap">248-555-0142</td><td>Priya</td></tr><tr><td class="nowrap">2026-09-08</td><td>Great Lakes Electric</td><td class="num">$8,450</td><td>Bank details changed: last 4 is 4412, file has 7781.</td><td>Released after callback</td><td>Marcus</td><td class="nowrap">248-555-0177</td><td>Priya</td></tr><tr><td class="nowrap">2026-09-12</td><td>Oakland Roofing</td><td class="num">$18,900</td><td>Amount $18,900 is more than 2x the 90-day average of $6,200.</td><td>Released after callback</td><td>Priya</td><td class="nowrap">248-555-0119</td><td>Marcus</td></tr><tr><td class="nowrap">2026-09-17</td><td>Birmingham Lumber</td><td class="num">$2,750</td><td>Payee not on file.</td><td>Released after callback</td><td>Marcus</td><td class="nowrap">248-555-0163</td><td>Dana</td></tr><tr><td class="nowrap">2026-09-19</td><td>Superior Drywall LLC</td><td class="num">$12,300</td><td>Bank details changed: last 4 is 9904, file has 3318.</td><td>Recorded not paid</td><td>Dana</td><td class="nowrap">248-555-0188</td><td>Priya</td></tr><tr><td class="nowrap">2026-09-22</td><td>Pontiac Tile Co</td><td class="num">$4,980</td><td>Payee not on file.</td><td>Recorded not paid</td><td>Marcus</td><td class="nowrap">248-555-0131</td><td>Priya</td></tr><tr><td class="nowrap">2026-09-24</td><td>Clarkston Paving</td><td class="num">$950</td><td>Payee not on file.</td><td>Void</td><td></td><td class="nowrap"></td><td></td></tr><tr><td class="nowrap">2026-09-26</td><td>Rochester Plumbing</td><td class="num">$6,100</td><td>Amount $6,100 is more than 2x the 90-day average of $2,400.</td><td>Paid without callback, reported by Priya: Owner on site; vendor unreachable</td><td></td><td class="nowrap"></td><td>Priya</td></tr><tr><td class="nowrap">2026-09-29</td><td>Troy Excavating</td><td class="num">$9,800</td><td>Payee not on file.</td><td>Still open</td><td></td><td class="nowrap"></td><td></td></tr></tbody></table>
+
+<p style="margin-top:4px">Amount recorded not paid: <b>$17,280</b> across 2 rejected holds.</p>
+<h2>Your record against the questions carriers ask</h2>
+<p class="grey">Questions carriers commonly ask on applications, from public forms, with your own record beside each. Closed holds are those released, rejected or overridden: 7 in this period.</p>
+<table>
+<thead><tr><th class="num">No.</th><th>Question and who asks it</th><th>Your record</th><th>Evidence</th></tr></thead>
+<tbody><tr><td class="num">1</td><td>Does the Applicant confirm all change requests regarding Vendor account information... by a direct call to the Vendor using only the telephone number provided by the Vendor before the change request was received?<div class="carriers">Asked by: Travelers (CRI-14104 II.4, CYB-14302 Q6, CRI-N-14300 Q5), One80/PSG (C.4), Intact 71074, SPG ExecuPro ~, Beazley F00769 ~ (predetermined number)</div></td><td>Callback to a number on file before the request: 6 of 7 closed holds record a number called. When the number first went on file is not in the log.</td><td class="ev">Partly recorded</td></tr><tr><td class="num">2</td><td>Is the call back procedure performed by an individual other than the individual who received the change request?<div class="carriers">Asked by: Travelers II.4a; PSG A/B/C; SPG ExecuPro ~</div></td><td>Caller different from the person who received the request: 6 of 7 closed holds (compared with the person who entered the request).</td><td class="ev">Partly recorded</td></tr><tr><td class="num">3</td><td>Does the Applicant refrain from implementing any such change requests until after the Vendor has responded...?<div class="carriers">Asked by: Travelers II.4b; PSG ~; SPG ~</div></td><td>Payment held until the vendor responded: 6 of 7 closed holds have vendor_said recorded before resolved_at.</td><td class="ev">Partly recorded</td></tr><tr><td class="num">4</td><td>Does the Applicant confirm all such change requests made by a Vendor with an individual (at the Vendor) other than the individual who requested the change?<div class="carriers">Asked by: Travelers II.4c; PSG C.4b; SPG ExecuPro</div></td><td>Not recorded by Mastiff. The log keeps what the vendor said (6 of 7 closed holds), not who answered at the vendor.</td><td class="ev">Not recorded</td></tr><tr><td class="num">5</td><td>Does the Applicant require that all such change requests made by a Vendor be approved by the Applicant&#x27;s supervisor(s)...?<div class="carriers">Asked by: Travelers II.4d; PSG C.4c; Intact &quot;second individual&quot;; Marsh AU &quot;senior management approval&quot;</div></td><td>Second person approved: 7 of 7 closed holds record an approver; approver differs from submitter in 6 of 7. The approver&#x27;s role is not recorded.</td><td class="ev">Partly recorded</td></tr><tr><td class="num">7</td><td>Do payments or funds-transfers of a certain amount require dual authorization?<div class="carriers">Asked by: Travelers IV.2 / CRI-N-14300 Q3; PSG A.2; Hartford HR 00 H122 I.4; SPG ExecuPro; Intact 71074; Coalition (&quot;in excess of $25,000&quot;); At-Bay ($25,000, two employees)</div></td><td>Dual authorization above a stated amount: line set at $5,000; 2 holds for amount out of range. Closed holds over the line with a different approver: 4 of 4.</td><td class="ev">Recorded</td></tr><tr><td class="num">9</td><td>Do you require all outgoing wire transfers be subject to segregation of duties between initiation and authorization...?<div class="carriers">Asked by: PSG A.1; Beazley (&quot;Can the employee independently initiate a wire transfer?&quot;); Cowbell 5.3 ~; Marsh AU reconciliation by persons not authorised</div></td><td>Initiator and approver are different people in 6 of 7 closed holds. Payments that pass record no approver, so this covers holds only.</td><td class="ev">Partly recorded</td></tr><tr><td class="num">11</td><td>Is all vendor bank information verified by a direct call to the receiving bank prior to the account being established...?<div class="carriers">Asked by: PSG C.2; Travelers II.1; Cowbell 5.1 ~; Intact 71074 (legitimacy of new vendors)</div></td><td>Not recorded by Mastiff. A direct call to the receiving bank is not a field in the log. For context: 5 new-payee holds, 2 released after a callback to the vendor.</td><td class="ev">Not recorded</td></tr><tr><td class="num">15</td><td>Does the Applicant maintain a pre-established list of employees authorized to initiate payment or funds transfer requests...?<div class="carriers">Asked by: Travelers IV.1; Hartford I.1; Beazley (&quot;Who in your organization has the authority to initiate a wire transfer?&quot;)</div></td><td>Pre-established list of authorized initiators: submitters seen in the log: Dana (30), Marcus (10). Roles and the office&#x27;s own list are not in the log.</td><td class="ev">Partly recorded</td></tr></tbody></table>
+<h2>What the log holds for each closed hold</h2>
+<ul class="fields"><li>1. Request received: receiver, date/time, channel, copy: <b>7 of 7</b> <span class="grey">(copy of the request is not in the export)</span></li><li>2. Request type, payee, amount: <b>7 of 7</b></li><li>3. Callback number used, and where it came from: <b>6 of 7</b> <span class="grey">(source and on-file date are not in the export)</span></li><li>4. Channel of verification, different from the request: <b>not in the export</b></li><li>5. Caller, different from the receiver: <b>6 of 7</b> <span class="grey">(counted when different from submitted_by)</span></li><li>6. Time of call and every attempt: <b>not in the export</b></li><li>7. Who answered at the vendor: <b>not in the export</b></li><li>8. What the vendor said: <b>6 of 7</b></li><li>9. Hold kept until the vendor responded; release time: <b>6 of 7</b> <span class="grey">(time of call is not in the export)</span></li><li>10. Second approver, different from initiator: <b>6 of 7</b> <span class="grey">(counted when different from submitted_by)</span></li><li>11. Outcome and reason: <b>7 of 7</b> <span class="grey">(reason is recorded for overrides)</span></li><li>12. Documentation retained (notes, request copy): <b>not in the export</b></li><li>13. New-account checks, incident time: <b>not in the export</b></li></ul>
+<p class="advisory">Mastiff flags. Your firm makes every payment decision.</p>
+<p class="grey">This read-out is a summary of your own log. It is not coverage advice. Whether a policy responds depends on its wording; confirm with your broker.</p>
+<p class="grey">The questions above are taken from publicly available carrier applications as of October 2026 and may differ from your policy&#x27;s application.</p>
+</body></html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mastiff demo</title>
+<meta name="description" content="Clickable demo of the Mastiff check with sample data.">
+<link rel="stylesheet" href="wall.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<p class="demo-banner">Demo with sample data. Nothing here is stored outside this browser.</p>
+<header class="site-header">
+  <div class="in bar">
+    <div class="brand"><span class="wordmark">Mastiff</span> <span class="grey org" id="org">Sample Office</span></div>
+    <button type="button" class="linkbtn" id="reset">Reset demo</button>
+  </div>
+</header>
+<div class="in">
+  <ul class="nums" id="nums" aria-label="Five numbers">
+    <li><span class="stat-v" id="n-checked">0</span><span>Checked</span></li>
+    <li><span class="stat-v" id="n-holds">0</span><span>Holds</span></li>
+    <li><span class="stat-v" id="n-released">0</span><span>Released</span></li>
+    <li><span class="stat-v" id="n-rejected">0</span><span>Rejected</span></li>
+    <li><span class="stat-v" id="n-median">-</span><span>Median hours to resolve</span></li>
+  </ul>
+  <div class="tabs" role="tablist" aria-label="Mastiff">
+    <button type="button" role="tab" id="tab-new" aria-controls="panel-new" aria-selected="true" data-tab="new">New request</button>
+    <button type="button" role="tab" id="tab-holds" aria-controls="panel-holds" aria-selected="false" data-tab="holds">Open holds <span id="hold-count">(0)</span></button>
+    <button type="button" role="tab" id="tab-log" aria-controls="panel-log" aria-selected="false" data-tab="log">Log</button>
+  </div>
+</div>
+<main id="main" class="in">
+  <section id="panel-new" role="tabpanel" aria-labelledby="tab-new" class="panel">
+    <h1>New request</h1>
+    <p class="grey lead">Five fields. Under two minutes. A known vendor at a normal amount passes without a word.</p>
+    <form id="req" class="form" novalidate autocomplete="off">
+      <div class="field"><label for="payee">Payee</label>
+        <input id="payee" name="payee" list="vendor-list" aria-describedby="e-payee h-payee">
+        <span class="hint" id="h-payee">Start typing to pick from the vendor file. A name not on the file is treated as a new payee.</span>
+        <datalist id="vendor-list"></datalist><p class="error" id="e-payee" hidden></p></div>
+      <div class="field"><label for="amount">Amount (USD)</label>
+        <input id="amount" name="amount" inputmode="decimal" placeholder="2,450.00" aria-describedby="e-amount"><p class="error" id="e-amount" hidden></p></div>
+      <div class="field"><label for="type">Request type</label>
+        <select id="type" name="type"><option value="payment">Payment</option><option value="new vendor">New vendor</option><option value="bank change">Bank change</option></select></div>
+      <div class="field"><label for="bank">Bank name <span class="grey">(optional)</span></label>
+        <input id="bank" name="bank"></div>
+      <div class="field"><label for="last4">Account, last 4 digits</label>
+        <input id="last4" name="last4" inputmode="numeric" aria-describedby="e-last4 h-last4">
+        <span class="hint" id="h-last4">Last 4 digits only. Never type a full account number.</span><p class="error" id="e-last4" hidden></p></div>
+      <div class="field"><label for="how">How it arrived</label>
+        <select id="how" name="how" aria-describedby="e-how"><option value="">Choose one</option><option>email</option><option>phone</option><option>portal</option><option>in person</option><option>text</option></select>
+        <p class="error" id="e-how" hidden></p></div>
+      <div class="field"><label for="note">Note <span class="grey">(optional)</span></label>
+        <textarea id="note" name="note"></textarea></div>
+      <fieldset class="field cautions"><legend>Worth checking <span class="grey">(optional, these never hold on their own)</span></legend>
+        <label class="check"><input type="checkbox" name="offHours"> arrived outside payment hours</label>
+        <label class="check"><input type="checkbox" name="urgent"> the request pushes to hurry</label></fieldset>
+      <div class="field"><label for="submitter">Submitted by</label>
+        <input id="submitter" name="submitter" value="Dana (bookkeeper)"></div>
+      <div class="row"><button type="submit" class="btn fill">Check request</button></div>
+    </form>
+    <div id="result" aria-live="polite"></div>
+  </section>
+  <section id="panel-holds" role="tabpanel" aria-labelledby="tab-holds" class="panel" hidden>
+    <h1>Open holds</h1>
+    <p class="grey lead">Each request below is held for a callback. Call the number on file, record what was said, and a second person signs off.</p>
+    <div id="holds" class="stack"></div>
+  </section>
+  <section id="panel-log" role="tabpanel" aria-labelledby="tab-log" class="panel" hidden>
+    <h1>Log</h1>
+    <div class="row"><button type="button" class="btn" id="export">Export CSV</button></div>
+    <div id="log"></div>
+  </section>
+</main>
+<footer class="site-footer"><div class="in"><p>Mastiff flags. Your firm makes every payment decision.</p><p class="grey">Demo only. Not the production app.</p></div></footer>
+<script src="sample-data.js"></script>
+<script src="wall.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1. The check</title>
+<style>
+@page { size: Letter; margin: 0.6in; }
+:root { --ink:#000; --grey:#6B6B6B; --bg:#fff; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:11pt/1.4 Inter, system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+main { max-width: 7.3in; margin: 0 auto; padding: 0.4in 0.3in; }
+h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; font-weight: 700; }
+h1 { font-size: 22pt; margin: 0 0 8pt; border-bottom: 1.5pt solid var(--ink); padding-bottom: 6pt; }
+h2 { font-size: 13pt; margin: 12pt 0 3pt; }
+h3 { font-size: 11.5pt; margin: 9pt 0 2pt; }
+p, ol, ul { margin: 0 0 4pt; }
+ol, ul { padding-left: 18pt; }
+li { margin-bottom: 1pt; }
+blockquote { margin: 4pt 0 6pt; padding: 2pt 0 2pt 10pt; border-left: 2pt solid var(--grey); color: var(--ink); }
+pre { margin: 3pt 0 6pt; padding: 4pt 8pt; border: 0.75pt solid var(--grey); font: 9.5pt/1.35 Consolas, "Courier New", monospace; white-space: pre-wrap; }
+code { font: 9.5pt Consolas, "Courier New", monospace; }
+hr { border: 0; border-top: 0.75pt solid var(--grey); margin: 10pt 0; }
+.grey { color: var(--grey); }
+@media print { main { padding: 0; max-width: none; } body { font-size: 10.5pt; } h1.part { break-before: page; } hr { break-after: page; border: 0; margin: 0; } }
+body{font-size:10.5pt;line-height:1.35} main{padding:0.2in 0.3in} h1{font-size:19pt} h2{margin:9pt 0 2pt}</style>
+</head>
+<body>
+<main>
+<h1>1. The check</h1>
+<h2>What it is</h2>
+<p>Before a payment is keyed, your bookkeeper types the request into the Mastiff page. It answers PASS or HOLD with a one-line reason.</p>
+<h2>What we do</h2>
+<ul>
+<li>Set up the page on your bookkeeper's machine and load your vendors.</li>
+<li>Agree three numbers with you: payment hours, a single-payment cap and a weekly total.</li>
+<li>Test it with your bookkeeper: a known vendor, a bank change and a new payee.</li>
+<li>If a request reaches us by text or email, we run the same check and reply.</li>
+</ul>
+<h2>What you do</h2>
+<ul>
+<li>Have your bookkeeper check every request before keying it.</li>
+<li>Decide the cap and the weekly total. They are your numbers.</li>
+</ul>
+<h2>What you get</h2>
+<p>A PASS or HOLD for every request. Only three things hold: the payee is not on file, the bank details changed, or the amount is out of range. Off-hours and urgent wording are shown as "worth checking" notes. Each check is written to your log.</p>
+<h2>What it is not</h2>
+<p>Not a block. Nothing is stopped and no money moves through Mastiff. A PASS is not approval to pay. Last 4 digits only, never a full account number.</p>
+<p>Mastiff flags. Your firm makes every payment decision.</p>
+</main>
+</body>
+</html>

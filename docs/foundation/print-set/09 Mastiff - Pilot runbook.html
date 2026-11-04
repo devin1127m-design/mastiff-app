@@ -1,0 +1,69 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Mastiff: Pilot runbook</title><style>@page{size:Letter;margin:0.75in}body{font-family:Inter,system-ui,sans-serif;color:#111;max-width:7in;margin:0 auto;line-height:1.45;font-size:11pt}h1,h2,h3{font-family:Georgia,'Instrument Serif',serif;font-weight:600;letter-spacing:-.01em}h1{font-size:22pt;margin:0 0 .4em}h2{font-size:15pt;margin:1.2em 0 .3em;border-top:1px solid #D9D9D9;padding-top:.6em}h3{font-size:12pt;margin:1em 0 .2em}p{margin:.4em 0}ul,ol{margin:.3em 0 .6em 1.3em}li{margin:.15em 0}code{font-family:Consolas,monospace;font-size:10pt;background:#F5F5F5;padding:0 .2em}pre{background:#F5F5F5;padding:.6em;font-size:9.5pt;overflow:auto}table{border-collapse:collapse;margin:.5em 0;font-size:10pt}td,th{border:1px solid #D9D9D9;padding:.3em .5em;text-align:left}.grey{color:#6B6B6B}hr{border:0;border-top:1px solid #D9D9D9}</style></head><body><h1>Pilot runbook (no-app setup)</h1>
+<p>Adapted from PLAN-2 Step 5. Mastiff flags. Your firm makes every payment decision.</p>
+<h2>1. First call</h2>
+<ul>
+<li>Ask for the payments export (QuickBooks, Xero or bank CSV), last 12-24 months, and the vendor list.</li>
+<li>Account columns must hold the last 4 digits only. If a file has more, ask for a redacted copy.</li>
+</ul>
+<h2>2. Run the look-back</h2>
+<p>From the repo root:</p>
+<p>    python -m lookback preview payments.csv     python -m lookback scan payments.csv --out reports/&lt;office&gt;-lookback --org "&lt;Office&gt;"</p>
+<p>Confirm the column matching with them first. Walk the report together: what would have held, what is worth checking this week.</p>
+<h2>3. Sign the agreement</h2>
+<ul>
+<li><code>confidentiality-agreement-draft.md</code> is not signable until a Michigan lawyer reviews it. [LAWYER]</li>
+<li>Entity name on the signature block. [CONFIRM: Michigan LLC formed]</li>
+<li>Cover in place before real files arrive. [CONFIRM]</li>
+</ul>
+<h2>4. Set up the demo page</h2>
+<ul>
+<li>Copy <code>wall-demo/</code> to a local folder on the bookkeeper's machine and open <code>index.html</code>, or use a served URL. [CONFIRM: which]</li>
+<li>Data stays in that browser only. Use the same browser every time.</li>
+<li>Enter their vendors by hand (name, bank last 4, callback number on file). Import comes later.</li>
+<li>Hand over <code>bookkeeper-sheet.html</code> (prints on one Letter page) after filling in your phone and email. [CONFIRM]</li>
+<li>Run one test of each with them: known vendor (PASS), bank change (HOLD), new payee (HOLD). Close one hold end to end.</li>
+</ul>
+<h2>5. Weekly</h2>
+<ul>
+<li>Get the Export CSV file from the bookkeeper.</li>
+<li>Run:</li>
+</ul>
+<p>      python -m lookback readout log.csv --out reports/&lt;office&gt;-weekN --org "&lt;Office&gt;"</p>
+<ul>
+<li>Review open holds together. If more than 1 in 10 requests holds, loosen that office's thresholds first.</li>
+</ul>
+<h2>6. Day 30</h2>
+<ul>
+<li>Run:</li>
+</ul>
+<p>      python -m lookback readout log.csv --out reports/&lt;office&gt;-day30 --org "&lt;Office&gt;" --start YYYY-MM-DD --end YYYY-MM-DD</p>
+<ul>
+<li>Deliver the one-page read-out and ask for their decision. No card, nothing renews.</li>
+<li>Delete their files on request, unless they ask us to keep them.</li>
+</ul>
+<h2>Open items</h2>
+<p>[CONFIRM] phone and email; demo hosting method; LLC; cover. [LAWYER] agreement review.</p>
+<h2>7. Working the holds queue (daily, payment hours Mon-Fri 7am-7pm)</h2>
+<p>Do this in addition to section 5. Promise the bookkeeper a result within the hour.</p>
+<ol>
+<li>Get the holds. Either the bookkeeper messages you (phone, text or email) or you open their Export CSV and read the open HOLD rows. [CONFIRM: which channel]</li>
+<li>For each hold, find the vendor's callback number on file. Never use a number from the request.</li>
+<li>Call it. Ask who is speaking, and whether the request (new bank, amount, payee) came from them.</li>
+<li>Record four fields: who called, which number, what the vendor said, the outcome. Put them in the office's log as "reported by" the office, or send them to the bookkeeper to enter. [LAWYER: R5 2.6 items 1 and 3 on Mastiff making calls and writing entries]</li>
+<li>Send the result to the bookkeeper within the hour: "Called [vendor] on the number on file at [time]. [Name] said [what]. Outcome: [confirmed / not confirmed]." Say nothing about whether to pay. The second person at the office signs off.</li>
+<li>If the call is not answered, say so and try once more later. Do not leave account details on voicemail.</li>
+<li>After the call, mark the vendor in the verified vendor file: phone confirmed, account last 4 confirmed, date, name of who confirmed it. By day 30 every active vendor should have a line.</li>
+</ol>
+<h2>8. New vendor onboarding</h2>
+<p>For each new sub or supplier, before the first payment:</p>
+<ol>
+<li>The office asks the vendor for a W-9 and sends it to you. Keep it in the office's own files; do not copy the tax ID anywhere. Last 4 only.</li>
+<li>Match the name on the W-9 to the payee name on the invoice.</li>
+<li>Call the vendor on a number the office already has from a source other than the invoice (contract, licence, prior job). Confirm who they are.</li>
+<li>Call the vendor's bank to confirm the account. [CONFIRM: many banks will not confirm account details to a third party. Fallback: the vendor reads the account name to you on the call and the office keeps a bank letter or voided check.]</li>
+<li>Record the last four digits, the date and the name of who confirmed it, then tell the bookkeeper the first payment can be keyed. The office decides.</li>
+</ol>
+<h2>9. When to hand over the incident playbook</h2>
+<p>Give <code>incident-playbook.html</code> (one printed page) as soon as an office tells you a payment may have gone to the wrong account, and at kickoff as a standing copy for the owner. Stay on the phone while they work through steps 1 and 2. Do not promise recovery, say what the policy covers, or tell them what their insurer requires. Your part: send the log export and the dated callback list, and keep your own call notes.</p>
+<h2>Day-30 renewal packet</h2>
+<p>Read-out plus the verified vendor file plus the log set against the questions carriers ask. Hand to the owner to give their broker. Do not say what the carrier requires.</p></body></html>

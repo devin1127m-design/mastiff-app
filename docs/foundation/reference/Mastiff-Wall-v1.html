@@ -1,0 +1,805 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Mastiff Wall</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one working screen in four tabs. Check (request form beside the verdict ticket), Log (four figures,
+   filter chips, rows that open to show the checks and the callback form), Vendors, Settings.
+   Paper and ink carried over from the Mastiff site. Claret is the brand; amber is a hold; green is a pass. */
+:root{
+  --paper:#F4F2EC; --paper-2:#EAE6DC; --ink:#15171A; --muted:#5C6168; --line:#D3CEC2;
+  --claret:#7E1E2E; --claret-ink:#FFFFFF; --bronze:#9A7B3C;
+  --ok:#1F6F3F; --ok-bg:#E1EEE5; --hold:#8A5A00; --hold-bg:#F5E7C8; --bad:#7E1E2E; --bad-bg:#F2DEDF;
+  --font-display:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;
+  --font-body:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#111315; --paper-2:#1A1D21; --ink:#ECE8DE; --muted:#A09B90; --line:#2E3339;
+    --claret:#C8415A; --claret-ink:#15171A; --bronze:#C7A45B;
+    --ok:#5FBF83; --ok-bg:#16301F; --hold:#E0A94A; --hold-bg:#3A2B0F; --bad:#E06A7C; --bad-bg:#3B1A20;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111315; --paper-2:#1A1D21; --ink:#ECE8DE; --muted:#A09B90; --line:#2E3339;
+  --claret:#C8415A; --claret-ink:#15171A; --bronze:#C7A45B;
+  --ok:#5FBF83; --ok-bg:#16301F; --hold:#E0A94A; --hold-bg:#3A2B0F; --bad:#E06A7C; --bad-bg:#3B1A20;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 56px}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+h1,h2,h3{margin:0;font-family:var(--font-display);line-height:1.1;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:22px;font-weight:800}
+h2{font-size:18px;font-weight:700}
+h3{font-size:15px;font-weight:700}
+p{margin:0}
+a{color:inherit}
+.muted{color:var(--muted)}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--claret)}
+.small{font-size:13px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
+
+/* Header */
+.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px 20px}
+.brand{display:flex;flex-direction:column;gap:4px;min-width:0}
+.wordmark{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:800;font-size:22px}
+.wordmark .m{width:32px;height:32px;background:var(--claret);color:var(--claret-ink);border-radius:4px;display:grid;place-items:center;font-size:19px;line-height:1;flex:none}
+.wordmark .w{font-weight:500;color:var(--muted)}
+.brand .co{font-size:13.5px;color:var(--muted)}
+.brand .co b{color:var(--ink);font-weight:600}
+.nav{display:flex;gap:2px;border-bottom:1.5px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav button{background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1.5px;padding:10px 12px;font-weight:600;color:var(--muted);white-space:nowrap;display:inline-flex;align-items:center;gap:7px}
+.nav button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--claret)}
+.nav .badge{font-family:var(--font-mono);font-size:11.5px;background:var(--hold-bg);color:var(--hold);border-radius:999px;padding:1px 7px;font-weight:500}
+.nav .badge:empty{display:none}
+.tab{display:flex;flex-direction:column;gap:18px}
+
+/* Notices */
+.notice{border:1.5px solid var(--line);border-left:4px solid var(--bronze);border-radius:6px;padding:10px 14px;font-size:13.5px;background:var(--paper-2)}
+.notice.bad{border-left-color:var(--bad)}
+
+/* Panels + forms */
+.panel{background:var(--paper);border:1.5px solid var(--line);border-radius:6px;min-width:0}
+.panel-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.panel-head .count{font-size:12.5px;color:var(--muted)}
+.panel-body{padding:16px;display:flex;flex-direction:column;gap:14px}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+@media (min-width:860px){.grid2{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.field label{font-size:13px;font-weight:600}
+.field .hint{font-size:12px;color:var(--muted)}
+.field input,.field select,.field textarea{border:1.5px solid var(--line);border-radius:4px;padding:10px 11px;background:var(--paper);color:var(--ink);font:inherit;min-width:0;width:100%}
+.field textarea{min-height:88px;resize:vertical}
+.field.full{grid-column:1 / -1}
+.field.err input,.field.err select,.field.err textarea{border-color:var(--bad)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1.5px solid currentColor;border-radius:4px;padding:10px 16px;font-weight:600;font-size:14.5px;background:none;color:inherit;min-height:42px;text-decoration:none}
+.btn.fill{background:var(--claret);color:var(--claret-ink);border-color:var(--claret)}
+.btn.small{padding:7px 12px;min-height:36px;font-size:13.5px}
+.btn:disabled{opacity:.5;cursor:default}
+.msg{font-size:13px;color:var(--bad);min-height:1em}
+.msg.ok{color:var(--ok)}
+
+/* Verdict ticket */
+.ticket{border:1.5px solid var(--line);border-radius:6px;padding:18px;display:flex;flex-direction:column;gap:14px;background:var(--paper);min-width:0}
+.ticket.hold{border-color:var(--hold)} .ticket.pass{border-color:var(--ok)}
+.ticket .head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.stamp{align-self:flex-start;border:2.5px solid currentColor;border-radius:4px;padding:3px 10px;font-family:var(--font-display);font-size:22px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;transform:rotate(-3deg);line-height:1.1}
+.stamp.hold{color:var(--hold)} .stamp.pass{color:var(--ok)} .stamp.preview{border-style:dashed}
+.ticket .amt{font-family:var(--font-mono);font-size:26px;font-weight:500;letter-spacing:-.01em;line-height:1}
+.ticket .sub{font-size:13.5px;color:var(--muted)}
+.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.check{display:grid;grid-template-columns:14px minmax(0,1fr);gap:10px;padding:9px 12px;border-bottom:1px solid var(--line);align-items:start;font-size:13.5px}
+.check:last-child{border-bottom:0}
+.check .dot{width:9px;height:9px;border-radius:50%;margin-top:6px;background:var(--line)}
+.check.pass .dot{background:var(--ok)} .check.hold .dot{background:var(--hold)}
+.check b{font-weight:600}
+.check span{display:block;color:var(--muted)}
+.check.hold span{color:var(--ink)}
+.todo{border-radius:6px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;font-size:13.5px}
+.todo.hold{background:var(--hold-bg)} .todo.pass{background:var(--ok-bg)}
+.todo b{font-family:var(--font-display);font-size:15px}
+.todo ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.rules{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.rules li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;font-size:14px}
+.rules li i{font-style:normal;font-family:var(--font-mono);font-size:12px;color:var(--bronze);padding-top:3px}
+.rules li b{display:block;font-weight:600}
+.rules li span{display:block;font-size:13px;color:var(--muted)}
+
+/* Log */
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 20px}
+@media (min-width:700px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.stat{border-top:2px solid var(--bronze);padding-top:10px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.stat .v{font-family:var(--font-display);font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
+.stat .l{font-size:12.5px;color:var(--muted)}
+.stat.hold .v{color:var(--hold)} .stat.bad .v{color:var(--bad)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chips button{border:1.5px solid var(--line);background:none;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;color:var(--muted)}
+.chips button[aria-pressed="true"]{border-color:var(--ink);color:var(--ink)}
+.list{display:flex;flex-direction:column}
+.item{border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:0}
+.item > button{display:grid;grid-template-columns:4px minmax(0,1fr) auto;gap:0 12px;width:100%;text-align:left;background:none;border:0;padding:12px 14px 12px 12px;color:inherit}
+.item > button:hover{background:var(--paper-2)}
+.stripe{border-radius:2px;align-self:stretch;background:var(--line)}
+.stripe.open{background:var(--hold)} .stripe.cleared{background:var(--ok)} .stripe.released{background:var(--ok)} .stripe.rejected{background:var(--bad)} .stripe.override{background:var(--bronze)} .stripe.void{background:var(--line)}
+.main{display:flex;flex-direction:column;gap:2px;min-width:0}
+.main .v{font-weight:600}
+.main .s{font-size:12.5px;color:var(--muted)}
+.main .why{font-size:13px;margin-top:2px}
+.side{display:flex;flex-direction:column;align-items:flex-end;gap:5px;white-space:nowrap}
+.side .amt{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-weight:500}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:999px;line-height:1.4}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.chip.open{color:var(--hold);background:var(--hold-bg)}
+.chip.cleared,.chip.released{color:var(--ok);background:var(--ok-bg)}
+.chip.rejected{color:var(--bad);background:var(--bad-bg)}
+.chip.override{color:var(--bronze);background:var(--paper-2)}
+.chip.void{color:var(--muted);background:var(--paper-2)}
+.detail{padding:4px 14px 16px 24px;display:flex;flex-direction:column;gap:14px;background:var(--paper-2)}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px 16px;font-size:13.5px;margin:0}
+.meta div{display:flex;flex-direction:column;gap:1px;min-width:0}
+.meta dt{color:var(--muted);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.meta dd{margin:0;overflow-wrap:anywhere}
+.resform{border:1.5px dashed var(--line);border-radius:6px;padding:12px;display:flex;flex-direction:column;gap:12px;background:var(--paper)}
+.record{border-radius:6px;padding:12px 14px;font-size:13.5px;display:flex;flex-direction:column;gap:4px}
+.record.released,.record.cleared{background:var(--ok-bg)} .record.rejected{background:var(--bad-bg)} .record.override{background:var(--hold-bg)} .record.void{background:var(--paper)}
+.record b{font-family:var(--font-display);font-size:15px}
+.empty{padding:28px 16px;color:var(--muted);font-size:14px;display:flex;flex-direction:column;gap:6px;text-align:center}
+
+/* Tables */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:620px}
+th,td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap}
+tbody tr{cursor:pointer}
+tbody tr:hover td{background:var(--paper-2)}
+tr:last-child td{border-bottom:0}
+td.n{font-family:var(--font-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:999px;font-size:13.5px;font-weight:600;max-width:calc(100% - 32px);z-index:20}
+@media (prefers-reduced-motion: reduce){.stamp{transform:none}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="wordmark"><span class="m">M</span>Mastiff <span class="w">Wall</span></div>
+      <div class="co" id="co-line">Every payment request goes through here before it is keyed.</div>
+    </div>
+    <div class="row">
+      <button class="btn small" type="button" id="btn-open-holds" hidden></button>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="Sections">
+    <button type="button" data-tab="check" role="tab" aria-selected="true">Check a request</button>
+    <button type="button" data-tab="log" role="tab" aria-selected="false">Log <span class="badge" id="nav-holds"></span></button>
+    <button type="button" data-tab="vendors" role="tab" aria-selected="false">Vendors</button>
+    <button type="button" data-tab="settings" role="tab" aria-selected="false">Settings</button>
+  </nav>
+
+  <div class="notice" id="notice" hidden></div>
+
+  <!-- ===== CHECK ===== -->
+  <div class="tab" id="tab-check">
+    <div class="grid2">
+      <section class="panel" aria-label="Check a payment request">
+        <div class="panel-head"><h2>Check a payment request</h2><span class="count">before anyone keys it</span></div>
+        <form class="panel-body" id="check-form" novalidate>
+          <div class="form">
+            <div class="field full"><label for="f-vendor">Payee</label><input id="f-vendor" name="vendor" type="text" list="vendor-list" autocomplete="off" placeholder="Vendor, sub, or person being paid"><datalist id="vendor-list"></datalist></div>
+            <div class="field"><label for="f-amount">Amount</label><input id="f-amount" name="amount" type="text" inputmode="decimal" placeholder="$"></div>
+            <div class="field"><label for="f-type">What is being asked</label>
+              <select id="f-type" name="type">
+                <option value="invoice">Pay an invoice</option>
+                <option value="bank_change">Change the payee's bank details</option>
+                <option value="new_vendor">Set up and pay a new payee</option>
+                <option value="wire">Wire or one-off transfer</option>
+                <option value="other">Other</option>
+              </select></div>
+            <div class="field"><label for="f-bank">Pay to: bank</label><input id="f-bank" name="bank" type="text" placeholder="Huntington, Chase…"></div>
+            <div class="field"><label for="f-last4">Account, last 4 digits</label><input id="f-last4" name="last4" type="text" inputmode="numeric" maxlength="4" placeholder="4471"><span class="hint">Last four only. Never put a full account number here.</span></div>
+            <div class="field"><label for="f-channel">Arrived by</label>
+              <select id="f-channel" name="channel">
+                <option value="email">Email</option><option value="phone">Phone call</option><option value="text">Text message</option><option value="portal">Vendor portal</option><option value="in_person">In person</option><option value="mail">Mail</option>
+              </select></div>
+            <div class="field"><label for="f-arrived">Arrived at</label><input id="f-arrived" name="arrived" type="datetime-local"></div>
+            <div class="field full"><label for="f-from">Who sent it</label><input id="f-from" name="from" type="text" placeholder="Name or email address on the request"></div>
+            <div class="field full"><label for="f-notes">The request</label><textarea id="f-notes" name="notes" placeholder="Paste the email or describe the call. Deadlines, reasons given, anything odd."></textarea></div>
+            <div class="field full"><label for="f-name">Your name</label><input id="f-name" name="name" type="text" autocomplete="name" placeholder="Who is running this check"><span class="hint">Remembered on this device.</span></div>
+          </div>
+          <div class="msg" id="check-msg"></div>
+          <div class="row">
+            <button class="btn fill" type="submit" id="btn-run">Run the check and log it</button>
+            <button class="btn" type="button" id="btn-preview">Check without logging</button>
+          </div>
+        </form>
+      </section>
+
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <!-- ===== LOG ===== -->
+  <div class="tab" id="tab-log" hidden>
+    <section class="stats" aria-label="This month">
+      <div class="stat"><span class="v" id="s-checked">0</span><span class="l">checked this month</span></div>
+      <div class="stat hold"><span class="v" id="s-open">0</span><span class="l">holds open now</span></div>
+      <div class="stat hold"><span class="v" id="s-held">$0</span><span class="l">waiting on a callback</span></div>
+      <div class="stat bad"><span class="v" id="s-stopped">$0</span><span class="l">rejected after a hold, all time</span></div>
+    </section>
+    <section class="panel" aria-label="Request log">
+      <div class="panel-head">
+        <h2>Request log</h2>
+        <div class="chips" id="chips">
+          <button type="button" data-filter="open" aria-pressed="true">Open holds</button>
+          <button type="button" data-filter="all" aria-pressed="false">All</button>
+          <button type="button" data-filter="cleared" aria-pressed="false">Pass</button>
+          <button type="button" data-filter="released" aria-pressed="false">Released</button>
+          <button type="button" data-filter="rejected" aria-pressed="false">Rejected</button>
+        </div>
+      </div>
+      <div class="list" id="list"></div>
+    </section>
+  </div>
+
+  <!-- ===== VENDORS ===== -->
+  <div class="tab" id="tab-vendors" hidden>
+    <p class="small muted" style="max-width:70ch">Load the vendor list once at the start. A payee that is not on it holds on its first payment, and a request that names a different account than the one on file holds every time. Tap a vendor to edit it.</p>
+    <section class="panel" aria-label="Add a vendor">
+      <div class="panel-head"><h2 id="vendor-form-title">Add a vendor</h2><span class="count">name and bank are enough to start</span></div>
+      <form class="panel-body" id="vendor-form" novalidate>
+        <input type="hidden" id="v-id" value="">
+        <div class="form">
+          <div class="field"><label for="v-name">Vendor</label><input id="v-name" type="text" autocomplete="off"></div>
+          <div class="field"><label for="v-bank">Bank on file</label><input id="v-bank" type="text" placeholder="Huntington"></div>
+          <div class="field"><label for="v-last4">Account, last 4</label><input id="v-last4" type="text" inputmode="numeric" maxlength="4" placeholder="4471"></div>
+          <div class="field"><label for="v-phone">Phone on file</label><input id="v-phone" type="text" inputmode="tel" placeholder="The number you call back"><span class="hint">From an old invoice or their website, never from a new email.</span></div>
+          <div class="field"><label for="v-typical">Typical payment</label><input id="v-typical" type="text" inputmode="decimal" placeholder="$"></div>
+        </div>
+        <div class="msg" id="vendor-msg"></div>
+        <div class="row">
+          <button class="btn fill" type="submit" id="btn-vendor-save">Add vendor</button>
+          <button class="btn" type="button" id="btn-vendor-cancel" hidden>Cancel</button>
+        </div>
+      </form>
+    </section>
+    <section class="panel" aria-label="Paste a list">
+      <div class="panel-head"><h2>Paste a list</h2><span class="count">one vendor per line</span></div>
+      <div class="panel-body">
+        <div class="field full"><label for="v-bulk">Vendor, bank, last 4, phone, typical amount</label><textarea id="v-bulk" placeholder="Midland Steel Supply, Huntington, 4471, (248) 555-0142, 12000&#10;Great Lakes Packaging, Fifth Third, 2210, (313) 555-0180, 4800"></textarea><span class="hint">Commas or tabs between fields. Only the name is required.</span></div>
+        <div class="msg" id="bulk-msg"></div>
+        <div class="row"><button class="btn" type="button" id="btn-bulk">Add these vendors</button></div>
+      </div>
+    </section>
+    <section class="panel" aria-label="Vendor list">
+      <div class="panel-head"><h2>Vendor list</h2><span class="count" id="vendor-count"></span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Vendor</th><th>Bank on file</th><th>Phone on file</th><th>Payments</th><th>Typical</th><th>Last paid</th></tr></thead>
+          <tbody id="vendor-rows"></tbody>
+        </table>
+      </div>
+      <div class="empty" id="vendor-empty" hidden><span>No vendors yet.</span><span>Add them above, or paste the list from your accounting software.</span></div>
+    </section>
+  </div>
+
+  <!-- ===== SETTINGS ===== -->
+  <div class="tab" id="tab-settings" hidden>
+    <section class="panel" aria-label="Settings">
+      <div class="panel-head"><h2>Your rules</h2><span class="count">the numbers the owner signs off on</span></div>
+      <form class="panel-body" id="settings-form" novalidate>
+        <div class="form">
+          <div class="field full"><label for="st-company">Company</label><input id="st-company" type="text" autocomplete="organization"></div>
+          <div class="field"><label for="st-cap">Single-payment line</label><input id="st-cap" type="text" inputmode="decimal"><span class="hint">Above this, a second person signs before it goes.</span></div>
+          <div class="field"><label for="st-mult">Unusual amount</label><input id="st-mult" type="text" inputmode="decimal"><span class="hint">Times a payee's typical payment. 3 means a payment three times larger than usual holds.</span></div>
+          <div class="field"><label for="st-start">Payment hours start</label><input id="st-start" type="time"></div>
+          <div class="field"><label for="st-end">Payment hours end</label><input id="st-end" type="time"></div>
+          <div class="field full"><label><input id="st-weekend" type="checkbox" style="width:auto;margin-right:8px"> Weekends count as outside payment hours</label></div>
+          <div class="field full"><label for="st-approvers">Who can be the second person</label><input id="st-approvers" type="text" placeholder="Owner, controller, office manager"><span class="hint">Shown as a reminder when a hold is released.</span></div>
+        </div>
+        <div class="msg" id="settings-msg"></div>
+        <div class="row"><button class="btn fill" type="submit">Save rules</button></div>
+      </form>
+    </section>
+    <section class="panel" aria-label="How to run the pilot">
+      <div class="panel-head"><h2>Running the pilot</h2></div>
+      <div class="panel-body">
+        <ul class="rules">
+          <li><i>1</i><div><b>Load the vendor list</b><span>Name, bank, last four and the phone number you already have. Thirty minutes, once.</span></div></li>
+          <li><i>2</i><div><b>Every payment request gets checked first</b><span>Invoices, bank changes, wires. Pass means key it to the account on file. Hold means nobody pays it yet.</span></div></li>
+          <li><i>3</i><div><b>Holds end with a callback</b><span>Someone other than the person who received the request calls the number on file, and logs the call here with a second person's name. Then it is released or rejected.</span></div></li>
+          <li><i>4</i><div><b>The log is yours</b><span>Every request, every hold, every callback, with who did what and when. The paper your insurer asks for.</span></div></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+  'use strict';
+  const $ = (s, el) => (el || document).querySelector(s);
+  const $$ = (s, el) => Array.from((el || document).querySelectorAll(s));
+  const DEFAULTS = { company:'', hoursStart:'07:00', hoursEnd:'18:00', weekendOff:true, cap:10000, multiplier:3, approvers:'' };
+  const TYPE_LABEL = { invoice:'Invoice', bank_change:'Bank change', new_vendor:'New payee', wire:'Wire', other:'Other' };
+  const CHANNEL_LABEL = { email:'email', phone:'phone call', text:'text', portal:'vendor portal', in_person:'in person', mail:'mail' };
+  const STATUS_LABEL = { cleared:'Pass', open:'Hold', released:'Released', rejected:'Rejected', override:'Override', void:'Void' };
+  const URGENCY = /\b(urgent(ly)?|asap|as soon as possible|immediately|right away|right now|today only|wire (it |this )?today|before (noon|close|cob|eod|end of (the )?day|the bank closes)|confidential|keep this (between|quiet|private)|don'?t (call|tell|mention|contact|loop)|do not (call|tell|mention|contact)|can'?t (talk|be reached|take calls)|in (a|the) meeting|final notice|last chance|only you)\b/i;
+  const TABS = ['check','log','vendors','settings'];
+
+  const state = {
+    db:null, user:null, myId:null, myName:'', canWrite:null, memory:false, ready:false, vendorsLoaded:false,
+    settings: Object.assign({}, DEFAULTS), settingsDirty:false,
+    vendors:[], requests:[], filter:'open', expanded:null, result:null, drafts:{}
+  };
+
+  // ---------- helpers ----------
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const money = (n) => '$' + (Math.round(Number(n) || 0)).toLocaleString('en-US');
+  const parseMoney = (s) => { const n = Number(String(s || '').replace(/[^0-9.]/g, '')); return isFinite(n) ? n : 0; };
+  const vkey = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const pad = (n) => String(n).padStart(2, '0');
+  function toLocalInput(d){ return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes()); }
+  function fmtWhen(iso){ const d = new Date(iso); if (isNaN(d)) return ''; return d.toLocaleString('en-US', { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' }); }
+  function fmtDate(iso){ const d = new Date(iso); if (isNaN(d)) return ''; return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }); }
+  function makeRef(){ const d = new Date(); const r = Math.random().toString(36).slice(2, 4).toUpperCase(); return 'MW-' + String(d.getFullYear()).slice(2) + pad(d.getMonth()+1) + pad(d.getDate()) + '-' + pad(d.getHours()) + pad(d.getMinutes()) + r; }
+  function minutes(hhmm){ const m = /^(\d{1,2}):(\d{2})/.exec(hhmm || ''); return m ? Number(m[1]) * 60 + Number(m[2]) : null; }
+  function hoursLabel(){ const s = state.settings; const f = (t) => { const m = minutes(t); if (m == null) return t; const d = new Date(); d.setHours(Math.floor(m/60), m%60); return d.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' }); }; return (s.weekendOff ? 'Mon–Fri ' : 'every day ') + f(s.hoursStart) + '–' + f(s.hoursEnd); }
+  function offHours(iso){
+    const d = new Date(iso); const s = state.settings;
+    if (isNaN(d)) return { off:false, label:'at an unknown time' };
+    const label = d.toLocaleString('en-US', { weekday:'long', hour:'numeric', minute:'2-digit' });
+    const day = d.getDay();
+    if (s.weekendOff && (day === 0 || day === 6)) return { off:true, label };
+    const m = d.getHours() * 60 + d.getMinutes(); const a = minutes(s.hoursStart), b = minutes(s.hoursEnd);
+    if (a != null && b != null && (m < a || m >= b)) return { off:true, label };
+    return { off:false, label };
+  }
+  function findVendor(key){ return state.vendors.find(v => v.nameKey === key) || null; }
+  function typicalOf(v){ if (!v) return 0; return (v.payments || 0) > 0 ? (v.sum || 0) / v.payments : (Number(v.typical) || 0); }
+  let toastTimer = null;
+  function toast(t){ const el = $('#toast'); el.textContent = t; el.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { el.hidden = true; }, 2600); }
+  function notice(t, bad){ const el = $('#notice'); el.hidden = !t; el.textContent = t || ''; el.classList.toggle('bad', !!bad); }
+  function use(name){ try { return (window.claude && typeof window.claude.use === 'function') ? window.claude.use(name) : Promise.resolve(null); } catch (e) { return Promise.resolve(null); } }
+
+  // ---------- tabs ----------
+  function showTab(name){
+    if (!TABS.includes(name)) name = 'check';
+    TABS.forEach(t => { $('#tab-' + t).hidden = (t !== name); });
+    $$('.nav button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
+    try { history.replaceState(null, '', '#' + name); } catch (e) {}
+  }
+  $$('.nav button').forEach(b => b.addEventListener('click', () => { showTab(b.dataset.tab); window.scrollTo({ top:0 }); }));
+  showTab((location.hash || '').slice(1));
+
+  // ---------- the wall ----------
+  function evaluate(req){
+    const s = state.settings;
+    const v = findVendor(req.vendorKey);
+    const checks = [];
+    const add = (rule, status, detail, action) => checks.push({ rule, status, detail, action: action || '' });
+
+    if (!v){
+      add('Payee on file', 'hold', req.vendor + ' is not on your vendor list. No payment history.',
+        'Find the payee’s phone number yourself (their website, an old invoice, a directory), never from this request. Someone other than whoever received the request calls, confirms the invoice and the account, and logs the call here. Then release.');
+    } else {
+      const n = v.payments || 0;
+      add('Payee on file', 'pass', n ? 'On file. Paid ' + n + ' time' + (n === 1 ? '' : 's') + (v.lastPaid ? ', last on ' + fmtDate(v.lastPaid) : '') + '.' : 'On file, added by your office. No payments through the wall yet.');
+    }
+
+    const phoneLine = (v && v.phone) ? 'the number on file: ' + v.phone : 'a number you found yourself (never one from the request)';
+    if (req.type === 'bank_change'){
+      add('Bank details', 'hold', 'A request to change where ' + req.vendor + ' gets paid' + (req.last4 ? ' (to ····' + req.last4 + (req.bank ? ' at ' + req.bank : '') + ')' : '') + '. Bank details never change on an email or a call.',
+        'Call ' + phoneLine + '. The call is made by someone other than whoever received the request. If the payee confirms, release and the new account becomes the account on file. If not, reject it and keep paying the account on file.');
+    } else if (v && v.last4 && req.last4 && req.last4 !== v.last4){
+      add('Bank details', 'hold', 'Account ····' + req.last4 + (req.bank ? ' at ' + req.bank : '') + ' is not the account on file (····' + v.last4 + (v.bank ? ' at ' + v.bank : '') + ').',
+        'Pay only the account on file, unless a call to ' + phoneLine + ' confirms the change. Log the call here.');
+    } else if (v && v.last4){
+      add('Bank details', 'pass', 'Account on file: ····' + v.last4 + (v.bank ? ' at ' + v.bank : '') + '.' + (req.last4 ? ' Matches.' : ' Key it to that account.'));
+    } else if (v){
+      add('Bank details', 'pass', req.last4 ? 'No account on file yet. ····' + req.last4 + ' becomes the account on file once this clears.' : 'No account on file yet.');
+    } else {
+      add('Bank details', 'na', 'Nothing on file to compare. The callback confirms the account.');
+    }
+
+    const typical = typicalOf(v);
+    const second = 'A second person checks the invoice against the PO or contract and signs off before release.';
+    if (req.amount > s.cap){
+      add('Amount', 'hold', money(req.amount) + ' is above your ' + money(s.cap) + ' single-payment line.', second);
+    } else if (typical > 0 && req.amount > s.multiplier * typical){
+      add('Amount', 'hold', (req.amount / typical).toFixed(1) + '× this payee’s typical payment of ' + money(typical) + '.', second);
+    } else if (typical > 0){
+      add('Amount', 'pass', 'In range for this payee (typical ' + money(typical) + ') and under the ' + money(s.cap) + ' line.');
+    } else {
+      add('Amount', 'pass', 'Under your ' + money(s.cap) + ' single-payment line.');
+    }
+
+    const t = offHours(req.arrivedAt);
+    if (t.off) add('Timing', 'hold', 'Arrived ' + t.label + ', outside your payment hours (' + hoursLabel() + ').', 'Nothing goes out until the next business morning. Verify by callback then.');
+    else add('Timing', 'pass', 'Arrived ' + t.label + ', inside payment hours.');
+
+    const m = URGENCY.exec(req.notes || '');
+    if (m) add('Pressure', 'hold', 'The request pushes for speed or secrecy: “' + m[0] + '”.', 'Pressure to hurry is the reason to slow down. Verify by callback. The owner has agreed never to be angry about a confirmation call.');
+    else add('Pressure', 'pass', req.notes ? 'No push for speed or secrecy in the request.' : 'No notes to scan.');
+
+    return { verdict: checks.some(c => c.status === 'hold') ? 'hold' : 'pass', checks, vendorId: v ? v.id : null };
+  }
+
+  // ---------- storage ----------
+  async function saveRequest(doc){
+    if (state.db){ const ref = await state.db.collection('requests').add(doc); return ref.id; }
+    doc.id = 'local-' + Date.now(); state.requests.unshift(doc); state.memory = true; return doc.id;
+  }
+  async function updateRequest(id, patch){
+    if (state.db){ await state.db.doc('requests/' + id).update(patch); return; }
+    const r = state.requests.find(x => x.id === id); if (r) Object.assign(r, patch);
+  }
+  async function upsertVendor(id, data){
+    if (state.db){
+      if (id){ await state.db.doc('vendors/' + id).update(data); return id; }
+      const ref = await state.db.collection('vendors').add(data); return ref.id;
+    }
+    if (id){ const v = state.vendors.find(x => x.id === id); if (v) Object.assign(v, data); return id; }
+    data.id = 'local-' + Date.now() + Math.random().toString(36).slice(2, 5); state.vendors.push(data); state.memory = true; return data.id;
+  }
+  async function saveSettings(s){
+    if (state.db){ await state.db.doc('settings/main').set(s); return; }
+    state.settings = Object.assign({}, DEFAULTS, s); state.memory = true;
+  }
+  // After a payment clears or is released: the payee's history grows, and a verified account becomes the account on file.
+  async function creditVendor(req, verifiedBank){
+    const v = findVendor(req.vendorKey);
+    const now = new Date().toISOString();
+    if (v){
+      const patch = { payments: (v.payments || 0) + 1, sum: (v.sum || 0) + req.amount, lastPaid: now, updatedAt: now };
+      if (req.last4 && (verifiedBank || !v.last4)){ patch.last4 = req.last4; if (req.bank) patch.bank = req.bank; }
+      await upsertVendor(v.id, patch);
+    } else {
+      await upsertVendor(null, { name: req.vendor, nameKey: req.vendorKey, bank: verifiedBank ? (req.bank || '') : '', last4: verifiedBank ? (req.last4 || '') : '', phone: '', typical: 0, payments: 1, sum: req.amount, lastPaid: now, verified: true, createdAt: now, updatedAt: now });
+    }
+  }
+  function writeFailed(e){
+    const code = e && e.code;
+    if (code === 'invalid_argument' && state.canWrite === null){ state.canWrite = false; renderAccess(); return 'This page is view-only for you. Ask the owner to make you a contributor.'; }
+    if (code === 'quota_exceeded') return 'The log is full. Ask Mastiff to archive old entries.';
+    return 'Could not save. Check your connection and try again.';
+  }
+
+  // ---------- check form ----------
+  function readForm(){
+    const f = $('#check-form'); const g = (id) => $('#' + id).value;
+    $$('.field', f).forEach(x => x.classList.remove('err'));
+    const err = (id, m) => { $('#' + id).closest('.field').classList.add('err'); $('#check-msg').textContent = m; $('#' + id).focus(); return null; };
+    const vendor = g('f-vendor').trim();
+    if (vendor.length < 2) return err('f-vendor', 'Who is being paid?');
+    const amount = parseMoney(g('f-amount'));
+    if (!(amount > 0)) return err('f-amount', 'Enter the amount.');
+    const last4 = g('f-last4').replace(/\D/g, '');
+    if (last4 && last4.length !== 4) return err('f-last4', 'Last four digits only.');
+    const arrived = g('f-arrived') || toLocalInput(new Date());
+    const name = g('f-name').trim();
+    if (!name) return err('f-name', 'Put your name on the check.');
+    state.myName = name; try { localStorage.setItem('mw-name', name); } catch (e) {}
+    $('#check-msg').textContent = '';
+    return { vendor, vendorKey: vkey(vendor), amount, type: g('f-type'), bank: g('f-bank').trim(), last4, channel: g('f-channel'),
+      from: g('f-from').trim(), arrivedAt: new Date(arrived).toISOString(), notes: g('f-notes').trim() };
+  }
+  async function runCheck(save){
+    const req = readForm(); if (!req) return;
+    const ev = evaluate(req);
+    const doc = Object.assign({ ref: makeRef() }, req, { verdict: ev.verdict, checks: ev.checks, vendorId: ev.vendorId,
+      status: ev.verdict === 'pass' ? 'cleared' : 'open', createdAt: new Date().toISOString(), enteredBy: state.myName, enteredById: state.myId || null });
+    if (!save){ state.result = Object.assign({ preview:true, id:null }, doc); renderResult(); return; }
+    const btn = $('#btn-run'); btn.disabled = true;
+    try {
+      doc.id = await saveRequest(doc);
+      if (doc.status === 'cleared') await creditVendor(doc, false);
+      state.result = doc;
+      $('#check-form').reset(); $('#f-name').value = state.myName; $('#f-arrived').value = toLocalInput(new Date());
+      toast(doc.status === 'cleared' ? 'Logged as Pass · ' + doc.ref : 'Logged as Hold · ' + doc.ref);
+      if (state.memory) renderAll(); else renderResult();
+    } catch (e){ $('#check-msg').textContent = writeFailed(e); }
+    btn.disabled = false;
+  }
+  $('#check-form').addEventListener('submit', (e) => { e.preventDefault(); runCheck(true); });
+  $('#btn-preview').addEventListener('click', () => runCheck(false));
+  $('#check-form').addEventListener('input', (e) => { const f = e.target.closest('.field'); if (f) f.classList.remove('err'); });
+  $('#f-arrived').value = toLocalInput(new Date());
+  try { state.myName = localStorage.getItem('mw-name') || ''; } catch (e) {}
+  $('#f-name').value = state.myName;
+
+  function renderResult(){
+    const r = state.result; const box = $('#result');
+    if (!r){
+      const s = state.settings;
+      box.innerHTML = '<section class="panel"><div class="panel-head"><h2>How the wall decides</h2></div><div class="panel-body">' +
+        '<p class="small" style="max-width:62ch"><b>Pass</b> means every check held and the payment can be keyed to the account on file. <b>Hold</b> means one check failed and nobody pays it until a callback is logged.</p>' +
+        '<ul class="rules">' +
+        '<li><i>01</i><div><b>Payee on file</b><span>A payee that is not on your vendor list holds.</span></div></li>' +
+        '<li><i>02</i><div><b>Bank details</b><span>Any change of account holds. Bank details change only after a call to the number on file.</span></div></li>' +
+        '<li><i>03</i><div><b>Amount</b><span>Above ' + esc(money(s.cap)) + ', or ' + esc(String(s.multiplier)) + '× a payee’s usual payment, holds for a second person.</span></div></li>' +
+        '<li><i>04</i><div><b>Timing</b><span>A request that arrives outside ' + esc(hoursLabel()) + ' holds until the next business morning.</span></div></li>' +
+        '<li><i>05</i><div><b>Pressure</b><span>“Urgent”, “confidential”, “don’t call”: the push to hurry is itself the reason to slow down.</span></div></li>' +
+        '</ul></div></section>';
+      return;
+    }
+    const hold = r.verdict === 'hold';
+    const fired = r.checks.filter(c => c.status === 'hold');
+    const actions = []; fired.forEach(c => { if (c.action && !actions.includes(c.action)) actions.push(c.action); });
+    box.innerHTML = '<section class="ticket ' + (hold ? 'hold' : 'pass') + '" aria-live="polite">' +
+      '<div class="head"><span class="stamp ' + (hold ? 'hold' : 'pass') + (r.preview ? ' preview' : '') + '">' + (hold ? 'Hold' : 'Pass') + '</span>' +
+      '<span class="mono muted small">' + (r.preview ? 'not logged' : esc(r.ref)) + '</span></div>' +
+      '<div><div class="amt">' + esc(money(r.amount)) + '</div><div class="sub"><b>' + esc(r.vendor) + '</b> · ' + esc(TYPE_LABEL[r.type] || r.type) + ' · by ' + esc(CHANNEL_LABEL[r.channel] || r.channel) +
+      (r.last4 ? ' · ····' + esc(r.last4) + (r.bank ? ' at ' + esc(r.bank) : '') : '') + '</div></div>' +
+      '<ul class="checks">' + r.checks.map(c => '<li class="check ' + c.status + '"><i class="dot"></i><div><b>' + esc(c.rule) + '</b><span>' + esc(c.detail) + '</span></div></li>').join('') + '</ul>' +
+      (hold
+        ? '<div class="todo hold"><b>Nobody pays this yet.</b><ol>' + actions.map(a => '<li>' + esc(a) + '</li>').join('') + '</ol></div>'
+        : '<div class="todo pass"><b>Cleared to pay.</b><span>Key it to the account on file' + (r.last4 ? ' (····' + esc(r.last4) + ')' : '') + '. This check is in the log' + (r.preview ? ' only if you run it again and log it' : '') + '.</span></div>') +
+      '<div class="row">' + (hold && !r.preview ? '<button class="btn fill small" type="button" id="btn-go-log">Log the callback</button>' : '') +
+      (r.preview ? '<button class="btn fill small" type="button" id="btn-log-it">Log it</button>' : '') +
+      '<button class="btn small" type="button" id="btn-another">Check another</button></div></section>';
+    const go = $('#btn-go-log'); if (go) go.addEventListener('click', () => { state.filter = 'open'; state.expanded = r.id; showTab('log'); renderLog(); const el = $('#item-' + CSS.escape(r.id)); if (el) el.scrollIntoView({ block:'start' }); });
+    const logIt = $('#btn-log-it'); if (logIt) logIt.addEventListener('click', () => runCheck(true));
+    $('#btn-another').addEventListener('click', () => { state.result = null; renderResult(); $('#f-vendor').focus(); });
+  }
+
+  // ---------- log ----------
+  function visibleRequests(){
+    const f = state.filter;
+    return state.requests.filter(r => f === 'all' ? true : f === 'open' ? r.status === 'open' : r.status === f);
+  }
+  function renderStats(){
+    const now = new Date(); const y = now.getFullYear(), m = now.getMonth();
+    const thisMonth = state.requests.filter(r => { const d = new Date(r.createdAt); return d.getFullYear() === y && d.getMonth() === m && r.status !== 'void'; });
+    const open = state.requests.filter(r => r.status === 'open');
+    const stopped = state.requests.filter(r => r.status === 'rejected').reduce((s, r) => s + (r.amount || 0), 0);
+    $('#s-checked').textContent = String(thisMonth.length);
+    $('#s-open').textContent = String(open.length);
+    $('#s-held').textContent = money(open.reduce((s, r) => s + (r.amount || 0), 0));
+    $('#s-stopped').textContent = money(stopped);
+    $('#nav-holds').textContent = open.length ? String(open.length) : '';
+    const b = $('#btn-open-holds'); b.hidden = !open.length; b.textContent = open.length + (open.length === 1 ? ' hold open' : ' holds open');
+  }
+  $('#btn-open-holds').addEventListener('click', () => { state.filter = 'open'; showTab('log'); renderLog(); });
+  $('#chips').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; state.filter = b.dataset.filter; renderLog(); });
+
+  function resolutionLine(r){
+    const x = r.resolution || {}; const by = x.by ? ' by ' + x.by : '';
+    if (r.status === 'released') return 'Released after a callback' + by + '. ' + (x.callBy || 'Someone') + ' called ' + (x.numberUsed === 'file' ? 'the number on file' : (x.number || 'a number found independently')) + ' and spoke to ' + (x.spokeTo || 'the payee') + ': “' + (x.said || '') + '”. Second person: ' + (x.second || '') + '.';
+    if (r.status === 'rejected') return 'Rejected' + by + '. ' + (x.note || '');
+    if (r.status === 'override') return 'Released without a callback' + by + '. Reason: ' + (x.note || '') + ' Second person: ' + (x.second || '') + '.';
+    if (r.status === 'void') return 'Voided' + by + '. ' + (x.note || '');
+    if (r.status === 'cleared') return 'All checks passed. Cleared to the account on file.';
+    return '';
+  }
+  function renderLog(){
+    renderStats();
+    $$('#chips button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.filter === state.filter)));
+    const list = $('#list'); const rows = visibleRequests();
+    if (!rows.length){
+      list.innerHTML = '<div class="empty">' + (!state.requests.length
+        ? '<span>No requests yet.</span><span>Run the first one from the Check tab and it appears here.</span>'
+        : state.filter === 'open' ? '<span>No holds open.</span><span>Every request is cleared or resolved.</span>' : '<span>Nothing here yet.</span>') + '</div>';
+      return;
+    }
+    list.innerHTML = rows.map(r => {
+      const fired = (r.checks || []).filter(c => c.status === 'hold');
+      const why = fired.length ? fired.map(c => c.rule).join(' · ') : 'All checks passed';
+      const open = state.expanded === r.id;
+      return '<div class="item" id="item-' + esc(r.id) + '">' +
+        '<button type="button" data-id="' + esc(r.id) + '" aria-expanded="' + open + '"><i class="stripe ' + esc(r.status) + '"></i>' +
+        '<div class="main"><span class="v">' + esc(r.vendor) + '</span><span class="s">' + esc(TYPE_LABEL[r.type] || r.type) + ' · by ' + esc(CHANNEL_LABEL[r.channel] || r.channel) + ' · ' + esc(fmtWhen(r.createdAt)) + ' · ' + esc(r.ref || '') + '</span><span class="why">' + esc(why) + '</span></div>' +
+        '<div class="side"><span class="amt">' + esc(money(r.amount)) + '</span><span class="chip ' + esc(r.status) + '">' + esc(STATUS_LABEL[r.status] || r.status) + '</span></div></button>' +
+        (open ? renderDetail(r) : '') + '</div>';
+    }).join('');
+    if (state.expanded){
+      const el = $('#item-' + CSS.escape(state.expanded));
+      if (el){ const sel = $('#res-outcome', el); if (sel) applyOutcome(el, sel.value); }
+    }
+  }
+  function renderDetail(r){
+    const d = state.drafts[r.id] || {};
+    const val = (k) => esc(d[k] || '');
+    const approvers = state.settings.approvers ? ' One of: ' + esc(state.settings.approvers) + '.' : '';
+    let tail = '';
+    if (r.status === 'open' && state.canWrite === false){
+      tail = '<div class="record open"><b>Hold open</b><span>A contributor logs the callback here and releases or rejects it.</span></div>';
+    } else if (r.status === 'open'){
+      tail = '<form class="resform" id="res-' + esc(r.id) + '" data-id="' + esc(r.id) + '" novalidate>' +
+        '<h3>Close this hold</h3>' +
+        '<div class="form">' +
+        '<div class="field full"><label for="res-outcome">Outcome</label><select id="res-outcome" name="outcome">' +
+        '<option value="">Choose…</option><option value="released"' + (d.outcome === 'released' ? ' selected' : '') + '>Verified by callback · release the payment</option>' +
+        '<option value="rejected"' + (d.outcome === 'rejected' ? ' selected' : '') + '>Not verified · reject it</option>' +
+        '<option value="override"' + (d.outcome === 'override' ? ' selected' : '') + '>Release without a callback (logged as an override)</option>' +
+        '<option value="void"' + (d.outcome === 'void' ? ' selected' : '') + '>Void · entered by mistake</option></select></div>' +
+        '<div class="field" data-for="released"><label for="res-callBy">Who made the call</label><input id="res-callBy" name="callBy" type="text" value="' + val('callBy') + '"><span class="hint">Not the person who received the request.</span></div>' +
+        '<div class="field" data-for="released"><label for="res-numberUsed">Number called</label><select id="res-numberUsed" name="numberUsed"><option value="file"' + (d.numberUsed !== 'other' ? ' selected' : '') + '>The number on file</option><option value="other"' + (d.numberUsed === 'other' ? ' selected' : '') + '>A number found independently</option></select></div>' +
+        '<div class="field" data-for="released"><label for="res-number">Number, if not the one on file</label><input id="res-number" name="number" type="text" inputmode="tel" value="' + val('number') + '"></div>' +
+        '<div class="field" data-for="released"><label for="res-spokeTo">Spoke to</label><input id="res-spokeTo" name="spokeTo" type="text" value="' + val('spokeTo') + '"></div>' +
+        '<div class="field full" data-for="released"><label for="res-said">What they said</label><input id="res-said" name="said" type="text" placeholder="Confirmed invoice 4471 and the account ending 4471" value="' + val('said') + '"></div>' +
+        '<div class="field full" data-for="released override"><label for="res-second">Second person</label><input id="res-second" name="second" type="text" value="' + val('second') + '"><span class="hint">Someone other than you signs off.' + approvers + '</span></div>' +
+        '<div class="field full" data-for="rejected override void"><label for="res-note">Reason</label><input id="res-note" name="note" type="text" value="' + val('note') + '"></div>' +
+        '</div><div class="msg" id="res-msg"></div>' +
+        '<div class="row"><button class="btn fill small" type="submit">Record it</button></div></form>';
+    } else {
+      tail = '<div class="record ' + esc(r.status) + '"><b>' + esc(STATUS_LABEL[r.status] || r.status) + (r.resolution && r.resolution.at ? ' · ' + esc(fmtWhen(r.resolution.at)) : '') + '</b><span>' + esc(resolutionLine(r)) + '</span></div>';
+    }
+    return '<div class="detail">' +
+      '<ul class="checks">' + (r.checks || []).map(c => '<li class="check ' + esc(c.status) + '"><i class="dot"></i><div><b>' + esc(c.rule) + '</b><span>' + esc(c.detail) + '</span></div></li>').join('') + '</ul>' +
+      '<dl class="meta">' +
+      '<div><dt>Pay to</dt><dd>' + (r.last4 ? '····' + esc(r.last4) + (r.bank ? ' at ' + esc(r.bank) : '') : 'account on file') + '</dd></div>' +
+      '<div><dt>Sent by</dt><dd>' + (r.from ? esc(r.from) : '—') + '</dd></div>' +
+      '<div><dt>Arrived</dt><dd>' + esc(fmtWhen(r.arrivedAt)) + '</dd></div>' +
+      '<div><dt>Checked by</dt><dd>' + esc(r.enteredBy || '—') + ' · ' + esc(fmtWhen(r.createdAt)) + '</dd></div>' +
+      (r.notes ? '<div style="grid-column:1/-1"><dt>The request</dt><dd style="white-space:pre-wrap">' + esc(r.notes) + '</dd></div>' : '') +
+      '</dl>' + tail + '</div>';
+  }
+  function applyOutcome(scope, outcome){
+    $$('[data-for]', scope).forEach(el => { el.hidden = !(el.dataset.for.split(' ').includes(outcome)); });
+  }
+  $('#list').addEventListener('click', (e) => {
+    const b = e.target.closest('.item > button'); if (!b) return;
+    state.expanded = state.expanded === b.dataset.id ? null : b.dataset.id; renderLog();
+  });
+  $('#list').addEventListener('input', (e) => {
+    const f = e.target.closest('form.resform'); if (!f) return;
+    const d = state.drafts[f.dataset.id] || (state.drafts[f.dataset.id] = {});
+    d[e.target.name] = e.target.value;
+    if (e.target.name === 'outcome') applyOutcome(f, e.target.value);
+    const fld = e.target.closest('.field'); if (fld) fld.classList.remove('err');
+  });
+  $('#list').addEventListener('submit', async (e) => {
+    const f = e.target.closest('form.resform'); if (!f) return;
+    e.preventDefault();
+    const id = f.dataset.id; const r = state.requests.find(x => x.id === id); if (!r) return;
+    const g = (n) => (f.elements[n] ? f.elements[n].value.trim() : '');
+    const outcome = g('outcome');
+    $$('.field', f).forEach(x => x.classList.remove('err'));
+    const bad = (n, m) => { f.elements[n].closest('.field').classList.add('err'); $('#res-msg', f).textContent = m; f.elements[n].focus(); };
+    if (!outcome) return bad('outcome', 'Choose an outcome.');
+    if (outcome === 'released'){
+      if (!g('callBy')) return bad('callBy', 'Who made the call?');
+      if (g('numberUsed') === 'other' && !g('number')) return bad('number', 'Which number was called?');
+      if (!g('spokeTo')) return bad('spokeTo', 'Who did they speak to?');
+      if (!g('said')) return bad('said', 'What did the payee confirm?');
+      if (!g('second')) return bad('second', 'A second person signs off on every release.');
+    }
+    if (outcome === 'override' && !g('second')) return bad('second', 'An override needs a second person.');
+    if ((outcome === 'rejected' || outcome === 'override' || outcome === 'void') && !g('note')) return bad('note', 'Say why, in a few words.');
+    const res = { outcome, callBy: g('callBy'), numberUsed: g('numberUsed') || 'file', number: g('number'), spokeTo: g('spokeTo'), said: g('said'), second: g('second'), note: g('note'), by: state.myName || g('callBy') || '', byId: state.myId || null, at: new Date().toISOString() };
+    const btn = $('button[type=submit]', f); btn.disabled = true;
+    try {
+      await updateRequest(id, { status: outcome, resolution: res });
+      if (outcome === 'released' || outcome === 'override') await creditVendor(r, outcome === 'released');
+      delete state.drafts[id];
+      toast({ released:'Released · ' + r.ref, rejected:'Rejected · ' + r.ref, override:'Override logged · ' + r.ref, void:'Voided · ' + r.ref }[outcome]);
+      if (state.memory) renderAll();
+    } catch (err){ $('#res-msg', f).textContent = writeFailed(err); btn.disabled = false; }
+  });
+
+  // ---------- vendors ----------
+  function renderVendors(){
+    const vs = state.vendors.slice().sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+    $('#vendor-list').innerHTML = vs.map(v => '<option value="' + esc(v.name) + '"></option>').join('');
+    $('#vendor-count').textContent = vs.length ? vs.length + (vs.length === 1 ? ' vendor' : ' vendors') : '';
+    $('#vendor-empty').hidden = vs.length > 0;
+    $('#vendor-rows').innerHTML = vs.map(v => '<tr data-id="' + esc(v.id) + '"><td><b>' + esc(v.name) + '</b></td>' +
+      '<td>' + (v.last4 ? esc(v.bank || '') + ' ····' + esc(v.last4) : (v.bank ? esc(v.bank) : '<span class="muted">none yet</span>')) + '</td>' +
+      '<td>' + (v.phone ? esc(v.phone) : '<span class="muted">—</span>') + '</td>' +
+      '<td class="n">' + esc(String(v.payments || 0)) + '</td>' +
+      '<td class="n">' + (typicalOf(v) ? esc(money(typicalOf(v))) : '<span class="muted">—</span>') + '</td>' +
+      '<td class="n">' + (v.lastPaid ? esc(fmtDate(v.lastPaid)) : '<span class="muted">—</span>') + '</td></tr>').join('');
+  }
+  $('#vendor-rows').addEventListener('click', (e) => {
+    const tr = e.target.closest('tr'); if (!tr) return;
+    const v = state.vendors.find(x => x.id === tr.dataset.id); if (!v) return;
+    $('#v-id').value = v.id; $('#v-name').value = v.name || ''; $('#v-bank').value = v.bank || ''; $('#v-last4').value = v.last4 || ''; $('#v-phone').value = v.phone || ''; $('#v-typical').value = v.typical ? String(v.typical) : '';
+    $('#vendor-form-title').textContent = 'Edit ' + v.name; $('#btn-vendor-save').textContent = 'Save changes'; $('#btn-vendor-cancel').hidden = false;
+    $('#vendor-form').scrollIntoView({ block:'start' }); $('#v-name').focus();
+  });
+  function resetVendorForm(){ $('#vendor-form').reset(); $('#v-id').value = ''; $('#vendor-form-title').textContent = 'Add a vendor'; $('#btn-vendor-save').textContent = 'Add vendor'; $('#btn-vendor-cancel').hidden = true; $('#vendor-msg').textContent = ''; }
+  $('#btn-vendor-cancel').addEventListener('click', resetVendorForm);
+  $('#vendor-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = $('#v-name').value.trim(); const last4 = $('#v-last4').value.replace(/\D/g, '');
+    if (name.length < 2){ $('#vendor-msg').textContent = 'Vendor name is required.'; $('#v-name').focus(); return; }
+    if (last4 && last4.length !== 4){ $('#vendor-msg').textContent = 'Last four digits only.'; $('#v-last4').focus(); return; }
+    const id = $('#v-id').value; const key = vkey(name);
+    const dup = state.vendors.find(v => v.nameKey === key && v.id !== id);
+    if (dup){ $('#vendor-msg').textContent = name + ' is already on the list. Tap it in the table to edit it.'; return; }
+    const now = new Date().toISOString();
+    const data = { name, nameKey: key, bank: $('#v-bank').value.trim(), last4, phone: $('#v-phone').value.trim(), typical: parseMoney($('#v-typical').value), updatedAt: now };
+    try {
+      if (id) await upsertVendor(id, data);
+      else await upsertVendor(null, Object.assign(data, { payments: 0, sum: 0, lastPaid: null, verified: true, createdAt: now }));
+      toast(id ? 'Saved ' + name : 'Added ' + name); resetVendorForm(); if (state.memory) renderAll();
+    } catch (err){ $('#vendor-msg').textContent = writeFailed(err); }
+  });
+  $('#btn-bulk').addEventListener('click', async () => {
+    const lines = $('#v-bulk').value.split('\n').map(l => l.trim()).filter(Boolean);
+    if (!lines.length){ $('#bulk-msg').textContent = 'Paste at least one line.'; return; }
+    const now = new Date().toISOString(); let added = 0, skipped = 0;
+    $('#btn-bulk').disabled = true;
+    try {
+      for (const line of lines){
+        const p = line.split(/\t|,/).map(x => x.trim());
+        const name = p[0] || ''; if (name.length < 2){ skipped++; continue; }
+        const key = vkey(name); if (state.vendors.find(v => v.nameKey === key)){ skipped++; continue; }
+        const last4 = (p[2] || '').replace(/\D/g, '').slice(-4);
+        await upsertVendor(null, { name, nameKey: key, bank: p[1] || '', last4: last4.length === 4 ? last4 : '', phone: p[3] || '', typical: parseMoney(p[4]), payments: 0, sum: 0, lastPaid: null, verified: true, createdAt: now, updatedAt: now });
+        added++;
+      }
+      $('#bulk-msg').textContent = 'Added ' + added + (skipped ? ', skipped ' + skipped + ' already on the list or missing a name' : '') + '.';
+      $('#bulk-msg').classList.add('ok'); $('#v-bulk').value = ''; if (state.memory) renderAll();
+    } catch (err){ $('#bulk-msg').textContent = writeFailed(err) + (added ? ' Added ' + added + ' before that.' : ''); }
+    $('#btn-bulk').disabled = false;
+  });
+
+  // ---------- settings ----------
+  function renderSettings(){
+    const s = state.settings;
+    $('#co-line').innerHTML = s.company ? 'Payment wall for <b>' + esc(s.company) + '</b>' : 'Every payment request goes through here before it is keyed.';
+    if (state.settingsDirty) return;
+    $('#st-company').value = s.company || ''; $('#st-cap').value = String(s.cap); $('#st-mult').value = String(s.multiplier);
+    $('#st-start').value = s.hoursStart; $('#st-end').value = s.hoursEnd; $('#st-weekend').checked = !!s.weekendOff; $('#st-approvers').value = s.approvers || '';
+  }
+  $('#settings-form').addEventListener('input', () => { state.settingsDirty = true; });
+  $('#settings-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const cap = parseMoney($('#st-cap').value); const mult = Number($('#st-mult').value);
+    if (!(cap > 0)){ $('#settings-msg').textContent = 'Set the single-payment line.'; return; }
+    if (!(mult >= 1)){ $('#settings-msg').textContent = 'The multiplier is 1 or more.'; return; }
+    const s = { company: $('#st-company').value.trim(), cap, multiplier: mult, hoursStart: $('#st-start').value || '07:00', hoursEnd: $('#st-end').value || '18:00', weekendOff: $('#st-weekend').checked, approvers: $('#st-approvers').value.trim(), updatedAt: new Date().toISOString() };
+    try { await saveSettings(s); state.settingsDirty = false; $('#settings-msg').textContent = ''; toast('Rules saved'); if (state.memory) renderAll(); }
+    catch (err){ $('#settings-msg').textContent = writeFailed(err); }
+  });
+
+  // ---------- access + boot ----------
+  function renderAccess(){
+    const ro = state.canWrite === false;
+    const off = ro || !state.ready;
+    $$('#check-form button, #vendor-form button, #btn-bulk, #settings-form button, .resform button').forEach(b => { if (b.id !== 'btn-preview') b.disabled = off; });
+    $('#btn-run').textContent = state.ready ? 'Run the check and log it' : 'Connecting…';
+    if (ro) notice('View-only. You can read the log and run a check without logging it. Ask the owner to make you a contributor to log requests.');
+    else if (state.memory) notice('Not signed in to the wall: what you enter here stays on this screen and is gone when you close it. Open the link you were sent while signed in to keep a log.', true);
+    else notice('');
+  }
+  function renderAll(){ renderSettings(); renderVendors(); renderLog(); renderResult(); renderAccess(); }
+  renderAll();
+
+  (async function boot(){
+    const [db, user] = await Promise.all([use('db'), use('user')]);
+    state.db = db; state.user = user;
+    if (user){
+      try { state.myId = await user.id(); } catch (e) {}
+      try { state.canWrite = await user.can('data.write'); } catch (e) { state.canWrite = null; }
+      if (!state.myName){ try { const me = await user.me(); if (me && me.name){ state.myName = me.name; $('#f-name').value = me.name; } } catch (e) {} }
+    }
+    if (!db){ state.memory = true; state.ready = true; renderAccess(); return; }
+    db.doc('settings/main').onSnapshot(snap => { if (snap.exists) state.settings = Object.assign({}, DEFAULTS, snap.data()); renderSettings(); renderResult(); }, () => {});
+    db.collection('vendors').limit(1000).onSnapshot(snap => {
+      state.vendors = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+      if (!state.vendorsLoaded){ state.vendorsLoaded = true; state.ready = true; renderAccess(); }
+      renderVendors(); renderResult();
+    }, () => { state.ready = true; renderAccess(); });
+    db.collection('requests').orderBy('createdAt', 'desc').limit(500).onSnapshot(snap => { state.requests = snap.docs.map(d => Object.assign({ id: d.id }, d.data())); renderLog(); }, (e) => { if (e && e.code === 'revoked') notice('Your access to this page changed. Reload to continue.', true); });
+    renderAccess();
+  })();
+})();
+</script>
+
+</body></html>

@@ -1,0 +1,10 @@
+Date,Payee,Amount,Reasons,Outcome,Who called,Number called,Approver
+2026-09-03,Lakeshore Concrete Supply,3200.00,Payee not on file.,Released after callback,Marcus,248-555-0142,Priya
+2026-09-08,Great Lakes Electric,8450.00,"Bank details changed: last 4 is 4412, file has 7781.",Released after callback,Marcus,248-555-0177,Priya
+2026-09-12,Oakland Roofing,18900.00,"Amount $18,900 is more than 2x the 90-day average of $6,200.",Released after callback,Priya,248-555-0119,Marcus
+2026-09-17,Birmingham Lumber,2750.00,Payee not on file.,Released after callback,Marcus,248-555-0163,Dana
+2026-09-19,Superior Drywall LLC,12300.00,"Bank details changed: last 4 is 9904, file has 3318.",Recorded not paid,Dana,248-555-0188,Priya
+2026-09-22,Pontiac Tile Co,4980.00,Payee not on file.,Recorded not paid,Marcus,248-555-0131,Priya
+2026-09-24,Clarkston Paving,950.00,Payee not on file.,Void,,,
+2026-09-26,Rochester Plumbing,6100.00,"Amount $6,100 is more than 2x the 90-day average of $2,400.","Paid without callback, reported by Priya: Owner on site; vendor unreachable",,,Priya
+2026-09-29,Troy Excavating,9800.00,Payee not on file.,Still open,,,
