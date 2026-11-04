@@ -44,11 +44,11 @@ Next.js 16 (App Router, TypeScript, Tailwind v4 via `@tailwindcss/postcss`), Sup
 | 1 | Domain, email, forwarding address | Bookkeeper forwards or auto-forwards invoices to `<slug>@requests.<domain>`; a request with `source='email'` and the raw email appears for staff to enter. Resend as custom SMTP so sign-in uses a 6-digit code | Domain bought |
 | 2 | Hold notifications and Monday digest | Email (later SMS) to bookkeeper and approver when a hold is logged and when the callback result lands; a Monday digest. Silence means Pass | Step 1 |
 | 3 | AI intake | The forwarded invoice is read (hosted Claude model via the API, called from the app; per-office memory in Supabase, never in the model) and the request pre-filled. Rule 5 below decides when a tap is needed | One office forwarding real invoices |
-| 4 | Activity feed | Every action Mastiff took, visible live on the office home, each one overridable or taken over by the office | Step 3 |
+| 4 | Activity feed and questions | Every action Mastiff took, visible live on the office home, each one overridable or taken over by the office. Beside it, a question box: "Why did this hold?" "What did the callback say?" "What did we pay Pinecrest this year?" The model reads the office's own tables and answers; it changes nothing | Step 3 |
 | 5 | Vendor memory | Each vendor's normal pattern (amount range, cadence, sender domain) learned from history; `usual_min/max` become suggestions | 200+ real requests |
 | 6 | Day-30 read-out | Printable renewal packet per office: requests, holds, callbacks, vendors verified by voice, mapped to the carrier questions in `pilot-kit/` | First pilot at day 25 |
 | 7 | QuickBooks Online, read only | Bills and vendors pulled in with the owner's own login (OAuth). Nothing written back. Xero, Gmail and Microsoft 365 read connections follow the same pattern later | Second paying office asks |
-| 8 | Talk to Mastiff | "Why did this hold?" "Always pass Metro Fasteners under $500." Preferences become per-office settings; the model never changes a rule on its own | Step 3 |
+| 8 | Instructions to Mastiff | "Always pass Metro Fasteners under $500." "Pay discount invoices on day 9." The model proposes a per-office setting, the owner confirms it, the feed records it; the model never changes a rule on its own | Step 5 |
 | 9 | Construction add-ons | Certificate expiry, lien waiver gaps, positive pay export (the office uploads it; Mastiff never sends to a bank) | A construction office in a pilot |
 | 10 | Partner portal | A bookkeeping firm sees all its client offices in one view | First white-label firm signs |
 
