@@ -19,9 +19,9 @@ Payment verification for small offices. The bookkeeper enters (or forwards) a pa
 ## Stack
 Next.js 16 (App Router, TypeScript, Tailwind v4 via `@tailwindcss/postcss`), Supabase (auth, Postgres, RLS), Vercel. Production: https://mastiff-app.vercel.app. Supabase project ref `udgnlvmmomketyudpgwb`. Vercel auto-deploys from `main`.
 
-- No Node on Devin's PC; builds happen on Vercel. Push to `main` and check the Vercel deployment. Keep commits small so a broken build is easy to revert.
+- No Node on Devin's PC; builds happen on Vercel. `tsconfig.json` excludes the folded-in folders (`site/`, `lookback/`, etc.) so their files never enter the app build. Push to `main` and check the Vercel deployment. Keep commits small so a broken build is easy to revert.
 - Env vars (set in Vercel, never committed): `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Never commit a key. Never use the service_role key anywhere in this app.
-- Schema: `supabase/schema.sql` (tables, RLS) and `supabase/002_invites.sql` (invites, `claim_invites()`). Both are applied to production. New schema changes go in a new numbered file under `supabase/` and get applied as a migration; do not edit the applied files.
+- Schema: `supabase/schema.sql` (tables, RLS), `supabase/002_invites.sql` (invites, `claim_invites()`) and `supabase/003_lookbacks.sql`. All are applied to production. New schema changes go in a new numbered file under `supabase/` and get applied as a migration; do not edit the applied files.
 - Auth: emailed sign-in link using the implicit flow from a server action (`src/lib/auth-actions.ts`), read client-side in `src/app/auth/callback/page.tsx`. This is deliberate: it makes the link work on a different device than the one that requested it. Do not switch back to PKCE. A 6-digit code replaces the link once custom SMTP (Resend) exists, which needs the domain.
 
 ## What is built (v1, Nov 3 2026)
@@ -32,6 +32,7 @@ Next.js 16 (App Router, TypeScript, Tailwind v4 via `@tailwindcss/postcss`), Sup
 - `/app/requests/[id]`: Pass/Hold stamp with reasons, callback log form (staff only), decision form (owner/approver only), vendor sidebar with last three payments.
 - `/app/log` and `/app/log/export`: full log, holds filter, CSV with callbacks and decisions.
 - `/app/settings`: cap, range multiple, payment hours, forwarding address (shown, not yet wired).
+- `/app/lookback` and `/app/lookback/[id]`: upload a payment CSV, run the look-back in the app (TypeScript port of `lookback/`: rules 1 to 6 and the money findings; verified against the Python baseline by `src/lib/lookback/__tests__/port.test.ts`, run with `npx tsx`). Report shows money worth checking first, then each flagged payment with a mark (to verify, verified fine, legitimate repeat, two different vendors, confirmed, recovered) and a note; marks are saved per office and are the training signal for vendor memory (step 5). Tables `lookbacks`, `lookback_marks` in `supabase/003_lookbacks.sql`.
 - `/desk`: staff only. All open holds across offices oldest first with the one-hour window flagged; add office; invite person; people list.
 - Roles: `staff` table = Mastiff's people. `memberships.role` = owner | bookkeeper | approver. Invites are claimed on login by `claim_invites()`.
 

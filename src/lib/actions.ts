@@ -173,3 +173,39 @@ export async function removeInvite(id: string) {
   await supabase.from("invites").delete().eq("id", id);
   revalidatePath("/desk");
 }
+
+export async function runLookback(orgId: string, uploadedBy: string, form: FormData) {
+  const { readPayments, LookbackError } = await import("@/lib/lookback/importer");
+  const { scan, findMoney, summarize } = await import("@/lib/lookback/scan");
+  const file = form.get("file");
+  if (!(file instanceof File) || !file.size) return;
+  if (file.size > 10 * 1024 * 1024) redirect(`/app/lookback?error=${encodeURIComponent("That file is over 10 MB. Export a shorter date range.")}`);
+  const text = await file.text();
+  let res;
+  try { res = readPayments(text); }
+  catch (e) { redirect(`/app/lookback?error=${encodeURIComponent(e instanceof LookbackError ? e.message : "Could not read that file.")}`); }
+  const flags = scan(res.items);
+  const money = findMoney(res.items);
+  const s = summarize(res.items, flags);
+  const supabase = await createClient();
+  const { data: row } = await supabase.from("lookbacks").insert({
+    org_id: orgId, filename: file.name, uploaded_by: uploadedBy,
+    payments: s.payments, months: s.months, first_date: s.first, last_date: s.last,
+    held: s.held, need_call: s.need_call, masked: res.masked, skipped: res.skipped.length,
+    mapping: res.mapping, flags, money,
+  }).select("id").single();
+  revalidatePath("/app/lookback");
+  redirect(`/app/lookback/${row!.id}`);
+}
+
+export async function markRow(lookbackId: string, row: number, markedBy: string, form: FormData) {
+  const supabase = await createClient();
+  const mark = String(form.get("mark") ?? "");
+  if (!mark) return;
+  const rec = String(form.get("amount_recovered") ?? "").replace(/[$,\s]/g, "");
+  await supabase.from("lookback_marks").upsert({
+    lookback_id: lookbackId, row, mark, note: String(form.get("note") ?? "").trim() || null,
+    amount_recovered: rec ? Number(rec) : null, marked_by: markedBy,
+  }, { onConflict: "lookback_id,row" });
+  revalidatePath(`/app/lookback/${lookbackId}`);
+}

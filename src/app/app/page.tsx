@@ -21,7 +21,7 @@ export default async function OrgHome() {
           <h1>{org.name}</h1>
           <p className="grey">Forward invoices to <strong className="text-black">{org.inbound_email}</strong>, or enter one below.</p>
         </div>
-        <Link href="/app/requests/new" className="btn fill">New request</Link>
+        <div className="flex gap-2"><Link href="/app/lookback" className="btn">Look-back</Link><Link href="/app/requests/new" className="btn fill">New request</Link></div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
