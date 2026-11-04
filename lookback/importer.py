@@ -10,6 +10,7 @@ from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+from .bankdesc import merge_prefixes, payee_from_description
 from .normalize import HeaderMatch, match_headers
 from .rules import Bill, Payment
 
@@ -23,12 +24,16 @@ PAYMENT_SYNONYMS = {
     "payee": ["payee", "vendor", "vendorname", "payeename", "paidto", "name", "supplier"],
     "amount": ["amount", "amt", "paymentamount", "amountpaid", "total", "debit", "paid"],
     "method": ["method", "paymentmethod", "paymenttype", "type", "paidby"],
-    "check_or_ref": ["checkorref", "checkno", "checknumber", "check", "ref", "refno", "reference", "referencenumber", "num", "checknum"],
+    "check_or_ref": ["checkorref", "checkno", "checknumber", "check", "ref", "refno", "reference", "referencenumber", "num", "checknum", "checkorslip", "checkorslipno", "checkslip"],
     "invoice_no": ["invoiceno", "invoicenumber", "invoice", "invno", "billno", "billnumber", "invnum"],
     "memo": ["memo", "description", "note", "notes", "details"],
     "account_last4": ["accountlast4", "acctlast4", "last4", "account", "accountnumber", "acct", "acctno", "bankaccount", "accountno"],
     "routing_last4": ["routinglast4", "routing", "routingnumber", "aba", "abanumber", "routingno"],
+    "direction": ["details", "transactiontype", "drcr", "debitcredit", "creditdebit", "direction", "dc"],
 }
+# A bank export: no payee column, but a description we can read the payee out of.
+DESCRIPTION_HEADERS = ("description", "memo", "details", "transactiondescription", "narrative", "payeedescription")
+CREDIT_WORDS = ("credit", "deposit", "cr", "refund", "transfer in", "interest paid")
 BILL_SYNONYMS = {
     "date": ["date", "billdate", "invoicedate", "duedate", "txndate"],
     "payee": ["payee", "vendor", "vendorname", "payeename", "supplier", "name"],
@@ -170,6 +175,11 @@ def _read_rows(path) -> Tuple[List[str], List[Tuple[int, List[str]]]]:
 def _import(path, kind: str, synonyms) -> ImportResult:
     headers, rows = _read_rows(path)
     mapping = match_headers(headers, synonyms)
+    bank_mode = False
+    if kind == "payments" and "payee" not in mapping and "memo" in mapping:
+        # Bank export: derive the payee from the description column.
+        bank_mode = True
+        mapping["payee"] = HeaderMatch(mapping["memo"].header, "derived from the description")
     missing = [f for f in REQUIRED if f not in mapping]
     if missing:
         raise LookbackError(
@@ -184,10 +194,21 @@ def _import(path, kind: str, synonyms) -> ImportResult:
         i = idx.get(f)
         return row[i].strip() if i is not None and i < len(row) else ""
 
+    # Signed amounts: when any amount is negative, positives are money in, not payments.
+    signed = kind == "payments" and any(get(row, "amount").lstrip().startswith("-") or get(row, "amount").strip().startswith("(")
+                                        for _, row in rows)
     for line, row in rows:
+        raw_amt = get(row, "amount").strip()
+        direction = get(row, "direction").lower()
+        if kind == "payments" and direction and any(w == direction or direction.startswith(w) for w in CREDIT_WORDS):
+            res.skipped.append((line, "money in, not a payment"))
+            continue
+        if signed and raw_amt and not raw_amt.startswith(("-", "(")):
+            res.skipped.append((line, "money in, not a payment"))
+            continue
         try:
             d = parse_date(get(row, "date"))
-            amt = parse_amount(get(row, "amount"))
+            amt = parse_amount(raw_amt)
         except ValueError as exc:
             res.skipped.append((line, str(exc)))
             continue
@@ -196,6 +217,11 @@ def _import(path, kind: str, synonyms) -> ImportResult:
             t, n = mask_text(get(row, f))
             res.masked += n
             texts[f] = t.strip()
+        if bank_mode:
+            payee, ref = payee_from_description(get(row, "memo"))  # before masking, so a phone number is stripped, not starred
+            texts["payee"], _ = mask_text(payee)
+            if ref and not texts["check_or_ref"]:
+                texts["check_or_ref"] = ref
         if not texts["payee"]:
             res.skipped.append((line, "no payee"))
             continue
@@ -227,7 +253,15 @@ def _import(path, kind: str, synonyms) -> ImportResult:
                                   terms=terms.strip(), discount_date=disc_date, discount_percent=disc_pct))
     if not res.items:
         raise LookbackError(f"No usable rows in {Path(path).name}. {len(res.skipped)} rows were skipped.")
+    if bank_mode:
+        canon = merge_prefixes([i.payee for i in res.items])
+        res.items = [i._replace(payee=canon.get(i.payee, i.payee)) if hasattr(i, "_replace") else _with_payee(i, canon.get(i.payee, i.payee)) for i in res.items]
     return res
+
+
+def _with_payee(item, payee):
+    from dataclasses import replace
+    return replace(item, payee=payee)
 
 
 def read_payments(path) -> ImportResult:
@@ -240,6 +274,9 @@ def read_bills(path) -> ImportResult:
 
 def describe(res: ImportResult) -> str:
     lines = [f"{res.kind.capitalize()} file: {res.rows_read} rows read, {len(res.items)} usable, {len(res.skipped)} skipped."]
+    if res.mapping.get("payee") and res.mapping["payee"].how == "derived from the description":
+        lines.append("Bank export: payee names read out of the description; checks show only a number; "
+                     "invoice wording and vendor accounts are not in this file.")
     lines.append("Column matching:")
     synonyms = PAYMENT_SYNONYMS if res.kind == "payments" else BILL_SYNONYMS
     for f in synonyms:

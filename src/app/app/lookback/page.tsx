@@ -20,7 +20,7 @@ export default async function Lookbacks({ searchParams }: { searchParams: Promis
         <div className="field">
           <label htmlFor="file">CSV file</label>
           <input id="file" name="file" type="file" accept=".csv,text/csv" required />
-          <div className="hint">QuickBooks: Reports, Transaction List by Vendor, last 18 months, Export to CSV. Or your bank's transaction download. Columns it understands: date, payee or vendor, amount, and optionally method, check number, invoice, memo, account last 4. Full account numbers are cut to four on import.</div>
+          <div className="hint">QuickBooks: Reports, Transaction List by Vendor, last 18 months, Export to CSV. Or your bank's transaction download (Chase, Huntington, and the like: payee names are read out of the description). Columns it understands: date, payee or vendor, amount, and optionally method, check number, invoice, memo, account last 4. Full account numbers are cut to four on import.</div>
         </div>
         {error && <p className="text-sm">{error}</p>}
         <button className="btn fill">Run the look-back</button>

@@ -1,3 +1,5 @@
+import { payeeFromDescription, mergePrefixes } from "./bankdesc";
+
 // CSV import for the look-back: loose header matching, date and amount parsing,
 // and account-number stripping. A port of lookback/importer.py; keep them in step.
 
@@ -16,6 +18,7 @@ export type Payment = {
 
 export type ImportResult = {
   items: Payment[];
+  bankMode: boolean; // payee read out of the description column (a bank export)
   headers: string[];
   mapping: Record<string, string>;
   unmapped: string[];
@@ -31,12 +34,14 @@ const PAYMENT_SYNONYMS: Record<string, string[]> = {
   payee: ["payee", "vendor", "vendorname", "payeename", "paidto", "name", "supplier"],
   amount: ["amount", "amt", "paymentamount", "amountpaid", "total", "debit", "paid"],
   method: ["method", "paymentmethod", "paymenttype", "type", "paidby"],
-  check_or_ref: ["checkorref", "checkno", "checknumber", "check", "ref", "refno", "reference", "referencenumber", "num", "checknum"],
+  check_or_ref: ["checkorref", "checkno", "checknumber", "check", "ref", "refno", "reference", "referencenumber", "num", "checknum", "checkorslip", "checkorslipno", "checkslip"],
   invoice_no: ["invoiceno", "invoicenumber", "invoice", "invno", "billno", "billnumber", "invnum"],
   memo: ["memo", "description", "note", "notes", "details"],
   account_last4: ["accountlast4", "acctlast4", "last4", "account", "accountnumber", "acct", "acctno", "bankaccount", "accountno"],
   routing_last4: ["routinglast4", "routing", "routingnumber", "aba", "abanumber", "routingno"],
+  direction: ["details", "transactiontype", "drcr", "debitcredit", "creditdebit", "direction", "dc"],
 };
+const CREDIT_WORDS = ["credit", "deposit", "cr", "refund", "transfer in", "interest paid"];
 const REQUIRED = ["date", "payee", "amount"];
 
 export function normalizeHeader(h: string): string {
@@ -181,21 +186,35 @@ export function readPayments(text: string): ImportResult {
   });
   if (!headers.length) throw new LookbackError("The file has no header row.");
   const mapping = matchHeaders(headers, PAYMENT_SYNONYMS);
+  // A bank export: no payee column, but a description we can read the payee out of.
+  const bankMode = !mapping.payee && !!mapping.memo;
+  if (bankMode) mapping.payee = mapping.memo;
   const missing = REQUIRED.filter((f) => !mapping[f]);
   if (missing.length) throw new LookbackError(`Could not find a column for: ${missing.join(", ")}. Headers seen: ${headers.join(", ")}.`);
   const idx: Record<string, number> = {};
   for (const [f, h] of Object.entries(mapping)) idx[f] = headers.indexOf(h);
   const used = new Set(Object.values(mapping));
-  const res: ImportResult = { items: [], headers, mapping, unmapped: headers.filter((h) => !used.has(h)), rowsRead: rows.length, skipped: [], masked: 0 };
+  const res: ImportResult = { items: [], bankMode, headers, mapping, unmapped: headers.filter((h) => !used.has(h)), rowsRead: rows.length, skipped: [], masked: 0 };
   const get = (cells: string[], f: string) => (idx[f] !== undefined && idx[f] < cells.length ? cells[idx[f]].trim() : "");
+  // Signed amounts: when any amount is negative, positives are money in, not payments.
+  const signed = rows.some(({ cells }) => /^\s*[-(]/.test(get(cells, "amount")));
   for (const { line, cells } of rows) {
+    const rawAmt = get(cells, "amount");
+    const direction = get(cells, "direction").toLowerCase();
+    if (direction && CREDIT_WORDS.some((w) => direction === w || direction.startsWith(w))) { res.skipped.push({ line, why: "money in, not a payment" }); continue; }
+    if (signed && rawAmt && !/^[-(]/.test(rawAmt)) { res.skipped.push({ line, why: "money in, not a payment" }); continue; }
     let date: Date, amount: number;
-    try { date = parseDate(get(cells, "date")); amount = parseAmount(get(cells, "amount")); }
+    try { date = parseDate(get(cells, "date")); amount = parseAmount(rawAmt); }
     catch (e) { res.skipped.push({ line, why: (e as Error).message }); continue; }
     const texts: Record<string, string> = {};
     for (const f of ["payee", "method", "check_or_ref", "invoice_no", "memo"]) {
       const { text: t, count } = maskText(get(cells, f));
       res.masked += count; texts[f] = t.trim();
+    }
+    if (bankMode) {
+      const { payee, ref } = payeeFromDescription(get(cells, "memo")); // before masking, so a phone number is stripped, not starred
+      texts.payee = maskText(payee).text;
+      if (ref && !texts.check_or_ref) texts.check_or_ref = ref;
     }
     if (!texts.payee) { res.skipped.push({ line, why: "no payee" }); continue; }
     const a = last4(get(cells, "account_last4")), r = last4(get(cells, "routing_last4"));
@@ -203,5 +222,9 @@ export function readPayments(text: string): ImportResult {
     res.items.push({ row: line, date, payee: texts.payee, amount, method: texts.method, check_or_ref: texts.check_or_ref, invoice_no: texts.invoice_no, memo: texts.memo, account_last4: a.last4, routing_last4: r.last4 });
   }
   if (!res.items.length) throw new LookbackError(`No usable rows. ${res.skipped.length} rows were skipped.`);
+  if (bankMode) {
+    const canon = mergePrefixes(res.items.map((i) => i.payee));
+    for (const i of res.items) i.payee = canon.get(i.payee) ?? i.payee;
+  }
   return res;
 }

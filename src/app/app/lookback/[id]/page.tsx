@@ -44,6 +44,9 @@ export default async function LookbackReport({ params }: { params: Promise<{ id:
         <Link href="/app/lookback" className="btn">All look-backs</Link>
       </div>
       <p className="serif text-xl border-y border-black py-3 my-4">{lb.payments} payments, {lb.months} month{lb.months === 1 ? "" : "s"} ({d(lb.first_date)} to {d(lb.last_date)}), {lb.held} would have held, {lb.need_call} need a call this week.</p>
+      {(lb.mapping as Record<string, string>).payee === (lb.mapping as Record<string, string>).memo && (
+        <p className="text-sm mb-4">This is a bank export, so payee names were read out of the description line and a check shows only its number. A bank file does not carry invoice wording or the vendor's account on file, so late fees and account changes are not checked here; the books export (QuickBooks: Transaction List by Vendor) covers those.</p>
+      )}
       <p className="advisory mb-8">Mastiff flags. Your firm makes every payment decision. This report says what is worth checking, not that any payment was wrong.{lb.masked > 0 && ` ${lb.masked} account-number-like values were cut to the last four digits on import.`}{lb.skipped > 0 && ` ${lb.skipped} rows could not be read and were skipped.`}</p>
 
       <h2 className="mb-2">Money worth checking</h2>
