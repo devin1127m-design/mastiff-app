@@ -10,12 +10,14 @@ export default async function Desk() {
   if (!session.isStaff) redirect("/app");
   const supabase = await createClient();
   const since = new Date(Date.now() - 7 * 86400000).toISOString();
-  const [{ data: holds }, { data: orgs }, { count: weekCount }, { data: invites }, { data: members }] = await Promise.all([
+  const [{ data: holds }, { data: orgs }, { count: weekCount }, { data: invites }, { data: members }, { data: mail }, { data: notes }] = await Promise.all([
     supabase.from("requests").select("id, payee, amount, created_at, reasons, status, orgs(name)").in("status", ["open", "not_confirmed", "confirmed"]).order("created_at"),
     supabase.from("orgs").select("id, name, slug, inbound_email, created_at").order("name"),
     supabase.from("requests").select("id", { count: "exact", head: true }).gte("created_at", since),
     supabase.from("invites").select("id, email, role, name, claimed_at, orgs(name)").order("created_at", { ascending: false }),
     supabase.from("memberships").select("org_id, role, name"),
+    supabase.from("inbound_emails").select("id, from_email, to_email, subject, status, received_at, request_id, intake_id, orgs(name)").order("received_at", { ascending: false }).limit(20),
+    supabase.from("notifications").select("id, kind, to_email, subject, status, error, created_at").order("created_at", { ascending: false }).limit(20),
   ]);
   const now = Date.now();
   return (
@@ -47,6 +49,27 @@ export default async function Desk() {
           })}
         </tbody></table>
       ) : <p className="grey mb-10">Queue is empty.</p>}
+
+      <h2 className="mb-3">Email in</h2>
+      {mail && mail.length ? (
+        <table className="list mb-10"><thead><tr><th>When</th><th>From</th><th>To</th><th>Subject</th><th>What happened</th></tr></thead><tbody>
+          {mail.map((m) => {
+            const o = m.orgs as unknown as { name: string } | null;
+            return <tr key={m.id}><td className="whitespace-nowrap">{fmtDate(m.received_at)}</td><td className="text-sm">{m.from_email}</td><td className="text-sm">{o?.name ?? m.to_email}</td><td className="text-sm">{m.subject}</td><td className="text-sm">
+              {m.request_id ? <Link href={`/app/requests/${m.request_id}`} className="underline">Filed straight through</Link>
+                : m.intake_id ? <Link href={`/app/requests/new?intake=${m.intake_id}`} className="underline">Waiting for a look</Link>
+                : m.status === "no_office" ? "No office has this address" : m.status === "no_attachment" ? "No invoice attached" : m.status}
+            </td></tr>;
+          })}
+        </tbody></table>
+      ) : <p className="grey mb-10">No email has arrived yet. Each office has an address; forwarding starts once the domain is live.</p>}
+
+      <h2 className="mb-3">Mail out</h2>
+      {notes && notes.length ? (
+        <table className="list mb-10"><thead><tr><th>When</th><th>Kind</th><th>To</th><th>Subject</th><th>Status</th></tr></thead><tbody>
+          {notes.map((n) => <tr key={n.id}><td className="whitespace-nowrap">{fmtDate(n.created_at)}</td><td>{n.kind}</td><td className="text-sm">{n.to_email}</td><td className="text-sm">{n.subject}</td><td className="text-sm">{n.status}{n.error ? ` · ${n.error}` : ""}</td></tr>)}
+        </tbody></table>
+      ) : <p className="grey mb-10">Nothing queued. Holds, callback results and the Monday digest appear here; silence means Pass.</p>}
 
       <h2 className="mb-3">Offices</h2>
       <table className="list mb-6"><thead><tr><th>Office</th><th>Forwarding address</th><th>Since</th></tr></thead><tbody>

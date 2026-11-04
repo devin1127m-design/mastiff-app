@@ -5,6 +5,11 @@ import { check, nameKey, type Vendor, type Org } from "@/lib/rules";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+// Send whatever notifications the database just queued. Best effort, never blocks the bookkeeper.
+async function flush() {
+  try { const { flushNotifications } = await import("@/lib/mail"); await flushNotifications(20); } catch { /* mail is optional */ }
+}
+
 function last4(v: FormDataEntryValue | null): string | null {
   const s = String(v ?? "").replace(/\D/g, "");
   if (!s) return null;
@@ -104,6 +109,7 @@ export async function submitRequest(orgId: string, submittedBy: string, form: Fo
     straight_through: false,
   }).select("id").single();
   if (intakeId && row) await supabase.from("intakes").update({ request_id: row.id }).eq("id", intakeId);
+  if (v.verdict === "hold") await flush();
   revalidatePath("/app");
   revalidatePath("/desk");
   redirect(`/app/requests/${row!.id}`);
@@ -130,6 +136,7 @@ export async function logCallback(requestId: string, byName: string, form: FormD
       }
     }
   }
+  await flush();
   revalidatePath(`/app/requests/${requestId}`);
   revalidatePath("/desk");
 }

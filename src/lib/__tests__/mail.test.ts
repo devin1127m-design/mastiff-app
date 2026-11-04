@@ -1,0 +1,10 @@
+import assert from "node:assert/strict";
+import { composeDigest } from "../mail";
+const d = composeDigest("Test Office", "Devin", { checked: 7, passed: 6, held: 1, open: 1, waiting: 2, holds: [{ payee: "New Guy Concrete", amount: 3400, reason: "Payee is not on your vendor list.", status: "open" }] });
+assert.match(d.subject, /1 held/);
+assert.match(d.body, /7 payment requests checked, 6 passed, 1 would have held/);
+assert.match(d.body, /New Guy Concrete, \$3,400.00/);
+assert.match(d.body, /Mastiff flags\. Your firm makes every payment decision\./);
+const z = composeDigest("Test Office", "Devin", { checked: 0, passed: 0, held: 0, open: 0, waiting: 0, holds: [] });
+assert.match(z.body, /Nothing held\. Pay as usual\./);
+console.log("mail tests pass");
