@@ -39,3 +39,10 @@ table.list tr:hover td { background: #fafafa; }
 .print-page .print\:block { display: block !important; }
 .print-page a { text-decoration: none; }
 @media print { header, footer, nav, .print\:hidden { display: none !important; } main { padding: 0; } }
+
+/* The Mastiff thread */
+.bubble { max-width: 85%; padding: 10px 12px; border-radius: 14px; font-size: 15px; line-height: 1.4; }
+.bubble.user { background: #000; color: #fff; border-bottom-right-radius: 4px; }
+.bubble.mastiff { background: #fff; color: #000; border: 1px solid #000; border-bottom-left-radius: 4px; }
+.bubble .btn.small { min-height: 30px; }
+.bubble.mastiff .btn.small.fill { background: #000; color: #fff; }

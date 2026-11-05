@@ -56,7 +56,7 @@ export function Shell({ session, orgName, children }: { session: Session; orgNam
                 <Link href="/app/lookback">Look-back</Link>
                 <Link href="/app/subs">Subs</Link>
                 <Link href="/app/readout">Read-out</Link>
-                <Link href="/app/instructions">Instructions</Link>
+                <Link href="/app/chat">Mastiff</Link>
                 <Link href="/app/log">Log</Link>
               </>
             )}

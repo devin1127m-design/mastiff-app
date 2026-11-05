@@ -48,3 +48,52 @@ export async function ask(supabase: SupabaseClient, orgId: string, question: str
   });
   return res.content.filter((c) => c.type === "text").map((c) => (c as { text: string }).text).join("\n").trim();
 }
+
+// One thread: a message is either a question (answered from the records) or an
+// instruction (turned into a proposal the owner confirms). The model decides which
+// and plain code checks the proposal; it never applies anything itself.
+import { checkProposal, summary as proposalSummary, type Proposal, type VendorLite } from "@/lib/instructions";
+
+const THREAD_SYSTEM = SYSTEM + `
+
+You are in a running text thread with the office. Keep replies short, like texts: one to four sentences, no headings, no bullet lists unless listing payments.
+Decide first whether the latest message is a QUESTION about the records or an INSTRUCTION about how the office pays.
+- For a question, reply with JSON: {"kind":"answer","text":"<your reply>"}
+- For an instruction (a standing rule about a vendor, an amount, hours, a phone number, a note to keep), reply with JSON: {"kind":"instruction","proposal":<one of the setting objects below>}
+Setting objects:
+{"kind":"vendor_pass_under","vendor":"<name as given>","amount":<number>}
+{"kind":"vendor_usual_range","vendor":"<name>","min":<number>,"max":<number>}
+{"kind":"vendor_phone","vendor":"<name>","phone":"<digits as given>"}
+{"kind":"vendor_note","vendor":"<name>","note":"<short>"}
+{"kind":"single_cap","amount":<number>}
+{"kind":"range_multiple","multiple":<number>}
+{"kind":"hours","start":<0-23>,"end":<1-24>}
+{"kind":"unclear","why":"<one line>"}
+Use "unclear" when an instruction asks to skip a callback, release a hold, pay something, delete a record, or change who can decide: say in why that those stay with people. Never invent a vendor name. Return only the JSON.`;
+
+export type Turn = { role: "user" | "mastiff"; text: string };
+
+export async function converse(supabase: SupabaseClient, orgId: string, history: Turn[], latest: string, vendors: VendorLite[]): Promise<{ text: string; proposal: Proposal | null }> {
+  if (!process.env.ANTHROPIC_API_KEY) return { text: "I'm not switched on for this desk yet.", proposal: null };
+  const context = await gatherContext(supabase, orgId);
+  const client = new Anthropic();
+  const msgs = history.slice(-12).map((h) => ({ role: h.role === "user" ? ("user" as const) : ("assistant" as const), content: h.text }));
+  msgs.push({ role: "user", content: latest.slice(0, 600) });
+  const res = await client.messages.create({
+    model: MODEL, max_tokens: 600,
+    system: [{ type: "text", text: THREAD_SYSTEM }, { type: "text", text: `Records for this office:\n\n${context}`, cache_control: { type: "ephemeral" } }],
+    messages: msgs,
+  });
+  const raw = res.content.filter((c) => c.type === "text").map((c) => (c as { text: string }).text).join("\n").trim();
+  const m = raw.match(/\{[\s\S]*\}/);
+  if (!m) return { text: raw || "I did not catch that.", proposal: null };
+  try {
+    const j = JSON.parse(m[0]) as { kind: string; text?: string; proposal?: unknown };
+    if (j.kind === "instruction" && j.proposal) {
+      const p = checkProposal(JSON.stringify(j.proposal), vendors);
+      if (p.kind === "unclear") return { text: p.why, proposal: null };
+      return { text: "Here is what I understood: " + proposalSummary(p) + " Confirm below and it takes effect; otherwise nothing changes.", proposal: p };
+    }
+    return { text: String(j.text ?? raw), proposal: null };
+  } catch { return { text: raw, proposal: null }; }
+}

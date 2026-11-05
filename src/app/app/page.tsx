@@ -3,7 +3,6 @@ import { Shell } from "@/components/Shell";
 import { requireOrg, fmtMoney, fmtDate, STATUS_LABEL } from "@/lib/org";
 import { createClient } from "@/lib/supabase/server";
 import { buildFeed } from "@/lib/feed";
-import { AskBox } from "@/components/AskBox";
 
 export default async function OrgHome() {
   const { session, org } = await requireOrg();
@@ -72,7 +71,11 @@ export default async function OrgHome() {
           ) : <p className="grey">Nothing yet. The first invoice you send starts the record.</p>}
           <p className="advisory mt-3">Every line is something you can open and take over. Mastiff flags; your firm makes every payment decision.</p>
         </div>
-        <AskBox orgId={org.id} />
+        <div className="card">
+          <h2 className="mb-1">Text Mastiff</h2>
+          <p className="grey text-sm mb-3">"Why did the last one hold?" "What have we paid Ray's this year?" "Always pass Metro under $500." One thread, saved.</p>
+          <Link href="/app/chat" className="btn fill w-full">Open the thread</Link>
+        </div>
       </div>
 
       <h2 className="mb-3">Recent</h2>

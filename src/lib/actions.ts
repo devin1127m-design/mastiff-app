@@ -418,3 +418,37 @@ export async function importSubs(orgId: string, form: FormData) {
   }
   revalidatePath("/app/subs"); revalidatePath("/app/vendors");
 }
+
+// The Mastiff thread (steps 4 and 8 in one place).
+export async function sendMessage(orgId: string, byName: string, form: FormData) {
+  const text = String(form.get("text") ?? "").trim().slice(0, 600);
+  if (!text) return;
+  const supabase = await createClient();
+  const { data: ok } = await supabase.from("orgs").select("id").eq("id", orgId).maybeSingle();
+  if (!ok) return;
+  const { data: prior } = await supabase.from("messages").select("role, text").eq("org_id", orgId).order("created_at", { ascending: false }).limit(12);
+  await supabase.from("messages").insert({ org_id: orgId, role: "user", by_name: byName, text });
+  const { data: vendors } = await supabase.from("vendors").select("id, name, name_key").eq("org_id", orgId);
+  const { converse } = await import("@/lib/ask");
+  const { summary } = await import("@/lib/instructions");
+  let reply = "", instructionId: string | null = null;
+  try {
+    const r = await converse(supabase, orgId, (prior ?? []).reverse() as { role: "user" | "mastiff"; text: string }[], text, vendors ?? []);
+    reply = r.text;
+    if (r.proposal) {
+      const { data: ins } = await supabase.from("instructions").insert({ org_id: orgId, text, proposal: r.proposal, summary: summary(r.proposal), status: "proposed", asked_by: byName }).select("id").single();
+      instructionId = ins?.id ?? null;
+    }
+  } catch (e) { reply = "I could not answer that right now. (" + (e instanceof Error ? e.message.slice(0, 80) : "error") + ")"; }
+  await supabase.from("messages").insert({ org_id: orgId, role: "mastiff", text: reply, instruction_id: instructionId });
+  revalidatePath("/app/chat");
+}
+
+export async function decideInThread(orgId: string, byName: string, instructionId: string, confirm: boolean) {
+  await decideInstruction(orgId, byName, instructionId, confirm);
+  const supabase = await createClient();
+  const { data: ins } = await supabase.from("instructions").select("summary, status").eq("id", instructionId).maybeSingle();
+  if (ins?.status === "confirmed") await supabase.from("messages").insert({ org_id: orgId, role: "mastiff", text: "Done. " + ins.summary });
+  else if (ins?.status === "declined") await supabase.from("messages").insert({ org_id: orgId, role: "mastiff", text: "Left as it was. Nothing changed." });
+  revalidatePath("/app/chat");
+}
