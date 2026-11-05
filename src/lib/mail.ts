@@ -51,8 +51,8 @@ export function composeDigest(orgName: string, name: string, c: { checked: numbe
     lines.push("", "What held:");
     for (const h of c.holds) lines.push(`- ${h.payee}, ${money(h.amount)}: ${h.reason ?? ""} (${h.status.replace("_", " ")})`);
   }
-  if (c.open > 0) lines.push("", `${c.open} hold${c.open === 1 ? " is" : "s are"} still waiting for your decision: https://mastiff-app.vercel.app/app`);
-  if (c.waiting > 0) lines.push("", `${c.waiting} invoice${c.waiting === 1 ? "" : "s"} Mastiff read ${c.waiting === 1 ? "is" : "are"} waiting for a look: https://mastiff-app.vercel.app/app`);
+  if (c.open > 0) lines.push("", `${c.open} hold${c.open === 1 ? " is" : "s are"} still waiting for your decision: https://mastiffdesk.com/app`);
+  if (c.waiting > 0) lines.push("", `${c.waiting} invoice${c.waiting === 1 ? "" : "s"} Mastiff read ${c.waiting === 1 ? "is" : "are"} waiting for a look: https://mastiffdesk.com/app`);
   lines.push("", "Mastiff flags. Your firm makes every payment decision.", "", "— The Mastiff desk");
   return { subject: `Mastiff, week of ${new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })}: ${c.held === 0 ? "nothing held" : `${c.held} held`}`, body: lines.join("\n") };
 }

@@ -12,28 +12,25 @@ Everything in the roadmap is built and deployed. Each piece waits on one of the 
 - Vercel: `MASTIFF_INBOUND_SECRET` = the value Eris sent in chat on Nov 4. The matching value is in the database.
 - Switches on: nothing visible yet; the email route and the sender need it.
 
-## 3. The domain
-- Buy the domain (Cloudflare or Namecheap). Suggested shape: `mastiff` + `.app` / `.co` / `.desk`; check what is free.
-- Vercel: Settings → Domains → add it and follow the DNS it shows. The app then answers at the domain as well as mastiff-app.vercel.app.
-- Tell Eris the domain: the inbound address and the links in the emails are updated to it (one small commit; today they say `requests.mastiff.app` and `mastiff-app.vercel.app`).
+## 3. The domain (done Nov 5: mastiffdesk.com on Cloudflare, attached to Vercel, DNS A 216.198.79.1 + 64.29.17.1, CNAME www → a5168e3ce1278061.vercel-dns-017.com, proxy off)
 
 ## 4. Resend (mail in and out)
 - resend.com → sign up → Domains → add the domain → add the DNS records it gives (SPF, DKIM, MX for receiving). Wait for "Verified".
 - API keys → Create → Vercel: `RESEND_API_KEY`.
-- Vercel: `MAIL_FROM` = `Mastiff <desk@<domain>>`.
-- Receiving: Resend → Receiving → enable for `requests.<domain>` (or the root domain, then the address is `<office>@<domain>`; tell Eris which).
-- Webhooks → Add → URL `https://<domain>/api/inbound` (or the vercel.app URL) → event `email.received` → copy the signing secret → Vercel: `RESEND_WEBHOOK_SECRET`.
+- Vercel: `MAIL_FROM` = `Mastiff <desk@mastiffdesk.com>`.
+- Receiving: Resend → Receiving → enable for `requests.mastiffdesk.com` (or the root domain, then the address is `<office>@mastiffdesk.com`; tell Eris which).
+- Webhooks → Add → URL `https://mastiffdesk.com/api/inbound` (or the vercel.app URL) → event `email.received` → copy the signing secret → Vercel: `RESEND_WEBHOOK_SECRET`.
 - Vercel: `CRON_SECRET` = any long random string (protects the daily cron routes).
-- Switches on: forwarding to `<office>@requests.<domain>`, hold and callback emails, the Monday digest.
+- Switches on: forwarding to `<office>@requests.mastiffdesk.com`, hold and callback emails, the Monday digest.
 - Test: forward a PDF invoice to the Test Office address; Desk → "Email in" shows it.
 
 ## 5. Sign-in by 6-digit code (needs 4)
-- Supabase → Authentication → Emails → SMTP settings → enable custom SMTP with Resend (host `smtp.resend.com`, port 465, user `resend`, password = the Resend API key, sender = `desk@<domain>`).
+- Supabase → Authentication → Emails → SMTP settings → enable custom SMTP with Resend (host `smtp.resend.com`, port 465, user `resend`, password = the Resend API key, sender = `desk@mastiffdesk.com`).
 - Then tell Eris: the sign-in switches from the link to a code (one commit).
 
 ## 6. QuickBooks (when the second paying office asks)
 - developer.intuit.com → Create app → QuickBooks Online and Payments → Keys & credentials.
-- Redirect URI to add there: `https://<domain>/api/qbo/callback` (and the vercel.app one while testing).
+- Redirect URI to add there: `https://mastiffdesk.com/api/qbo/callback` (and the vercel.app one while testing).
 - Vercel: `QBO_CLIENT_ID`, `QBO_CLIENT_SECRET`, `QBO_ENV` = `sandbox` until Intuit approves production.
 - Test: Settings → Connect QuickBooks with the sandbox company → Pull.
 
