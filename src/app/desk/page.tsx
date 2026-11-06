@@ -81,7 +81,7 @@ export default async function Desk() {
       <form action={createOrg} className="card space-y-3">
         <h2>Add an office</h2>
         <div className="field"><label>Office name</label><input name="name" required placeholder="Oakland Builders" /></div>
-        <div className="field"><label>Short name (for the forwarding address)</label><input name="slug" required placeholder="oaklandbuilders" pattern="[a-z0-9-]+" /><div className="hint">Lowercase letters, numbers and dashes. Becomes name@requests.mastiffdesk.com.</div></div>
+        <div className="field"><label>Short name (for the forwarding address)</label><input name="slug" required placeholder="oaklandbuilders" pattern="[a-z0-9-]+" /><div className="hint">Lowercase letters, numbers and dashes. Becomes name@mastiffdesk.com.</div></div>
         <button className="btn fill">Add office</button>
       </form>
       <form action={inviteMember} className="card space-y-3">
