@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { sendSignInLink } from "@/lib/auth-actions";
 
 export default function Login() {
@@ -7,6 +7,10 @@ export default function Login() {
   const [sent, setSent] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  // A sign-in link that lands here (or on the root) still carries its tokens in the hash. Hand them to the callback.
+  useEffect(() => {
+    if (/access_token=|error_description=/.test(window.location.hash)) window.location.replace("/auth/callback" + window.location.hash);
+  }, []);
 
   async function send(e: React.FormEvent) {
     e.preventDefault();
