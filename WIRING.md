@@ -16,10 +16,10 @@ Everything in the roadmap is built and deployed. Each piece waits on one of the 
 
 ## 4. Resend (mail in and out)
 - resend.com → sign up → Domains → add the domain → add the DNS records it gives (SPF, DKIM, MX for receiving). Wait for "Verified".
-- API keys → Create → Vercel: `RESEND_API_KEY`.
-- Vercel: `MAIL_FROM` = `Mastiff <desk@mastiffdesk.com>`.
+- API keys → Create → Vercel: `RESEND_API_KEY` (set Nov 6).
+- Vercel: `MAIL_FROM` = `Mastiff <desk@mastiffdesk.com>` (set Nov 6).
 - Receiving: Resend → Receiving → enable for the root domain `mastiffdesk.com` (or the root domain, then the address is `<office>@mastiffdesk.com`; tell Eris which).
-- Webhooks → Add → URL `https://mastiffdesk.com/api/inbound` (or the vercel.app URL) → event `email.received` → copy the signing secret → Vercel: `RESEND_WEBHOOK_SECRET`.
+- Webhooks → Add → URL `https://mastiffdesk.com/api/inbound` (or the vercel.app URL) → event `email.received` → copy the signing secret → Vercel: `RESEND_WEBHOOK_SECRET` (set Nov 6).
 - Vercel: `CRON_SECRET` (set by Eris Nov 5; protects the daily cron routes).
 - Switches on: forwarding to `<office>@mastiffdesk.com`, hold and callback emails, the Monday digest.
 - Test: forward a PDF invoice to the Test Office address; Desk → "Email in" shows it.
