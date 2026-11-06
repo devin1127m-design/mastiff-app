@@ -216,7 +216,7 @@ class ReportTests(unittest.TestCase):
 
     def test_summary_shape(self):
         self.assertRegex(self.summary.line, SHAPE)
-        self.assertTrue(self.summary.line.startswith("700 payments, 18 months, 3 would have held"))
+        self.assertTrue(self.summary.line.startswith("700 payments, 18 months, 2 would have held"))
         self.assertEqual(self.summary.need_call, 2)
 
     def test_need_call_falls_back_to_top_three(self):

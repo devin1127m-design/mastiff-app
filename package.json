@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm test && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "tsx src/lib/__tests__/intake.test.ts && tsx src/lib/__tests__/mail.test.ts && tsx src/lib/__tests__/memory.test.ts && tsx src/lib/__tests__/readout.test.ts && tsx src/lib/__tests__/instructions.test.ts && tsx src/lib/__tests__/subs.test.ts && tsx src/lib/lookback/__tests__/port.test.ts && tsx src/lib/lookback/__tests__/bank.test.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.4.0",
@@ -26,6 +27,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.4.4",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }

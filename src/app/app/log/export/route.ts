@@ -2,7 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 
 function csv(v: unknown) {
   const s = v == null ? "" : String(v);
-  return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  const v = /^[=+\-@\t\r]/.test(s) ? "'" + s : s; // never let a payee name run as a spreadsheet formula
+  return /[",\n']/.test(v) ? `"${v.replace(/"/g, '""')}"` : v;
 }
 
 export async function GET() {

@@ -39,7 +39,7 @@ export async function ask(supabase: SupabaseClient, orgId: string, question: str
   const q = question.trim().slice(0, 500);
   if (!q) return "";
   const context = await gatherContext(supabase, orgId);
-  const client = new Anthropic();
+  const client = new Anthropic({ timeout: 25_000, maxRetries: 1 });
   const res = await client.messages.create({
     model: MODEL,
     max_tokens: 700,
@@ -76,7 +76,7 @@ export type Turn = { role: "user" | "mastiff"; text: string };
 export async function converse(supabase: SupabaseClient, orgId: string, history: Turn[], latest: string, vendors: VendorLite[]): Promise<{ text: string; proposal: Proposal | null }> {
   if (!process.env.ANTHROPIC_API_KEY) return { text: "I'm not switched on for this desk yet.", proposal: null };
   const context = await gatherContext(supabase, orgId);
-  const client = new Anthropic();
+  const client = new Anthropic({ timeout: 25_000, maxRetries: 1 });
   const msgs = history.slice(-12).map((h) => ({ role: h.role === "user" ? ("user" as const) : ("assistant" as const), content: h.text }));
   msgs.push({ role: "user", content: latest.slice(0, 600) });
   const res = await client.messages.create({

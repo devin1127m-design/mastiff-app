@@ -33,6 +33,10 @@ assert.equal(v4.verdict, "hold"); // over cap
 const v5 = check({ payee: clean.payee!, amount: 1200, account_last4: "2208" }, [rays], org);
 assert.equal(v5.verdict, "pass");
 assert.match(needsTap({ ...clean, amount: 1200 }, v5, v5.vendor)!, /below/);
+// Tap: vendor with no usual range yet.
+const noRange = { ...rays, usual_min: null, usual_max: null };
+const v6 = check({ payee: clean.payee!, amount: 3400, account_last4: "2208" }, [noRange], org);
+assert.match(needsTap(clean, v6, v6.vendor)!, /usual amount yet/);
 // Tap: a "new bank details" note.
 assert.match(needsTap({ ...clean, notes: "Notice: new bank details effective today" }, v, v.vendor)!, /change/);
 // Not an invoice.

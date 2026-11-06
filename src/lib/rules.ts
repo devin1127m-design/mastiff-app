@@ -11,6 +11,7 @@ export type Vendor = {
 };
 
 export type Org = {
+  timezone?: string | null;
   single_cap: number;
   range_multiple: number;
   hours_start: number;
@@ -70,8 +71,11 @@ export function check(input: RequestInput, vendors: Vendor[], org: Org): Verdict
 
   // Caution A: off-hours
   const at = input.submittedAt ?? new Date();
-  const hour = at.getHours();
-  const weekend = at.getDay() === 0 || at.getDay() === 6;
+  // Hours are the office's local hours (orgs.timezone), never the server's.
+  const parts = new Intl.DateTimeFormat("en-US", { timeZone: org.timezone || "America/Detroit", hour: "numeric", hour12: false, weekday: "short" }).formatToParts(at);
+  const hour = Number(parts.find((x) => x.type === "hour")?.value ?? at.getHours()) % 24;
+  const wd = parts.find((x) => x.type === "weekday")?.value ?? "";
+  const weekend = wd === "Sat" || wd === "Sun";
   if (weekend || hour < org.hours_start || hour >= org.hours_end) {
     cautions.push("Request arrived outside payment hours.");
   }

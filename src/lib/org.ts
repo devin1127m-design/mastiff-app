@@ -16,8 +16,10 @@ export async function requireOrg(orgId?: string) {
 export function fmtMoney(n: number | string) {
   return "$" + Number(n).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
+// All offices are in Michigan for now; shown times use that zone, not the server's (UTC).
+export const TZ = "America/Detroit";
 export function fmtDate(s: string) {
-  return new Date(s).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+  return new Date(s).toLocaleString("en-US", { timeZone: TZ, month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
 }
 export const STATUS_LABEL: Record<string, string> = {
   passed: "Passed", open: "Hold, open", confirmed: "Confirmed by callback", not_confirmed: "Not confirmed",

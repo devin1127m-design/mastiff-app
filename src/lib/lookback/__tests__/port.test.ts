@@ -16,5 +16,5 @@ const money = findMoney(res.items);
 assert.equal(money.duplicate_total, 4446.93);
 assert.equal(money.late_total, 322.22);
 assert.equal(money.late_fees.map((l) => l.row).join(","), "154,364,524,578");
-assert.equal(summarize(res.items, flags).line, "700 payments, 18 months, 3 would have held, 2 need a call this week");
+assert.equal(summarize(res.items, flags).line, "700 payments, 18 months, 2 would have held, 2 need a call this week");
 console.log("port matches Python baseline: 11 flags, $4,446.93 duplicates, $322.22 late fees");

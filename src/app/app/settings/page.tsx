@@ -10,6 +10,8 @@ const QBO_MSG: Record<string, string> = {
   failed: "QuickBooks did not connect. Try again.",
   owneronly: "Only the owner can connect QuickBooks, with their own login.",
   notconfigured: "QuickBooks is not switched on for this desk yet.",
+  saved: "Saved.",
+  notsaved: "Those settings did not save. Only the owner can change them.",
 };
 
 export default async function Settings({ searchParams }: { searchParams: Promise<{ qbo?: string; msg?: string }> }) {
@@ -18,7 +20,7 @@ export default async function Settings({ searchParams }: { searchParams: Promise
   const supabase = await createClient();
   const { data: conn } = role === "owner" ? await supabase.from("connections").select("realm_id, connected_by, connected_at, last_pulled_at, last_result").eq("org_id", org.id).eq("provider", "qbo").maybeSingle() : { data: null };
   const action = saveSettings.bind(null, org.id);
-  const notice = sp.msg ?? (sp.qbo ? QBO_MSG[sp.qbo] : null);
+  const notice = sp.msg && /^(Pulled |The pull )/.test(sp.msg) ? sp.msg : sp.qbo ? QBO_MSG[sp.qbo] : null;
   return (
     <Shell session={session} orgName={org.name}>
       <h1 className="mb-1">Settings</h1>

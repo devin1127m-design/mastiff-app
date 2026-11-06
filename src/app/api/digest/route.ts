@@ -6,7 +6,7 @@ export const runtime = "nodejs";
 
 export async function GET(req: Request) {
   const auth = req.headers.get("authorization");
-  if (process.env.CRON_SECRET && auth !== `Bearer ${process.env.CRON_SECRET}`) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  if (!process.env.CRON_SECRET || auth !== `Bearer ${process.env.CRON_SECRET}`) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   if (!SECRET()) return NextResponse.json({ error: "not configured" }, { status: 503 });
   const db = plainClient();
   const { data: people, error } = await db.rpc("digest_recipients", { p_secret: SECRET() });

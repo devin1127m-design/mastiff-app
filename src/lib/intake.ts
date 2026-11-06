@@ -51,12 +51,12 @@ export function parseExtracted(text: string): Extracted {
     : typeof amtRaw === "string" ? (Number(amtRaw.replace(/[^0-9.]/g, "")) || null) : null;
   const digits = (str(j.account_last4) ?? "").replace(/\D/g, "");
   const conf = typeof j.confidence === "number" ? Math.max(0, Math.min(1, j.confidence)) : 0;
-  let notes = str(j.notes);
-  if (notes) notes = notes.replace(/\d(?:[ -]?\d){7,}/g, (run) => "****" + run.replace(/\D/g, "").slice(-4)).slice(0, 240);
+  const mask = (s: string | null) => s && s.replace(/\d(?:[ -]?\d){7,}/g, (run) => "****" + run.replace(/\D/g, "").slice(-4));
+  const notes = mask(str(j.notes))?.slice(0, 240) ?? null;
   return {
-    payee: str(j.payee)?.slice(0, 120) ?? null,
+    payee: mask(str(j.payee))?.slice(0, 120) ?? null,
     amount,
-    invoice_no: str(j.invoice_no)?.slice(0, 40) ?? null,
+    invoice_no: mask(str(j.invoice_no))?.slice(0, 40) ?? null,
     invoice_date: date(j.invoice_date),
     due_date: date(j.due_date),
     account_last4: digits.length >= 4 ? digits.slice(-4) : null,
@@ -67,7 +67,7 @@ export function parseExtracted(text: string): Extracted {
 }
 
 export async function readInvoice(bytes: Uint8Array, mime: string): Promise<Extracted> {
-  const client = new Anthropic();
+  const client = new Anthropic({ timeout: 25_000, maxRetries: 1 });
   const data = Buffer.from(bytes).toString("base64");
   const block = mime === "application/pdf"
     ? { type: "document" as const, source: { type: "base64" as const, media_type: "application/pdf" as const, data } }
@@ -90,6 +90,7 @@ export function needsTap(x: Extracted, v: Verdict, vendor: Vendor | null): strin
   if (v.verdict === "hold") return "It would hold: " + v.reasons[0];
   const passUnder = (vendor as Vendor & { pass_under?: number | null }).pass_under;
   if (passUnder != null && x.amount <= Number(passUnder)) return null; // an owner's standing instruction (step 8)
+  if (vendor.usual_min == null && vendor.usual_max == null) return "Mastiff does not know this vendor's usual amount yet. After three payments it will suggest one on the Vendors page.";
   if (vendor.usual_min != null && x.amount < Number(vendor.usual_min)) return `Amount is below this vendor's usual range (from $${Number(vendor.usual_min).toLocaleString()}).`;
   if (vendor.usual_max != null && x.amount > Number(vendor.usual_max)) return `Amount is above this vendor's usual range (to $${Number(vendor.usual_max).toLocaleString()}).`;
   if (x.notes && /new bank|bank (details|account) (change|updat)|remit(tance)? (change|updat)|handwrit/i.test(x.notes)) return "The invoice mentions a change: " + x.notes;

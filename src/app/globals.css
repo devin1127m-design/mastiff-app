@@ -4,7 +4,7 @@
   --ink: #000;
   --paper: #fff;
   --grey: #6B6B6B;
-  --line: #d9d9d9;
+  --line: #6B6B6B;
 }
 html { color-scheme: light; }
 body { background: var(--paper); color: var(--ink); font-family: Inter, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.5; }
@@ -27,7 +27,7 @@ a { color: inherit; }
 table.list { width: 100%; border-collapse: collapse; font-size: 14px; }
 table.list th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--grey); font-weight: 600; padding: 8px 8px 8px 0; border-bottom: 1px solid #000; }
 table.list td { padding: 10px 8px 10px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
-table.list tr:hover td { background: #fafafa; }
+table.list tr:hover td { text-decoration: underline; text-decoration-color: #6B6B6B; }
 .card { border: 1px solid #000; border-radius: 2px; padding: 16px; }
 .advisory { font-size: 12.5px; color: var(--grey); }
 .pill { display: inline-block; border: 1px solid #000; border-radius: 999px; padding: 1px 9px; font-size: 12px; }

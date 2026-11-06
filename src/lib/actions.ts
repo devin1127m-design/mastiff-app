@@ -7,7 +7,15 @@ import { redirect } from "next/navigation";
 
 // Send whatever notifications the database just queued. Best effort, never blocks the bookkeeper.
 async function flush() {
-  try { const { flushNotifications } = await import("@/lib/mail"); await flushNotifications(20); } catch { /* mail is optional */ }
+  // Never make the bookkeeper wait on mail: kick it off and let the daily cron sweep anything missed.
+  try { const { flushNotifications } = await import("@/lib/mail"); void flushNotifications(20).catch(() => null); } catch { /* mail is optional */ }
+}
+
+// C11: free text never carries more than the last four of anything that looks like an account.
+function clean(v: FormDataEntryValue | null): string | null {
+  const s = String(v ?? "").trim();
+  if (!s) return null;
+  return s.replace(/\d(?:[ -]?\d){7,}/g, (run) => "****" + run.replace(/\D/g, "").slice(-4));
 }
 
 function last4(v: FormDataEntryValue | null): string | null {
@@ -35,31 +43,31 @@ export async function addVendor(orgId: string, form: FormData) {
     account_last4: last4(form.get("account_last4")),
     usual_min: usualMin || null,
     usual_max: usualMax || null,
-    notes: String(form.get("notes") ?? "").trim() || null,
+    notes: clean(form.get("notes")),
   }, { onConflict: "org_id,name_key" });
   revalidatePath("/app/vendors");
 }
 
 export async function importVendors(orgId: string, form: FormData) {
   const supabase = await createClient();
-  const text = String(form.get("csv") ?? "");
-  const lines = text.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
-  if (lines.length < 2) return;
-  const header = lines[0].toLowerCase().split(",").map((h) => h.replace(/[^a-z0-9]/g, ""));
+  const { parseCsv } = await import("@/lib/lookback/importer");
+  const all = parseCsv(String(form.get("csv") ?? "")).filter((r) => r.some((c) => c.trim()));
+  if (all.length < 2) return;
+  const header = all[0].map((h) => h.toLowerCase().replace(/[^a-z0-9]/g, ""));
   const col = (names: string[]) => header.findIndex((h) => names.includes(h));
   const iName = col(["vendor", "name", "payee", "vendorname", "supplier"]);
   const iPhone = col(["phone", "callbackphone", "callback", "phonenumber"]);
   const iAcct = col(["last4", "accountlast4", "account", "acct", "accountnumber"]);
   if (iName < 0) return;
-  const rows = lines.slice(1).map((l) => l.split(",").map((c) => c.trim().replace(/^"|"$/g, ""))).filter((c) => c[iName]);
-  const payload = rows.map((c) => ({
-    org_id: orgId,
-    name: c[iName],
-    name_key: nameKey(c[iName]),
-    callback_phone: iPhone >= 0 ? c[iPhone] || null : null,
-    account_last4: iAcct >= 0 ? last4(c[iAcct]) : null,
-  }));
-  if (payload.length) await supabase.from("vendors").upsert(payload, { onConflict: "org_id,name_key" });
+  // Only the columns the sheet has are written, so a sheet without phones never blanks a phone on file.
+  for (const c of all.slice(1)) {
+    const name = (c[iName] ?? "").trim();
+    if (!name) continue;
+    const row: Record<string, unknown> = { org_id: orgId, name, name_key: nameKey(name) };
+    if (iPhone >= 0 && c[iPhone]?.trim()) row.callback_phone = c[iPhone].trim();
+    if (iAcct >= 0 && c[iAcct]?.trim()) row.account_last4 = last4(c[iAcct]);
+    await supabase.from("vendors").upsert(row, { onConflict: "org_id,name_key" });
+  }
   revalidatePath("/app/vendors");
 }
 
@@ -71,13 +79,13 @@ export async function deleteVendor(orgId: string, vendorId: string) {
 
 export async function submitRequest(orgId: string, submittedBy: string, form: FormData) {
   const supabase = await createClient();
-  const { data: org } = await supabase.from("orgs").select("single_cap, range_multiple, hours_start, hours_end").eq("id", orgId).single();
+  const { data: org } = await supabase.from("orgs").select("single_cap, range_multiple, hours_start, hours_end, timezone").eq("id", orgId).single();
   const { data: vendors } = await supabase.from("vendors").select("id, name, name_key, account_last4, usual_min, usual_max").eq("org_id", orgId);
   const input = {
     payee: String(form.get("payee") ?? "").trim(),
     amount: money(form.get("amount")),
     account_last4: last4(form.get("account_last4")),
-    note: String(form.get("note") ?? "").trim() || null,
+    note: clean(form.get("note")),
     submittedAt: new Date(),
   };
   if (!input.payee || !(input.amount > 0)) return;
@@ -121,8 +129,8 @@ export async function logCallback(requestId: string, byName: string, form: FormD
   await supabase.from("callbacks").insert({
     request_id: requestId,
     number_called: String(form.get("number_called") ?? "").trim(),
-    who_answered: String(form.get("who_answered") ?? "").trim() || null,
-    what_said: String(form.get("what_said") ?? "").trim() || null,
+    who_answered: clean(form.get("who_answered")),
+    what_said: clean(form.get("what_said")),
     outcome,
     by_name: byName,
   });
@@ -144,12 +152,13 @@ export async function logCallback(requestId: string, byName: string, form: FormD
 export async function recordDecision(requestId: string, decidedBy: string, form: FormData) {
   const supabase = await createClient();
   const decision = String(form.get("decision"));
-  await supabase.from("decisions").insert({
+  const { error } = await supabase.from("decisions").insert({
     request_id: requestId,
     decided_by: decidedBy,
     decision,
-    note: String(form.get("note") ?? "").trim() || null,
+    note: clean(form.get("note")),
   });
+  if (error) return; // not the owner or approver: the database says no and nothing moves
   await supabase.from("requests").update({ status: decision === "reject" ? "rejected" : "released" }).eq("id", requestId);
   revalidatePath(`/app/requests/${requestId}`);
   revalidatePath("/app");
@@ -158,13 +167,15 @@ export async function recordDecision(requestId: string, decidedBy: string, form:
 
 export async function saveSettings(orgId: string, form: FormData) {
   const supabase = await createClient();
-  await supabase.from("orgs").update({
+  const { data, error } = await supabase.from("orgs").update({
     single_cap: money(form.get("single_cap")) || 5000,
     range_multiple: Number(form.get("range_multiple")) || 2,
     hours_start: Number(form.get("hours_start")),
     hours_end: Number(form.get("hours_end")),
-  }).eq("id", orgId);
+  }).eq("id", orgId).select("id");
   revalidatePath("/app/settings");
+  if (error || !data?.length) redirect("/app/settings?qbo=notsaved");
+  redirect("/app/settings?qbo=saved");
 }
 
 export async function createOrg(form: FormData) {
@@ -272,7 +283,7 @@ export async function startIntake(orgId: string, byName: string, path: string, s
   let tapReason: string | null = readError;
   let verdict: ReturnType<typeof check> | null = null;
   if (extracted) {
-    const { data: org } = await supabase.from("orgs").select("single_cap, range_multiple, hours_start, hours_end").eq("id", orgId).single();
+    const { data: org } = await supabase.from("orgs").select("single_cap, range_multiple, hours_start, hours_end, timezone").eq("id", orgId).single();
     const { data: vendors } = await supabase.from("vendors").select("id, name, name_key, account_last4, usual_min, usual_max, pass_under").eq("org_id", orgId);
     if (extracted.payee && extracted.amount) {
       verdict = check({ payee: extracted.payee, amount: extracted.amount, account_last4: extracted.account_last4, note: extracted.notes, submittedAt: new Date() }, (vendors ?? []) as Vendor[], org as Org);

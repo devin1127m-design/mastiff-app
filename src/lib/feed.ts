@@ -32,7 +32,7 @@ export async function buildFeed(supabase: SupabaseClient, orgId: string, limit =
   for (const r of reqs ?? []) {
     const href = `/app/requests/${r.id}`;
     const how = r.source === "photo" ? "from a photo" : r.source === "upload" ? "from an upload" : r.source === "email" ? "from a forwarded email" : r.source === "qbo" ? "pulled from QuickBooks" : `typed in by ${r.submitted_by}`;
-    if (r.verdict === "hold") ev.push({ at: r.created_at, who: "mastiff", text: `Held ${r.payee}, ${money(r.amount)} (${how}): ${r.reasons[0] ?? ""}`, href, requestId: r.id });
+    if (r.verdict === "hold") ev.push({ at: r.created_at, who: "mastiff", text: `Would have held ${r.payee}, ${money(r.amount)} (${how}): ${r.reasons[0] ?? ""}`, href, requestId: r.id });
     else if (r.straight_through) ev.push({ at: r.created_at, who: "mastiff", text: `Read ${r.payee}, ${money(r.amount)} ${how} and filed it: vendor on file, usual amount, passed the three checks.`, href, requestId: r.id });
     else ev.push({ at: r.created_at, who: "mastiff", text: `Passed ${r.payee}, ${money(r.amount)} (${how}).`, href, requestId: r.id });
   }

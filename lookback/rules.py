@@ -6,6 +6,8 @@ amount out of range) and read "would have held". Rules 3, 4, 6 and 7 are caution
 """
 from __future__ import annotations
 
+import dataclasses
+
 import difflib
 from collections import defaultdict
 from dataclasses import dataclass
@@ -137,11 +139,14 @@ def _rule2(groups: Dict[str, List[Payment]], s: Settings) -> List[Flag]:
         if p.amount > s.payment_line:
             why.append(f"a first payment over the {_m(s.payment_line)} line")
         if why:
-            out.append(_flag(
+            f = _flag(
                 2, p,
                 f"Paid once and not again: {_m(p.amount)} on {_d(p.date)}, {' and '.join(why)}.",
                 "Confirm this payee was an expected vendor and that the goods or work were received.",
-            ))
+            )
+            if not p.amount > s.payment_line:  # a round amount alone is worth checking, not a hold
+                f = dataclasses.replace(f, verdict=CHECK, weight=WEIGHTS[4])
+            out.append(f)
     return out
 
 

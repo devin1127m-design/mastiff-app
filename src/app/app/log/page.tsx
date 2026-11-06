@@ -15,7 +15,7 @@ export default async function Log({ searchParams }: { searchParams: Promise<{ ho
       <div className="flex items-start justify-between gap-4 mb-6">
         <div>
           <h1 className="mb-1">Log</h1>
-          <p className="grey">Every request, verdict, callback and decision. This is the record your insurer and your CPA ask for.</p>
+          <p className="grey">Every request, verdict, callback and decision.</p>
         </div>
         <div className="flex gap-2">
           <Link href={holds ? "/app/log" : "/app/log?holds=1"} className="btn">{holds ? "Show all" : "Holds only"}</Link>

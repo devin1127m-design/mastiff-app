@@ -73,8 +73,12 @@ function rule2(groups: Map<string, Payment[]>, s: Settings): Flag[] {
     const p = g[0]; const why: string[] = [];
     if (p.amount >= s.round_min && eq(p.amount % s.round_unit, 0)) why.push("a round amount");
     if (p.amount > s.payment_line) why.push(`a first payment over the ${m(s.payment_line)} line`);
-    if (why.length) out.push(flag(2, p, `Paid once and not again: ${m(p.amount)} on ${d(p.date)}, ${why.join(" and ")}.`,
-      "Confirm this payee was an expected vendor and that the goods or work were received."));
+    if (why.length) {
+      const f = flag(2, p, `Paid once and not again: ${m(p.amount)} on ${d(p.date)}, ${why.join(" and ")}.`,
+        "Confirm this payee was an expected vendor and that the goods or work were received.");
+      if (!(p.amount > s.payment_line)) { f.verdict = CHECK; f.weight = WEIGHTS[4]; } // a round amount alone is worth checking, not a hold
+      out.push(f);
+    }
   }
   return out;
 }

@@ -39,12 +39,16 @@ export async function POST(req: Request) {
   const evt = JSON.parse(raw) as { type: string; data: { email_id: string; from: string; to: string[]; subject?: string; attachments?: { id: string; filename: string; content_type: string }[] } };
   if (evt.type !== "email.received") return NextResponse.json({ ignored: evt.type });
   const d = evt.data;
-  const to = (d.to?.[0] ?? "").toLowerCase();
   const db = plainClient();
 
-  // Which office, and what it has on file.
-  const { data: orgJ } = await db.rpc("org_for_inbound", { p_secret: SECRET(), p_to: to });
-  const org = orgJ as (Org & { id: string; name: string; vendors: Vendor[] }) | null;
+  // Which office (the first address on the email that belongs to one), and what it has on file.
+  type OrgInfo = Org & { id: string; name: string; vendors: Vendor[]; members: string[]; sender_domains: Record<string, string[]> };
+  let org: OrgInfo | null = null;
+  let to = (d.to?.[0] ?? "").toLowerCase();
+  for (const addr of d.to ?? []) {
+    const { data: orgJ } = await db.rpc("org_for_inbound", { p_secret: SECRET(), p_to: addr.toLowerCase() });
+    if (orgJ) { org = orgJ as OrgInfo; to = addr.toLowerCase(); break; }
+  }
 
   // Body text (for the record) and the first attachment that looks like an invoice.
   let bodyText = "";
@@ -57,10 +61,12 @@ export async function POST(req: Request) {
       if (full.attachments?.length) attachments = full.attachments;
     }
   }
-  const stored: { name: string; mime: string; path: string }[] = [];
+  const stored: { name: string; mime: string; path: string; bytes: number }[] = [];
   let imagePath: string | null = null, imageMime = "", imageBytes: Uint8Array | null = null;
   if (org && process.env.RESEND_API_KEY) {
-    for (const a of attachments) {
+    // PDFs first, then the largest image: a signature logo is small, an invoice photo is not.
+    const ordered = [...attachments].filter((a) => ACCEPT[a.content_type]).sort((a, b) => (a.content_type === "application/pdf" ? 0 : 1) - (b.content_type === "application/pdf" ? 0 : 1));
+    for (const a of ordered) {
       const ext = ACCEPT[a.content_type];
       if (!ext) continue;
       const meta = await resend(`/emails/receiving/${d.email_id}/attachments/${a.id}`);
@@ -73,9 +79,12 @@ export async function POST(req: Request) {
       const path = `inbound/${crypto.randomUUID()}.${ext}`;
       const { error } = await db.storage.from("invoices").upload(path, bytes, { contentType: a.content_type });
       if (error) continue;
-      stored.push({ name: a.filename, mime: a.content_type, path });
-      if (!imagePath) { imagePath = path; imageMime = a.content_type; imageBytes = bytes; }
+      stored.push({ name: a.filename, mime: a.content_type, path, bytes: bytes.byteLength });
+      const better = !imagePath || (imageMime !== "application/pdf" && a.content_type !== "application/pdf" && bytes.byteLength > (imageBytes?.byteLength ?? 0));
+      if (better) { imagePath = path; imageMime = a.content_type; imageBytes = bytes; }
     }
+    // Tiny images are logos, not invoices.
+    if (imageBytes && imageMime !== "application/pdf" && imageBytes.byteLength < 30 * 1024) { imagePath = null; imageBytes = null; }
   }
 
   // Read and check, in that order; the rules are the last word.
@@ -90,6 +99,14 @@ export async function POST(req: Request) {
     if (extracted?.payee && extracted.amount) {
       verdict = check({ payee: extracted.payee, amount: extracted.amount, account_last4: extracted.account_last4, note: extracted.notes, submittedAt: new Date() }, org.vendors, org);
       tap = needsTap(extracted, verdict, verdict.vendor);
+      // An emailed invoice goes straight through only from a sender the office already knows:
+      // one of its own people, or a domain this vendor's paid invoices have come from before.
+      if (!tap && verdict.vendor) {
+        const from = (d.from.match(/<([^>]+)>/)?.[1] ?? d.from).trim().toLowerCase();
+        const domain = from.split("@").pop() ?? "";
+        const known = (org.members ?? []).includes(from) || (org.sender_domains?.[verdict.vendor.id] ?? []).includes(domain);
+        if (!known) tap = `Sent from ${from}, an address Mastiff has not seen for this vendor before.`;
+      }
     } else tap = readError ?? (extracted ? needsTap(extracted, { verdict: "hold", reasons: [], cautions: [], vendor: null }, null) : "Forwarded by email; not read yet.");
   }
 

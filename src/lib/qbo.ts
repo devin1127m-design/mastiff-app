@@ -77,16 +77,16 @@ export async function pull(supabase: SupabaseClient, orgId: string, byName: stri
     const phone = v.PrimaryPhone?.FreeFormNumber?.trim() || null;
     const cur = have.get(key);
     if (!cur) {
-      const { data: row } = await supabase.from("vendors").insert({ org_id: orgId, name: v.DisplayName, name_key: key, callback_phone: phone, phone_on_file_since: phone ? new Date().toISOString().slice(0, 10) : null, notes: "From QuickBooks" }).select("id, name, name_key, account_last4, usual_min, usual_max, callback_phone").single();
+      const { data: row } = await supabase.from("vendors").insert({ org_id: orgId, name: v.DisplayName, name_key: key, callback_phone: phone, phone_on_file_since: null, notes: "From QuickBooks; number not yet confirmed by voice" }).select("id, name, name_key, account_last4, usual_min, usual_max, callback_phone").single();
       if (row) { have.set(key, row); added++; }
     } else if (!cur.callback_phone && phone) {
-      await supabase.from("vendors").update({ callback_phone: phone, phone_on_file_since: new Date().toISOString().slice(0, 10) }).eq("id", cur.id);
+      await supabase.from("vendors").update({ callback_phone: phone }).eq("id", cur.id); // on file from QuickBooks, not yet confirmed
       cur.callback_phone = phone; phones++;
     }
   }
 
   // Bills: each unpaid bill not seen before becomes a request, checked like any other.
-  const { data: org } = await supabase.from("orgs").select("single_cap, range_multiple, hours_start, hours_end").eq("id", orgId).single();
+  const { data: org } = await supabase.from("orgs").select("single_cap, range_multiple, hours_start, hours_end, timezone").eq("id", orgId).single();
   const vendors = [...have.values()] as Vendor[];
   const { data: seen } = await supabase.from("requests").select("external_id").eq("org_id", orgId).like("external_id", "qbo:%");
   const seenIds = new Set((seen ?? []).map((r) => r.external_id));
@@ -94,7 +94,8 @@ export async function pull(supabase: SupabaseClient, orgId: string, byName: stri
   for (const b of qb) {
     const ext = `qbo:${c.realm_id}:${b.Id}`;
     if (seenIds.has(ext) || !b.VendorRef?.name || !(b.Balance > 0)) continue;
-    const input = { payee: b.VendorRef.name, amount: Math.round(b.Balance * 100) / 100, account_last4: null, note: b.PrivateNote ?? null, submittedAt: new Date() };
+    const note = b.PrivateNote ? b.PrivateNote.replace(/\d(?:[ -]?\d){7,}/g, (run) => "****" + run.replace(/\D/g, "").slice(-4)) : null;
+    const input = { payee: b.VendorRef.name, amount: Math.round(b.Balance * 100) / 100, account_last4: null, note, submittedAt: new Date() };
     const v = check(input, vendors, org as Org);
     const { error } = await supabase.from("requests").insert({
       org_id: orgId, payee: input.payee, amount: input.amount, account_last4: null, invoice_no: b.DocNumber ?? null, note: input.note,

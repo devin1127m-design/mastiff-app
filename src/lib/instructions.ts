@@ -33,7 +33,7 @@ Rules: never invent a vendor name; copy it as written. Amounts are plain numbers
 
 export async function propose(text: string, vendors: VendorLite[]): Promise<Proposal> {
   if (!process.env.ANTHROPIC_API_KEY) return { kind: "unclear", why: "Instructions are not switched on for this desk yet." };
-  const client = new Anthropic();
+  const client = new Anthropic({ timeout: 20_000, maxRetries: 1 });
   const res = await client.messages.create({ model: MODEL, max_tokens: 200, system: PROMPT, messages: [{ role: "user", content: `Vendors on file: ${vendors.map((v) => v.name).join("; ") || "none"}\n\nInstruction: ${text.slice(0, 400)}` }] });
   const raw = res.content.filter((c) => c.type === "text").map((c) => (c as { text: string }).text).join("");
   return checkProposal(raw, vendors);

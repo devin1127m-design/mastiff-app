@@ -39,7 +39,7 @@ export default async function Desk() {
             const late = r.status === "open" && mins > 60;
             return (
               <tr key={r.id}>
-                <td className={late ? "font-semibold" : ""}>{mins < 60 ? `${mins} min` : `${Math.floor(mins / 60)} h ${mins % 60} m`}{late && " ⚠"}<div className="grey text-xs">{fmtDate(r.created_at)}</div></td>
+                <td className={late ? "font-semibold" : ""}>{mins < 60 ? `${mins} min` : `${Math.floor(mins / 60)} h ${mins % 60} m`}{late && " "}<div className="grey text-xs">{fmtDate(r.created_at)}</div></td>
                 <td>{(r.orgs as unknown as { name: string } | null)?.name}</td>
                 <td><Link href={`/app/requests/${r.id}`} className="underline">{r.payee}</Link></td>
                 <td>{fmtMoney(r.amount)}</td>
@@ -102,7 +102,7 @@ export default async function Desk() {
             </select>
           </div>
         </div>
-        <div className="field"><label>Email</label><input name="email" type="email" required /><div className="hint">They sign in at this site with this email and a 6-digit code. Nothing else to set up.</div></div>
+        <div className="field"><label>Email</label><input name="email" type="email" required /><div className="hint">They sign in at this site with this email and the link it sends. Nothing else to set up.</div></div>
         <button className="btn fill">Invite</button>
       </form>
       </div>

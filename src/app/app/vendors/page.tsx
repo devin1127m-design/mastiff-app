@@ -9,7 +9,7 @@ export default async function Vendors() {
   const supabase = await createClient();
   const [{ data: vendors }, { data: paid }, { data: mails }] = await Promise.all([
     supabase.from("vendors").select("*").eq("org_id", org.id).order("name"),
-    supabase.from("requests").select("id, vendor_id, amount, created_at").eq("org_id", org.id).in("status", ["passed", "confirmed", "released"]).not("vendor_id", "is", null),
+    supabase.from("requests").select("id, vendor_id, amount, created_at").eq("org_id", org.id).in("status", ["confirmed", "released"]).not("vendor_id", "is", null),
     supabase.from("inbound_emails").select("from_email, request_id").eq("org_id", org.id).not("request_id", "is", null),
   ]);
   // Vendor memory: what the office's own history says is normal. Suggested, never applied on its own.
