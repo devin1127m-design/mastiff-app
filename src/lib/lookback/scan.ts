@@ -194,7 +194,26 @@ function lateMatch(p: Payment): { matched: string; field: string } | null {
   return null;
 }
 
-export type Money = { duplicates: DuplicatePair[]; duplicate_total: number; late_fees: LateFee[]; late_total: number; total: number; summary: string };
+export type NearRepeat = { vendor: string; first_date: string; second_date: string; amount: number; first_row: number; second_row: number; days: number };
+export type Money = { duplicates: DuplicatePair[]; duplicate_total: number; late_fees: LateFee[]; late_total: number; total: number; summary: string; near_repeats?: NearRepeat[] };
+
+// Not flagged, only counted: same payee, same amount, 15 to 45 days apart. Where monthly bills live.
+// Kept on the report so a real file can tell us whether a wider duplicate window would find anything but rent.
+export function nearRepeats(payments: Payment[], s: Settings = DEFAULTS): NearRepeat[] {
+  const out: NearRepeat[] = [];
+  for (const g of group(payments).values()) {
+    const sorted = [...g].sort((a, b) => a.date.getTime() - b.date.getTime());
+    for (let i = 1; i < sorted.length; i++) {
+      const p = sorted[i];
+      for (let j = i - 1; j >= 0; j--) {
+        const q = sorted[j]; const dd = days(p.date, q.date);
+        if (dd > 45) break;
+        if (dd > s.duplicate_days && Math.abs(p.amount - q.amount) < 0.005) { out.push({ vendor: p.payee, first_date: q.date.toISOString().slice(0, 10), second_date: p.date.toISOString().slice(0, 10), amount: p.amount, first_row: q.row, second_row: p.row, days: dd }); break; }
+      }
+    }
+  }
+  return out.sort((a, b) => b.amount - a.amount);
+}
 
 export function findMoney(payments: Payment[], s: Settings = DEFAULTS): Money {
   const duplicates = duplicatePairs(payments, s);
@@ -206,7 +225,7 @@ export function findMoney(payments: Payment[], s: Settings = DEFAULTS): Money {
   const parts: string[] = [];
   if (duplicates.length) parts.push(`${m(duplicate_total)} in possible duplicate payments`);
   if (late_fees.length) parts.push(`${m(late_total)} in late fees and interest`);
-  return { duplicates, duplicate_total, late_fees, late_total, total: round2(duplicate_total + late_total), summary: parts.length ? "Possible money back or stopped: " + parts.join(", ") + "." : "" };
+  return { duplicates, duplicate_total, late_fees, late_total, total: round2(duplicate_total + late_total), summary: parts.length ? "Possible money back or stopped: " + parts.join(", ") + "." : "", near_repeats: nearRepeats(payments, s) };
 }
 
 export type Summary = { payments: number; months: number; held: number; need_call: number; first: string; last: string; line: string };

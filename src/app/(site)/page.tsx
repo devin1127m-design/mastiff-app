@@ -64,7 +64,7 @@ export default function Landing() {
           <li><span className="num">02</span><div><h3>The call</h3><p>On a hold, we call the vendor on the number already on file and tell you who answered and what they said. Your bookkeeper never has to make the call.</p></div></li>
           <li><span className="num">03</span><div><h3>The vendor file</h3><p>By day 30, every active vendor's number and account confirmed by voice, dated, with a name next to it. Yours to keep.</p></div></li>
           <li><span className="num">04</span><div><h3>The log</h3><p>Every check, call and decision in one place. When your broker or CPA asks how a payment was verified, you hand them the page.</p></div></li>
-          <li><span className="num">05</span><div><h3>Money back</h3><p>The look-back scans the last 18 months of payments for duplicates and late fees. Most offices find some.</p></div></li>
+          <li><span className="num">05</span><div><h3>Money back</h3><p>The look-back scans the last 18 months of payments for duplicates and late fees, and shows you the amounts worth asking a vendor about.</p></div></li>
         </ol>
       </section>
 
@@ -73,7 +73,7 @@ export default function Landing() {
           <p className="eyebrow light">The numbers</p>
           <div className="stats">
             <div><p className="stat">$3.05B</p><p>Business email compromise losses the FBI logged in 2025, the second-largest category by loss.<sup><a href="#fn1">1</a></sup></p></div>
-            <div><p className="stat">81%</p><p>Of senior finance executives surveyed in August 2026 said their company faced an AI-enabled fraud attempt in the past year.<sup><a href="#fn2">2</a></sup></p></div>
+            <div><p className="stat">81%</p><p>Of senior finance executives surveyed in August 2026 said their company faced an AI-enabled payment attempt in the past year.<sup><a href="#fn2">2</a></sup></p></div>
             <div><p className="stat">$93,425</p><p>Lost by one small construction firm when a subcontractor's bank details changed and the callback its own policy required was skipped.<sup><a href="#fn3">3</a></sup></p></div>
           </div>
         </div>

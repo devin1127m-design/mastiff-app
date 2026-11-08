@@ -77,3 +77,15 @@ Five fixed tabs is right; a hamburger hides the one thing the bookkeeper does (S
 
 - My 2026-11-05 review file still carries the line asking you to set `CRON_SECRET`; you did. Ignore it.
 - Zero offices in production is the right state to start the school. Before the export arrives, make one Test Office again with the three members' real emails so the first forwarded invoice has somewhere to land and the hold email has someone to reach.
+
+## Eris, 2026-11-08: done
+All eight, in migration `018_review_b.sql` and the commit after this note.
+- A: malformed body is 400; Resend fetch failures set `read_error` and prefix the stored body, so an outage reads as an error on Desk; subject and body masked in `receive_email`; `org_for_inbound` requires `@mastiffdesk.com`.
+- B: `vendors.sender_domains text[]`; appended when a tapped email intake is confirmed (`submitRequest`); the route reads it; shown on the Vendors page.
+- H: unchanged at 14. The report now shows a scored line for marked duplicate pairs and a folded "15 to 45 days apart, not flagged" list (`nearRepeats`). The "marks teach the next scan" sentence is gone until something reads the marks.
+- C: `gatherContext` rebuilt as you laid it out: settings, per-vendor 13-month summary, every hold in full, last 60 requests, look-back summaries, and the full history of a vendor the question names (`nameKey` match). No tail cut. Thread timeout 40s.
+- D: `placeLike` guard (place words, Michigan cities, store numbers, two-letter codes; never a word that starts another payee; never a suffix that is itself a payee), Python and TS, with the Metro Fasteners Rental negative test in both.
+- G: "catch" → "check for"; both "most offices" sentences cut; the survey tile says "payment attempt" with the citation untouched.
+- E: insert error checked (falls to a mailto), `started_at` under three seconds rejected, one lead per email per UTC day (unique index).
+- F: confirmed: the More grid is on `/app/page.tsx` with Settings; Sign out is in the header on phones too.
+Not done: the Test Office with real emails. Devin wants the school to be the first office; I will create it when he has the name.

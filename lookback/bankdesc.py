@@ -56,19 +56,36 @@ def payee_from_description(desc: str) -> Tuple[str, Optional[str]]:
     return _tidy(s), None
 
 
+_PLACE_WORDS = set("north south east west lake lakes hills hill heights park pointe point township twp city village beach shores grove harbor harbour center centre station plaza mall square ridge creek river falls valley springs woods oaks pines mt mount saint st ste suite rd road ave avenue blvd hwy highway main".split())
+_MI_CITIES = set("oxford orion ortonville clarkston auburn rochester troy pontiac waterford detroit flint lapeer brandon holly fenton grand blanc davison burton goodrich metamora dryden almont imlay romeo washington shelby utica sterling warren royal oak ferndale birmingham bloomfield southfield novi livonia farmington wixom milford highland white commerce walled lyon brighton howell hartland ann arbor ypsilanti saline dearborn lansing okemos holland saginaw midland bay traverse kalamazoo portage battle jackson monroe wyandotte taylor canton plymouth northville".split())
+
+
+def _place_like(suffix, first_words, own_names):
+    """A suffix that is a place or a store number: the only tail a bank adds to one vendor.
+    "Lake", "Auburn Hills", "#1234" merge; "Rental", "Supply", "Pro" do not."""
+    words = suffix.lower().split()
+    if not words or suffix.lower().strip() in own_names:
+        return False
+    ok = all(w in _PLACE_WORDS or w in _MI_CITIES or re.fullmatch(r"#?\d{2,}", w) or re.fullmatch(r"[a-z]{2}", w) for w in words)
+    return ok and not any(w in first_words for w in words)
+
+
 def merge_prefixes(names):
-    """Names that extend one another by whole words are one vendor ("Home Depot Pro",
-    "Home Depot Pro Lake", "Home Depot Pro Auburn"). Each maps to the family's most common form."""
+    """Names that extend one another by a place-like tail are one vendor ("Home Depot Pro",
+    "Home Depot Pro Lake", "Home Depot Pro Auburn"). Each maps to the family's most common form.
+    Keep in step with src/lib/lookback/bankdesc.ts."""
     from collections import Counter
     counts = Counter(n for n in names if n)
     keys = sorted(counts, key=len)
+    own_names = {k.lower() for k in keys}
+    first_words = {k.lower().split()[0] for k in keys if k.split()}
     family = {}
     for n in keys:
         root = n
         for k in keys:
             if len(k) >= len(n):
                 break
-            if (len(k.split()) >= 2 or len(k) >= 6) and n.lower().startswith(k.lower() + " "):
+            if (len(k.split()) >= 2 or len(k) >= 6) and n.lower().startswith(k.lower() + " ") and _place_like(n[len(k):], first_words, own_names):
                 root = family.get(k, k)
                 break
         family[n] = root

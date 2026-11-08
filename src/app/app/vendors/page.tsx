@@ -60,9 +60,10 @@ export default async function Vendors() {
             <td className="text-sm">{v.usual_min || v.usual_max ? `$${Number(v.usual_min ?? 0).toLocaleString()} – $${Number(v.usual_max ?? 0).toLocaleString()}` : <span className="grey">—</span>}</td>
             <td className="text-sm">{(() => {
               const p = patterns.get(v.id);
-              if (!p) return <span className="grey">Fewer than three payments so far.</span>;
+              const senders = (v.sender_domains as string[] | null)?.length ? <div className="grey text-xs">Emails from {(v.sender_domains as string[]).join(", ")}</div> : null;
+              if (!p) return <><span className="grey">Fewer than three payments so far.</span>{senders}</>;
               const same = Number(v.usual_min) === p.low && Number(v.usual_max) === p.high;
-              return <>{describe(p)}{!same && <form action={adoptPattern.bind(null, org.id, v.id, p.low, p.high)} className="mt-1"><button className="btn small">Use ${p.low.toLocaleString()} – ${p.high.toLocaleString()} as usual</button></form>}</>;
+              return <>{describe(p)}{senders}{!same && <form action={adoptPattern.bind(null, org.id, v.id, p.low, p.high)} className="mt-1"><button className="btn small">Use ${p.low.toLocaleString()} – ${p.high.toLocaleString()} as usual</button></form>}</>;
             })()}</td>
             <td className="text-sm">{v.verified_at ? <>by voice, {new Date(v.verified_at).toLocaleDateString()}<div className="grey text-xs">{v.verified_by}</div></> : <span className="grey">not yet</span>}</td>
             <td><form action={deleteVendor.bind(null, org.id, v.id)}><button className="btn small">Remove</button></form></td>

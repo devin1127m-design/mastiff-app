@@ -36,13 +36,16 @@ export async function POST(req: Request) {
   const raw = await req.text();
   if (!verify(raw, req.headers)) return NextResponse.json({ error: "bad signature" }, { status: 401 });
   if (!SECRET()) return NextResponse.json({ error: "inbound not configured" }, { status: 503 });
-  const evt = JSON.parse(raw) as { type: string; data: { email_id: string; from: string; to: string[]; subject?: string; attachments?: { id: string; filename: string; content_type: string }[] } };
+  type Evt = { type: string; data: { email_id: string; from: string; to: string[]; subject?: string; attachments?: { id: string; filename: string; content_type: string }[] } };
+  let evt: Evt;
+  try { evt = JSON.parse(raw) as Evt; if (!evt?.type || !evt.data?.email_id) throw new Error("shape"); }
+  catch { return NextResponse.json({ error: "bad body" }, { status: 400 }); } // never 500 on a signed-but-odd body; Resend would retry for a day
   if (evt.type !== "email.received") return NextResponse.json({ ignored: evt.type });
   const d = evt.data;
   const db = plainClient();
 
   // Which office (the first address on the email that belongs to one), and what it has on file.
-  type OrgInfo = Org & { id: string; name: string; vendors: Vendor[]; members: string[]; sender_domains: Record<string, string[]> };
+  type OrgInfo = Org & { id: string; name: string; vendors: (Vendor & { sender_domains?: string[] })[]; members: string[] };
   let org: OrgInfo | null = null;
   let to = (d.to?.[0] ?? "").toLowerCase();
   for (const addr of d.to ?? []) {
@@ -53,13 +56,14 @@ export async function POST(req: Request) {
   // Body text (for the record) and the first attachment that looks like an invoice.
   let bodyText = "";
   let attachments = d.attachments ?? [];
+  let fetchError: string | null = null; // a Resend outage must look like an error, never like "no invoices arrived"
   if (process.env.RESEND_API_KEY) {
-    const r = await resend(`/emails/receiving/${d.email_id}`);
-    if (r.ok) {
+    const r = await resend(`/emails/receiving/${d.email_id}`).catch(() => null);
+    if (r?.ok) {
       const full = await r.json() as { text?: string | null; html?: string | null; attachments?: typeof attachments };
       bodyText = full.text ?? (full.html ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
       if (full.attachments?.length) attachments = full.attachments;
-    }
+    } else fetchError = `Could not fetch the email from Resend (${r ? r.status : "no response"}).`;
   }
   const stored: { name: string; mime: string; path: string; bytes: number }[] = [];
   let imagePath: string | null = null, imageMime = "", imageBytes: Uint8Array | null = null;
@@ -69,11 +73,11 @@ export async function POST(req: Request) {
     for (const a of ordered) {
       const ext = ACCEPT[a.content_type];
       if (!ext) continue;
-      const meta = await resend(`/emails/receiving/${d.email_id}/attachments/${a.id}`);
-      if (!meta.ok) continue;
+      const meta = await resend(`/emails/receiving/${d.email_id}/attachments/${a.id}`).catch(() => null);
+      if (!meta?.ok) { fetchError = fetchError ?? `Could not fetch attachment ${a.filename} (${meta ? meta.status : "no response"}).`; continue; }
       const { download_url } = await meta.json() as { download_url: string };
-      const file = await fetch(download_url);
-      if (!file.ok) continue;
+      const file = await fetch(download_url).catch(() => null);
+      if (!file?.ok) { fetchError = fetchError ?? `Could not download ${a.filename}.`; continue; }
       const bytes = new Uint8Array(await file.arrayBuffer());
       if (bytes.byteLength > 15 * 1024 * 1024) continue;
       const path = `inbound/${crypto.randomUUID()}.${ext}`;
@@ -104,14 +108,16 @@ export async function POST(req: Request) {
       if (!tap && verdict.vendor) {
         const from = (d.from.match(/<([^>]+)>/)?.[1] ?? d.from).trim().toLowerCase();
         const domain = from.split("@").pop() ?? "";
-        const known = (org.members ?? []).includes(from) || (org.sender_domains?.[verdict.vendor.id] ?? []).includes(domain);
-        if (!known) tap = `Sent from ${from}, an address Mastiff has not seen for this vendor before.`;
+        const vend = org.vendors.find((v) => v.id === verdict!.vendor!.id);
+        const known = (org.members ?? []).includes(from) || (vend?.sender_domains ?? []).map((x) => x.toLowerCase()).includes(domain);
+        if (!known) tap = `Sent from ${from}, an address Mastiff has not seen for this vendor before. Confirm it and Mastiff will remember the sender.`;
       }
     } else tap = readError ?? (extracted ? needsTap(extracted, { verdict: "hold", reasons: [], cautions: [], vendor: null }, null) : "Forwarded by email; not read yet.");
   }
+  if (org && !imagePath && fetchError) { readError = fetchError; tap = fetchError; }
 
   const { data: out, error } = await db.rpc("receive_email", {
-    p_secret: SECRET(), p_provider_id: d.email_id, p_from: d.from, p_to: to, p_subject: d.subject ?? null, p_body: bodyText,
+    p_secret: SECRET(), p_provider_id: d.email_id, p_from: d.from, p_to: to, p_subject: d.subject ?? null, p_body: fetchError ? `[${fetchError}] ` + bodyText : bodyText,
     p_attachments: stored, p_org_id: org?.id ?? null, p_image_path: imagePath,
     p_extracted: extracted, p_confidence: extracted?.confidence ?? null, p_tap_reason: tap, p_read_error: readError,
     p_verdict: verdict?.verdict ?? null, p_reasons: verdict?.reasons ?? null, p_cautions: verdict?.cautions ?? null,

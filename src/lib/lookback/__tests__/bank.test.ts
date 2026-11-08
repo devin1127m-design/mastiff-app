@@ -13,6 +13,11 @@ assert.equal(payeeFromDescription("Zelle payment to Mike Tile Setters 9981234").
 assert.deepEqual(payeeFromDescription("CHECK 1837"), { payee: CHECK_PAYEE, ref: "1837" });
 const canon = mergePrefixes([..."12345"].map(() => "Home Depot Pro").concat(["Home Depot Pro Lake", "Home Depot Pro Lake", "Home Depot Pro Auburn", "Menards", "Menards", "Menards", "Menards Lake"]));
 assert.equal(canon.get("Home Depot Pro Lake"), "Home Depot Pro"); assert.equal(canon.get("Menards Lake"), "Menards");
+// Negative: a different business that shares a prefix stays its own payee.
+const c2 = mergePrefixes(["Metro Fasteners", "Metro Fasteners", "Metro Fasteners Rental", "Metro Fasteners Rental", "Metro Fasteners Auburn", "Great Lakes Flooring Supply", "Great Lakes Flooring"]);
+assert.equal(c2.get("Metro Fasteners Rental"), "Metro Fasteners Rental");
+assert.equal(c2.get("Metro Fasteners Auburn"), "Metro Fasteners");
+assert.equal(c2.get("Great Lakes Flooring Supply"), "Great Lakes Flooring Supply");
 
 const res = readPayments(readFileSync("lookback/tests/fixtures/bank-export.csv", "utf8"));
 assert.equal(res.bankMode, true);

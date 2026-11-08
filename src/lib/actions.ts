@@ -116,7 +116,19 @@ export async function submitRequest(orgId: string, submittedBy: string, form: Fo
     read_confidence: intake?.read_confidence ?? null,
     straight_through: false,
   }).select("id").single();
-  if (intakeId && row) await supabase.from("intakes").update({ request_id: row.id }).eq("id", intakeId);
+  if (intakeId && row) {
+    await supabase.from("intakes").update({ request_id: row.id }).eq("id", intakeId);
+    // An emailed invoice the office confirmed: remember the sender's domain for this vendor (step 5's "sender domain").
+    if (intake?.source === "email" && v.vendor) {
+      const { data: mail } = await supabase.from("inbound_emails").select("from_email").eq("intake_id", intakeId).maybeSingle();
+      const domain = (mail?.from_email?.match(/<([^>]+)>/)?.[1] ?? mail?.from_email ?? "").trim().toLowerCase().split("@").pop();
+      if (domain && domain.includes(".")) {
+        const { data: vd } = await supabase.from("vendors").select("sender_domains").eq("id", v.vendor.id).single();
+        const have = (vd?.sender_domains ?? []) as string[];
+        if (!have.includes(domain)) await supabase.from("vendors").update({ sender_domains: [...have, domain] }).eq("id", v.vendor.id);
+      }
+    }
+  }
   if (v.verdict === "hold") await flush();
   revalidatePath("/app");
   revalidatePath("/desk");
@@ -472,7 +484,10 @@ export async function submitLead(form: FormData) {
   const s = (k: string, n = 120) => String(form.get(k) ?? "").trim().slice(0, n).replace(/\d(?:[ -]?\d){7,}/g, (r) => "****" + r.replace(/\D/g, "").slice(-4));
   const name = s("name"), firm = s("firm"), email = s("email").toLowerCase(), phone = s("phone", 40);
   if (!name || !firm || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || phone.replace(/\D/g, "").length < 7) redirect("/pilot?err=1#form");
+  const started = Number(form.get("started_at") ?? 0);
+  if (started && Date.now() - started < 3000) redirect("/pilot?sent=1"); // filled in under three seconds: not a person
   const ppm = Number(s("payments_per_month", 6).replace(/\D/g, "")) || null;
-  await db.from("leads").insert({ name, firm, email, phone, payments_per_month: ppm, note: s("note", 400) || null });
+  const { error } = await db.from("leads").insert({ name, firm, email, phone, payments_per_month: ppm, note: s("note", 400) || null });
+  if (error && !/duplicate|unique/i.test(error.message)) redirect("/pilot?err=save#form");
   redirect("/pilot?sent=1");
 }

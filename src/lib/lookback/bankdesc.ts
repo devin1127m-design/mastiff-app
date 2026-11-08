@@ -43,17 +43,30 @@ export function payeeFromDescription(desc: string): { payee: string; ref: string
   return { payee: tidy(s), ref: null };
 }
 
-// Names that extend one another by whole words are one vendor; each maps to the family's most common form.
+// A suffix that is a place or a store number, the only kind of tail a bank adds to one vendor.
+// "Lake", "Auburn Hills", "#1234", "0042" merge; "Rental", "Supply", "Pro" do not.
+const PLACE_WORDS = new Set("north south east west lake lakes hills hill heights park pointe point township twp city village beach shores grove harbor harbour center centre station plaza mall square ridge creek river falls valley springs woods oaks pines mt mount saint st ste suite rd road ave avenue blvd hwy highway main".split(" "));
+const MI_CITIES = new Set("oxford orion ortonville clarkston auburn rochester troy pontiac waterford detroit flint lapeer brandon holly fenton grand blanc davison burton goodrich metamora dryden almont imlay romeo washington shelby utica sterling warren royal oak ferndale birmingham bloomfield southfield novi livonia farmington wixom milford highland white commerce walled lyon brighton howell hartland ann arbor ypsilanti saline dearborn lansing okemos holland saginaw midland bay traverse kalamazoo portage battle jackson monroe wyandotte taylor canton plymouth northville".split(" "));
+function placeLike(suffix: string, firstWords: Set<string>, ownNames: Set<string>): boolean {
+  const words = suffix.toLowerCase().split(/\s+/).filter(Boolean);
+  if (!words.length) return false;
+  if (ownNames.has(suffix.toLowerCase())) return false;                 // the suffix is itself a payee in the file
+  return words.every((w) => PLACE_WORDS.has(w) || MI_CITIES.has(w) || /^#?\d{2,}$/.test(w) || /^[a-z]{2}$/.test(w)) && !words.some((w) => firstWords.has(w));
+}
+
+// Names that extend one another by a place-like tail are one vendor; each maps to the family's most common form.
 export function mergePrefixes(names: string[]): Map<string, string> {
   const counts = new Map<string, number>();
   for (const n of names) if (n) counts.set(n, (counts.get(n) ?? 0) + 1);
   const keys = [...counts.keys()].sort((a, b) => a.length - b.length);
+  const ownNames = new Set(keys.map((k) => k.toLowerCase()));
+  const firstWords = new Set(keys.map((k) => k.toLowerCase().split(" ")[0]));
   const family = new Map<string, string>();
   for (const n of keys) {
     let root = n;
     for (const k of keys) {
       if (k.length >= n.length) break;
-      if ((k.split(" ").length >= 2 || k.length >= 6) && n.toLowerCase().startsWith(k.toLowerCase() + " ")) { root = family.get(k) ?? k; break; }
+      if ((k.split(" ").length >= 2 || k.length >= 6) && n.toLowerCase().startsWith(k.toLowerCase() + " ") && placeLike(n.slice(k.length), firstWords, ownNames)) { root = family.get(k) ?? k; break; }
     }
     family.set(n, root);
   }

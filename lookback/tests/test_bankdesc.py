@@ -33,6 +33,12 @@ class BankDescription(unittest.TestCase):
         self.assertEqual(canon["Menards Lake"], "Menards")
         self.assertEqual(canon["Menards"], "Menards")
 
+    def test_no_merge_of_different_business(self):
+        canon = merge_prefixes(["Metro Fasteners"] * 2 + ["Metro Fasteners Rental"] * 2 + ["Metro Fasteners Auburn", "Great Lakes Flooring Supply", "Great Lakes Flooring"])
+        self.assertEqual(canon["Metro Fasteners Rental"], "Metro Fasteners Rental")
+        self.assertEqual(canon["Metro Fasteners Auburn"], "Metro Fasteners")
+        self.assertEqual(canon["Great Lakes Flooring Supply"], "Great Lakes Flooring Supply")
+
     def test_bank_file(self):
         res = read_payments(FIX)
         self.assertEqual(len(res.items), 791)

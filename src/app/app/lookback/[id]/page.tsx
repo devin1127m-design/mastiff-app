@@ -31,6 +31,10 @@ export default async function LookbackReport({ params }: { params: Promise<{ id:
     return { row, fs, verdict: fs.some((f) => f.verdict === HELD) ? HELD : "worth checking", first: fs[0] };
   }).sort((a, b) => b.first.weight - a.first.weight || a.first.date.localeCompare(b.first.date));
   const recovered = (marks ?? []).reduce((t, m) => t + Number(m.amount_recovered ?? 0), 0);
+  // How the scan scored once the office marked it: confirmed or recovered over everything flagged.
+  const dupRows = new Set(money.duplicates.map((x) => x.second_row));
+  const dupMarked = (marks ?? []).filter((m) => dupRows.has(m.row));
+  const dupHits = dupMarked.filter((m) => m.mark === "confirmed_issue" || m.mark === "recovered").length;
   const unresolved = rows.filter((r) => !markByRow.get(r.row) || markByRow.get(r.row)!.mark === "to_verify").length;
   const d = (s: string) => new Date(s + "T00:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
 
@@ -57,6 +61,7 @@ export default async function LookbackReport({ params }: { params: Promise<{ id:
           {money.duplicates.length > 0 && (
             <>
               <h3 className="text-base font-semibold mt-4 mb-1">Possible duplicate payments: {fmtMoney(money.duplicate_total)}</h3>
+              {dupMarked.length > 0 && <p className="text-sm mb-2">Scored so far: {dupHits} of {dupMarked.length} marked pairs were real ({Math.round((100 * dupHits) / dupMarked.length)}%). {money.duplicates.length - dupMarked.length} still to mark.</p>}
               <p className="grey text-sm mb-2">The later payment of each pair. A payment can repeat for a good reason (rent, a deposit then a balance); confirm each before asking the vendor for a credit.</p>
               <table className="list mb-4"><thead><tr><th>Vendor</th><th>First paid</th><th>Paid again</th><th className="text-right">Amount</th><th>Match</th></tr></thead><tbody>
                 {money.duplicates.map((x) => <tr key={x.second_row}><td>{x.vendor}</td><td>{d(x.first_date)}</td><td>{d(x.second_date)}</td><td className="text-right">{fmtMoney(x.amount)}</td><td className="text-sm">{x.by_invoice ? "same invoice number" : "same amount, days apart"}</td></tr>)}
@@ -74,9 +79,18 @@ export default async function LookbackReport({ params }: { params: Promise<{ id:
           )}
         </>
       ) : <p className="grey mb-8">No payments look paid twice and no late fees were found in the wording.</p>}
+      {money.near_repeats && money.near_repeats.length > 0 && (
+        <details className="mb-8">
+          <summary className="text-sm cursor-pointer">Same payee, same amount, 15 to 45 days apart: {money.near_repeats.length} pairs, not flagged</summary>
+          <p className="grey text-sm my-2">Where monthly bills live. Shown so we can see whether widening the 14-day window would find real duplicates or only rent and utilities.</p>
+          <table className="list"><thead><tr><th>Vendor</th><th>First</th><th>Again</th><th className="text-right">Amount</th><th>Days</th></tr></thead><tbody>
+            {money.near_repeats.map((x) => <tr key={x.second_row}><td>{x.vendor}</td><td>{d(x.first_date)}</td><td>{d(x.second_date)}</td><td className="text-right">{fmtMoney(x.amount)}</td><td>{x.days}</td></tr>)}
+          </tbody></table>
+        </details>
+      )}
 
       <h2 className="mt-8 mb-1">Payments worth a look</h2>
-      <p className="grey text-sm mb-3">Heaviest first. {unresolved} of {rows.length} still to verify. Mark each one; the marks teach the next scan what is normal for this office.</p>
+      <p className="grey text-sm mb-3">Heaviest first. {unresolved} of {rows.length} still to verify. Mark each one; the marks are kept with the report and are how we score the scan against what the office knows.</p>
       {rows.length ? (
         <div className="space-y-3">
           {rows.map((r) => {

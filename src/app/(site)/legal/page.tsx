@@ -21,7 +21,7 @@ export default function Legal() {
         <h2>Leaving</h2>
         <p>Export your log and vendor file any time. Ask, and we delete your office within a week and confirm in writing.</p>
         <h2>What we don't promise</h2>
-        <p>That nothing will go wrong. We catch three patterns; we do not guarantee recovery, and we do not state what any insurer requires. Ask your broker.</p>
+        <p>That nothing will go wrong. We check for three patterns; we do not guarantee recovery, and we do not state what any insurer requires. Ask your broker.</p>
       </section>
     </>
   );
