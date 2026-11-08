@@ -78,6 +78,17 @@ export default async function OrgHome() {
         </div>
       </div>
 
+      <div className="md:hidden mb-8">
+        <h2 className="mb-2">More</h2>
+        <div className="grid grid-cols-2 gap-2">
+          <Link href="/app/vendors" className="btn">Vendors</Link>
+          <Link href="/app/lookback" className="btn">Look-back</Link>
+          <Link href="/app/readout" className="btn">Read-out</Link>
+          <Link href="/app/subs" className="btn">Subs</Link>
+          <Link href="/app/settings" className="btn col-span-2">Settings</Link>
+        </div>
+      </div>
+
       <h2 className="mb-3">Recent</h2>
       {recent && recent.length ? (
         <table className="list"><thead><tr><th>When</th><th>Payee</th><th>Amount</th><th>Verdict</th><th>Status</th></tr></thead><tbody>

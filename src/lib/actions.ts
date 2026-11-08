@@ -463,3 +463,16 @@ export async function decideInThread(orgId: string, byName: string, instructionI
   else if (ins?.status === "declined") await supabase.from("messages").insert({ org_id: orgId, role: "mastiff", text: "Left as it was. Nothing changed." });
   revalidatePath("/app/chat");
 }
+
+// The pilot form on the public site. No session; the leads table lets anyone insert and only staff read.
+export async function submitLead(form: FormData) {
+  if (String(form.get("website") ?? "")) redirect("/pilot?sent=1"); // honeypot: bots fill it, people never see it
+  const { createClient: plain } = await import("@supabase/supabase-js");
+  const db = plain(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, { auth: { persistSession: false } });
+  const s = (k: string, n = 120) => String(form.get(k) ?? "").trim().slice(0, n).replace(/\d(?:[ -]?\d){7,}/g, (r) => "****" + r.replace(/\D/g, "").slice(-4));
+  const name = s("name"), firm = s("firm"), email = s("email").toLowerCase(), phone = s("phone", 40);
+  if (!name || !firm || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || phone.replace(/\D/g, "").length < 7) redirect("/pilot?err=1#form");
+  const ppm = Number(s("payments_per_month", 6).replace(/\D/g, "")) || null;
+  await db.from("leads").insert({ name, firm, email, phone, payments_per_month: ppm, note: s("note", 400) || null });
+  redirect("/pilot?sent=1");
+}

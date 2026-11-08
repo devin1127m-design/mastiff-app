@@ -37,37 +37,58 @@ export async function getSession(): Promise<Session> {
 }
 
 export function Shell({ session, orgName, children }: { session: Session; orgName?: string; children: React.ReactNode }) {
+  const inOffice = session.memberships.length > 0;
+  const others = session.memberships.filter((m) => m.orgs.name !== orgName).slice(0, 3);
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="border-b border-black">
+    <div className="min-h-screen flex flex-col app-shell">
+      <header className="border-b border-black bg-white sticky top-0 z-10">
         <div className="mx-auto max-w-5xl px-4 min-h-14 py-2 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-5">
-            <Link href={session.isStaff ? "/desk" : "/app"} className="serif text-xl no-underline">Mastiff</Link>
-            {orgName && <span className="grey text-sm hidden sm:inline">{orgName}{session.memberships.length > 1 && <> · {session.memberships.filter((m) => m.orgs.name !== orgName).slice(0, 3).map((m) => <a key={m.org_id} href={`/app/switch?org=${m.org_id}`} className="underline mr-2">{m.orgs.name}</a>)}</>}</span>}
+          <div className="flex items-baseline gap-3 min-w-0">
+            <Link href={session.isStaff && !inOffice ? "/desk" : "/app"} className="serif text-xl no-underline shrink-0">Mastiff</Link>
+            {orgName && <span className="grey text-sm truncate">{orgName}{others.length > 0 && <> · {others.map((m) => <a key={m.org_id} href={`/app/switch?org=${m.org_id}`} className="underline mr-2">{m.orgs.name}</a>)}</>}</span>}
           </div>
-          <nav className="flex items-center flex-wrap justify-end gap-x-3 gap-y-1 text-sm">
+          <nav className="hidden md:flex items-center gap-x-4 text-sm">
             {session.isStaff && <Link href="/desk">Desk</Link>}
             {session.isPartner && <Link href="/partner">Offices</Link>}
-            {session.memberships.length > 0 && (
+            {inOffice && (
               <>
                 <Link href="/app">Home</Link>
-                <Link href="/app/requests/new">New request</Link>
-                <Link href="/app/vendors">Vendors</Link>
-                <Link href="/app/lookback">Look-back</Link>
-                <Link href="/app/subs">Subs</Link>
-                <Link href="/app/readout">Read-out</Link>
+                <Link href="/app/requests/new">Send an invoice</Link>
                 <Link href="/app/chat">Mastiff</Link>
+                <Link href="/app/vendors">Vendors</Link>
                 <Link href="/app/log">Log</Link>
+                <Link href="/app/lookback">Look-back</Link>
+                <Link href="/app/readout">Read-out</Link>
+                <Link href="/app/subs">Subs</Link>
+                <Link href="/app/settings">Settings</Link>
               </>
             )}
             <form action="/auth/signout" method="post"><button className="grey underline-offset-2 hover:underline">Sign out</button></form>
           </nav>
+          <form action="/auth/signout" method="post" className="md:hidden"><button className="grey text-sm underline-offset-2">Sign out</button></form>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-5xl px-4 py-8 flex-1">{children}</main>
-      <footer className="border-t hair">
+      <main className="mx-auto w-full max-w-5xl px-4 py-6 md:py-8 flex-1 pb-24 md:pb-8">{children}</main>
+      <footer className="border-t hair hidden md:block">
         <div className="mx-auto max-w-5xl px-4 py-4 advisory">Mastiff flags. Your firm makes every payment decision.</div>
       </footer>
+      {/* Phone: the five things a bookkeeper taps, always under the thumb. */}
+      <nav className="tabbar md:hidden" aria-label="Main">
+        {session.isStaff && !inOffice ? (
+          <>
+            <Link href="/desk">Desk</Link>
+            <Link href="/partner">Firms</Link>
+          </>
+        ) : (
+          <>
+            <Link href="/app">Home</Link>
+            <Link href="/app/requests/new">Send</Link>
+            <Link href="/app/chat">Mastiff</Link>
+            <Link href="/app/log">Log</Link>
+            {session.isStaff ? <Link href="/desk">Desk</Link> : <Link href="/app/vendors">Vendors</Link>}
+          </>
+        )}
+      </nav>
     </div>
   );
 }

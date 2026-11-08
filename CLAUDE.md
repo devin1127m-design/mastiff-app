@@ -1,6 +1,6 @@
 # CLAUDE.md — Mastiff app
 
-Read this first. Two Claude sessions work on this repo: Claude Code on Devin's PC and Eris (Claude in the chat app, building in a cloud container). Git is the handoff. Pull before you start, push when a step is done, and say in the commit message what changed and what is next.
+Read this first. Two Claude sessions work on this repo: Claude Code on Devin's PC and Eris (Claude in the chat app, building in a cloud container). Git is the handoff. Pull before you start, push when a step is done, and say in the commit message what changed and what is next. Notes to each other go in `plans/` (`review-*-for-eris.md`, `update-*-for-jarvis.md`).
 
 ## What Mastiff is
 Payment verification for small offices. The bookkeeper enters (or forwards) a payment request before it is keyed. Mastiff answers Pass or Hold with a one-line reason. On a hold, Mastiff staff call the vendor at the number already on file and log it. The office's second person records the decision. The office owns the verified vendor file and the log.
@@ -25,6 +25,8 @@ Next.js 16 (App Router, TypeScript, Tailwind v4 via `@tailwindcss/postcss`), Sup
 - Auth: emailed sign-in link using the implicit flow from a server action (`src/lib/auth-actions.ts`), read client-side in `src/app/auth/callback/page.tsx`. This is deliberate: it makes the link work on a different device than the one that requested it. Do not switch back to PKCE. A 6-digit code replaces the link once custom SMTP (Resend) exists, which needs the domain.
 
 ## What is built (v1 Nov 3 2026; steps 1 to 10 Nov 4 2026, each waiting on its gate to be switched on and used)
+- Public site, `src/app/(site)/` (ported from `site/` on Nov 7; the HTML folder stays as reference): `/` landing with the hold ticket beside the headline, `/how-it-works`, `/pilot` (form → `leads`, honeypot field), `/about`, `/legal`. `SiteShell` is its frame; styles under "Public site" in `globals.css`. Phone-first: 20px gutters, nav collapses to Sign in + Start free.
+- App shell (`Shell.tsx`): on phones a fixed bottom tab bar (Home, Send, Mastiff, Log, Vendors; Desk and Firms for staff with no office) and a More grid on Home; the full nav from `md` up.
 - `/login`: email link sign-in.
 - `/app`: office home (week count, holds waiting, vendors, verified count, recent).
 - `/app` also carries step 4: "What Mastiff did", a feed built from the tables themselves (`src/lib/feed.ts`, never a separate log that can drift), each line opening the request; and a card into the Mastiff thread. On a passed request the office can "Turn into a hold" (`askForALook`), which is the take-over.
