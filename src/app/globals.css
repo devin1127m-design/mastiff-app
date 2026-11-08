@@ -130,3 +130,9 @@ table.list tr:hover td { text-decoration: underline; text-decoration-color: #6B6
   .site-nav { gap: 8px; }
   .site-nav .btn { min-height: 38px; padding: 7px 12px; font-size: 13.5px; }
 }
+
+/* /scan: the report inside the site frame */
+.scan-report .card { border: 1px solid #000; border-radius: 4px; padding: 14px; }
+.scan-report table.list { display: block; overflow-x: auto; }
+@media (min-width: 768px) { .scan-report table.list { display: table; } }
+@media print { .site-head, .site-foot, .print\:hidden { display: none !important; } }

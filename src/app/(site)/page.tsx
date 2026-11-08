@@ -16,9 +16,9 @@ export default function Landing() {
           <p className="lead">Most losses start with a request that looks right: a vendor's "new bank details," an invoice with the right logo, a call that sounds like the owner. Mastiff checks each one against what your office already has on file. When something doesn't match, it holds, and we call the vendor on the number you already had.</p>
           <div className="row gap">
             <Link href="/pilot" className="btn fill lg">Start a free 30-day pilot</Link>
-            <Link href="/how-it-works" className="btn lg">How it works</Link>
+            <Link href="/scan" className="btn lg">Scan your own payments</Link>
           </div>
-          <p className="advisory mt">Mastiff flags. Your firm makes every payment decision.</p>
+          <p className="advisory mt">The scan runs in your browser; nothing is uploaded. Mastiff flags. Your firm makes every payment decision.</p>
         </div>
         <div className="ticket" aria-label="Example of a held payment">
           <div className="row-between">
@@ -64,7 +64,7 @@ export default function Landing() {
           <li><span className="num">02</span><div><h3>The call</h3><p>On a hold, we call the vendor on the number already on file and tell you who answered and what they said. Your bookkeeper never has to make the call.</p></div></li>
           <li><span className="num">03</span><div><h3>The vendor file</h3><p>By day 30, every active vendor's number and account confirmed by voice, dated, with a name next to it. Yours to keep.</p></div></li>
           <li><span className="num">04</span><div><h3>The log</h3><p>Every check, call and decision in one place. When your broker or CPA asks how a payment was verified, you hand them the page.</p></div></li>
-          <li><span className="num">05</span><div><h3>Money back</h3><p>The look-back scans the last 18 months of payments for duplicates and late fees, and shows you the amounts worth asking a vendor about.</p></div></li>
+          <li><span className="num">05</span><div><h3>Money back</h3><p>The look-back scans the last 18 months of payments for duplicates and late fees, and shows you the amounts worth asking a vendor about. <Link href="/scan" className="underline">Run it yourself, right now, without sending us anything.</Link></p></div></li>
         </ol>
       </section>
 

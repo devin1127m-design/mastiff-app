@@ -9,6 +9,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           <Link href="/" className="wordmark">Mastiff</Link>
           <nav className="site-nav">
             <Link href="/how-it-works" className="hide-sm">How it works</Link>
+            <Link href="/scan" className="hide-sm">Scan</Link>
             <Link href="/pilot" className="hide-sm">The pilot</Link>
             <Link href="/about" className="hide-sm">About</Link>
             <Link href="/login" className="btn">Sign in</Link>
@@ -22,6 +23,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           <p className="serif text-lg">Mastiff flags. Your firm makes every payment decision.</p>
           <nav className="foot-nav">
             <Link href="/how-it-works">How it works</Link>
+            <Link href="/scan">Scan your own payments</Link>
             <Link href="/pilot">The pilot</Link>
             <Link href="/about">About</Link>
             <Link href="/legal">Privacy and terms</Link>

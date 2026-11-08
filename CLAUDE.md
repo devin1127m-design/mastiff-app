@@ -26,6 +26,7 @@ Next.js 16 (App Router, TypeScript, Tailwind v4 via `@tailwindcss/postcss`), Sup
 
 ## What is built (v1 Nov 3 2026; steps 1 to 10 Nov 4 2026, each waiting on its gate to be switched on and used)
 - Public site, `src/app/(site)/` (ported from `site/` on Nov 7; the HTML folder stays as reference): `/` landing with the hold ticket beside the headline, `/how-it-works`, `/pilot` (form → `leads`, honeypot field), `/about`, `/legal`. `SiteShell` is its frame; styles under "Public site" in `globals.css`. Phone-first: 20px gutters, nav collapses to Sign in + Start free.
+- `/scan` (Nov 8): the look-back run entirely in the browser (`LocalScan.tsx` imports the same `importer.ts` and `scan.ts`): pick a CSV, the report renders on the page, nothing is uploaded and no account is needed. Built because the first two people asked for a file said "I don't want to share that." Verified headless with the network blocked after load: zero requests. Print button; pilot call-to-action at the bottom.
 - App shell (`Shell.tsx`): on phones a fixed bottom tab bar (Home, Send, Mastiff, Log, Vendors; Desk and Firms for staff with no office) and a More grid on Home; the full nav from `md` up.
 - `/login`: email link sign-in.
 - `/app`: office home (week count, holds waiting, vendors, verified count, recent).
