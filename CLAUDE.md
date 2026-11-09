@@ -1,6 +1,6 @@
 # CLAUDE.md — Mastiff app
 
-Read this first. Two Claude sessions work on this repo: Claude Code on Devin's PC and Eris (Claude in the chat app, building in a cloud container). Git is the handoff. Pull before you start, push when a step is done, and say in the commit message what changed and what is next. Notes to each other go in `plans/` (`review-*-for-eris.md`, `update-*-for-jarvis.md`).
+**Parked 2026-11-09.** Read `STATUS.md` first: what exists, what was never done, and the order to pick it up in. Then this file. Two Claude sessions work on this repo: Claude Code on Devin's PC and Eris (Claude in the chat app, building in a cloud container). Git is the handoff. Pull before you start, push when a step is done, and say in the commit message what changed and what is next. Notes to each other go in `plans/` (`review-*-for-eris.md`, `update-*-for-jarvis.md`).
 
 ## What Mastiff is
 Payment verification for small offices. The bookkeeper enters (or forwards) a payment request before it is keyed. Mastiff answers Pass or Hold with a one-line reason. On a hold, Mastiff staff call the vendor at the number already on file and log it. The office's second person records the decision. The office owns the verified vendor file and the log.
